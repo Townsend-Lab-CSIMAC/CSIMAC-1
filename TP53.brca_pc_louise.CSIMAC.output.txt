@@ -1,0 +1,1061 @@
+
+CSI-MAC, Version: 1.0 [Last Update: May 3rd, 2016]
+Reference: Zi-Ming Zhao, Sachith Gullapalli, Ning Li and Jeffrey P. Townsend. (2016)
+
+Read cancer divergence consensus input file: TP53_mut_scaled3_brca_pc_1182_NM_000546_59.txt
+
+Read fasta: TP53_mut_scaled3_brca_pc_1182_NM_000546_59.txt
+Sequence Name:
+TP53_mut_scaled3_brca_pc1182NM_000546total_59_R_58_S_1_B_0
+Sequence string:
+*******************************************************D********************D*******D*****D***************RDDDR*RDD******D*DSRR**RDRR*RR****RDD***D***R***RDRR**RDR***DR***DRDRR**R***D***R***DDRRRDRDR*D**DR*****D*D*RR***RD**********R*R***RD*R***RRRR*D*R**RD*R******RR***RDRRR*RDRRRRR***R**R*D*D**D******D**D*D************D******D**D*D********R****************************************************
+Finish reading for the fasta file TP53_mut_scaled3_brca_pc_1182_NM_000546_59.txt
+
+Divergence Consensus Sequences:
+>TP53_mut_scaled3_brca_pc1182NM_000546total_59_R_58_S_1_B_0
+*******************************************************D********************D*******D*****D***************RDDDR*RDD******D*DSRR**RDRR*RR****RDD***D***R***RDRR**RDR***DR***DRDRR**R***D***R***DDRRRDRDR*D**DR*****D*D*RR***RD**********R*R***RD*R***RRRR*D*R**RD*R******RR***RDRRR*RDRRRRR***R**R*D*D**D******D**D*D************D******D**D*D********R****************************************************
+
+
+Warning: the length of divergence sequences can be divided by 3 (codon size).
+Get Recurrent list: 
+***The size of the recurrent: 31
+RecurrentSite:	106	Count: 2
+RecurrentSite:	125	Count: 2
+RecurrentSite:	131	Count: 4
+RecurrentSite:	134	Count: 2
+RecurrentSite:	140	Count: 4
+RecurrentSite:	156	Count: 2
+RecurrentSite:	162	Count: 2
+RecurrentSite:	172	Count: 4
+RecurrentSite:	174	Count: 15
+RecurrentSite:	175	Count: 4
+RecurrentSite:	178	Count: 5
+RecurrentSite:	192	Count: 10
+RecurrentSite:	193	Count: 3
+RecurrentSite:	194	Count: 4
+RecurrentSite:	198	Count: 2
+RecurrentSite:	204	Count: 2
+RecurrentSite:	214	Count: 2
+RecurrentSite:	215	Count: 3
+RecurrentSite:	219	Count: 9
+RecurrentSite:	233	Count: 2
+RecurrentSite:	237	Count: 4
+RecurrentSite:	244	Count: 4
+RecurrentSite:	247	Count: 8
+RecurrentSite:	254	Count: 3
+RecurrentSite:	264	Count: 2
+RecurrentSite:	265	Count: 2
+RecurrentSite:	269	Count: 2
+RecurrentSite:	272	Count: 11
+RecurrentSite:	277	Count: 3
+RecurrentSite:	281	Count: 3
+RecurrentSite:	285	Count: 4
+The size of the lookup LambdaCI: 99
+Test Lambda lookup table:
+Recurrent count: 2	LowerCI: 0.332705	UpperCI: 6.17459
+Divergence Synonymous Counts (DS): 1
+Divergence Replacement Counts (DR): 156
+The gene length: 1182 bp
+ Two time-consuming steps ClusterSubSeq and CI_r_stochastic.
+Cancer Divergence synonymous mutation rate: 4.56161e-06
+The ratio of Nonsynonymous and Synonymous is 0.345291
+Cancer Divergence replacement mutation rate (Silent*RatioNS): 1.32109e-05
+
+***Step: Start ClusterSubSeq for cancer Replacement!***
+The total number of models in ClusterSubSeq: 77815 for the region 0 to 393
+The size of selected models in ClusterSubSeq: 1
+Made it here
+But not here.
+The total number of models in ClusterSubSeq: 41616 for the region 106 to 393
+The size of selected models in ClusterSubSeq: 2
+Made it here
+But not here.
+The total number of models in ClusterSubSeq: 16836 for the region 106 to 288
+Finish ClusterSubSeq for the region from the start position 106 to the end position 393
+Finish ClusterSubSeq for the region from the start position 0 to the end position 393
+***Step: Finish ClusterSubSeq for cancer Replacement!***
+ClusterSubSeq (Time elapsed: 0:2)
+
+***Start to Estimate gamma for human cancer replacement!***
+***End to Estimate gamma for human cancer replacement!***
+rc_SitePRF (Time elapsed: 0:0)
+
+***Start Estimating Gamma CI by CIr_stochastic!***
+******CIr_stochastic******
+Start CIr_stochastic at Position 1 (Time elapsed: 0:0)
+Site: 0	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 1	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 2	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 3	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 4	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 5	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 6	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 7	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 8	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 9	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 10	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 11	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 12	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 13	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 14	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 15	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 16	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 17	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 18	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 19	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 20	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 21	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 22	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 23	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 24	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 25	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 26	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 27	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 28	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 29	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 30	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 31	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 32	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 33	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 34	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 35	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 36	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 37	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 38	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 39	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 40	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 41	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 42	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 43	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 44	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 45	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 46	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 47	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 48	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 49	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 50	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 51	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 52	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 53	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 54	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 55	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 56	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 57	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 58	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 59	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 60	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 61	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 62	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 63	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 64	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 65	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 66	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 67	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 68	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 69	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 70	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 71	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 72	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 73	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 74	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 75	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 76	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 77	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 78	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 79	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 80	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 81	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 82	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 83	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 84	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 85	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 86	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 87	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 88	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 89	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 90	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 91	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 92	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 93	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 94	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 95	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 96	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 97	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 98	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 99	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 100	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 101	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 102	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 103	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 104	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 105	Model size: 77815******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 106	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 106	Recurrent weight: 0.00787402	SiteRecurrentCount: 2	TotalReplacementSite: 156	TotalRecurrentCount: 129	TotalRecurrentSite: 31
+Calculate the parameter r for recurrent site 106 with Recurrent number 2 Gamma: 98.1779
+Lower recurrent gamma: 16.3321
+Upper recurrent gamma: 303.104
+Recurrent gamma before correction by weight: 98.1779	lower_r: 16.3321	upper_r: 303.104
+Site: 107	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 108	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 109	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 110	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 111	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 112	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 113	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 114	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 115	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 116	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 117	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 118	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 119	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 120	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 121	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 122	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 123	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 124	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 125	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 125	Recurrent weight: 0.00787402	SiteRecurrentCount: 2	TotalReplacementSite: 156	TotalRecurrentCount: 129	TotalRecurrentSite: 31
+Calculate the parameter r for recurrent site 125 with Recurrent number 2 Gamma: 98.1779
+Lower recurrent gamma: 16.3321
+Upper recurrent gamma: 303.104
+Recurrent gamma before correction by weight: 98.1779	lower_r: 16.3321	upper_r: 303.104
+Site: 126	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 127	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 128	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 129	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 130	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 131	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 131	Recurrent weight: 0.015748	SiteRecurrentCount: 4	TotalReplacementSite: 156	TotalRecurrentCount: 129	TotalRecurrentSite: 31
+Calculate the parameter r for recurrent site 131 with Recurrent number 4 Gamma: 196.356
+Lower recurrent gamma: 60.9748
+Upper recurrent gamma: 456.086
+Recurrent gamma before correction by weight: 196.356	lower_r: 60.9748	upper_r: 456.086
+Site: 132	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 133	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 134	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 134	Recurrent weight: 0.00787402	SiteRecurrentCount: 2	TotalReplacementSite: 156	TotalRecurrentCount: 129	TotalRecurrentSite: 31
+Calculate the parameter r for recurrent site 134 with Recurrent number 2 Gamma: 98.1779
+Lower recurrent gamma: 16.3321
+Upper recurrent gamma: 303.104
+Recurrent gamma before correction by weight: 98.1779	lower_r: 16.3321	upper_r: 303.104
+Site: 135	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 136	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 137	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 138	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 139	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 140	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 140	Recurrent weight: 0.015748	SiteRecurrentCount: 4	TotalReplacementSite: 156	TotalRecurrentCount: 129	TotalRecurrentSite: 31
+Calculate the parameter r for recurrent site 140 with Recurrent number 4 Gamma: 196.356
+Lower recurrent gamma: 60.9748
+Upper recurrent gamma: 456.086
+Recurrent gamma before correction by weight: 196.356	lower_r: 60.9748	upper_r: 456.086
+Site: 141	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 142	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 143	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 144	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 145	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 146	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 147	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 148	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 149	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 150	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 151	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 152	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 153	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 154	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 155	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 156	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 156	Recurrent weight: 0.00787402	SiteRecurrentCount: 2	TotalReplacementSite: 156	TotalRecurrentCount: 129	TotalRecurrentSite: 31
+Calculate the parameter r for recurrent site 156 with Recurrent number 2 Gamma: 98.1779
+Lower recurrent gamma: 16.3321
+Upper recurrent gamma: 303.104
+Recurrent gamma before correction by weight: 98.1779	lower_r: 16.3321	upper_r: 303.104
+Site: 157	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 158	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 159	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 160	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 161	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 162	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 162	Recurrent weight: 0.00787402	SiteRecurrentCount: 2	TotalReplacementSite: 156	TotalRecurrentCount: 129	TotalRecurrentSite: 31
+Calculate the parameter r for recurrent site 162 with Recurrent number 2 Gamma: 98.1779
+Lower recurrent gamma: 16.3321
+Upper recurrent gamma: 303.104
+Recurrent gamma before correction by weight: 98.1779	lower_r: 16.3321	upper_r: 303.104
+Site: 163	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 164	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 165	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 166	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 167	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 168	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 169	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 170	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 171	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 172	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 172	Recurrent weight: 0.015748	SiteRecurrentCount: 4	TotalReplacementSite: 156	TotalRecurrentCount: 129	TotalRecurrentSite: 31
+Calculate the parameter r for recurrent site 172 with Recurrent number 4 Gamma: 196.356
+Lower recurrent gamma: 60.9748
+Upper recurrent gamma: 456.086
+Recurrent gamma before correction by weight: 196.356	lower_r: 60.9748	upper_r: 456.086
+Site: 173	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 174	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 174	Recurrent weight: 0.0590551	SiteRecurrentCount: 15	TotalReplacementSite: 156	TotalRecurrentCount: 129	TotalRecurrentSite: 31
+Calculate the parameter r for recurrent site 174 with Recurrent number 15 Gamma: 736.334
+Lower recurrent gamma: 423.776
+Upper recurrent gamma: 1174.2
+Recurrent gamma before correction by weight: 736.334	lower_r: 423.776	upper_r: 1174.2
+Site: 175	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 175	Recurrent weight: 0.015748	SiteRecurrentCount: 4	TotalReplacementSite: 156	TotalRecurrentCount: 129	TotalRecurrentSite: 31
+Calculate the parameter r for recurrent site 175 with Recurrent number 4 Gamma: 196.356
+Lower recurrent gamma: 60.9748
+Upper recurrent gamma: 456.086
+Recurrent gamma before correction by weight: 196.356	lower_r: 60.9748	upper_r: 456.086
+Site: 176	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 177	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 178	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 178	Recurrent weight: 0.019685	SiteRecurrentCount: 5	TotalReplacementSite: 156	TotalRecurrentCount: 129	TotalRecurrentSite: 31
+Calculate the parameter r for recurrent site 178 with Recurrent number 5 Gamma: 245.445
+Lower recurrent gamma: 88.0366
+Upper recurrent gamma: 527.461
+Recurrent gamma before correction by weight: 245.445	lower_r: 88.0366	upper_r: 527.461
+Site: 179	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 180	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 181	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 182	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 183	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 184	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 185	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 186	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 187	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 188	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 189	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 190	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 191	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 192	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 192	Recurrent weight: 0.0393701	SiteRecurrentCount: 10	TotalReplacementSite: 156	TotalRecurrentCount: 129	TotalRecurrentSite: 31
+Calculate the parameter r for recurrent site 192 with Recurrent number 10 Gamma: 490.889
+Lower recurrent gamma: 246.009
+Upper recurrent gamma: 860.902
+Recurrent gamma before correction by weight: 490.889	lower_r: 246.009	upper_r: 860.902
+Site: 193	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 193	Recurrent weight: 0.011811	SiteRecurrentCount: 3	TotalReplacementSite: 156	TotalRecurrentCount: 129	TotalRecurrentSite: 31
+Calculate the parameter r for recurrent site 193 with Recurrent number 3 Gamma: 147.267
+Lower recurrent gamma: 36.6354
+Upper recurrent gamma: 381.819
+Recurrent gamma before correction by weight: 147.267	lower_r: 36.6354	upper_r: 381.819
+Site: 194	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 194	Recurrent weight: 0.015748	SiteRecurrentCount: 4	TotalReplacementSite: 156	TotalRecurrentCount: 129	TotalRecurrentSite: 31
+Calculate the parameter r for recurrent site 194 with Recurrent number 4 Gamma: 196.356
+Lower recurrent gamma: 60.9748
+Upper recurrent gamma: 456.086
+Recurrent gamma before correction by weight: 196.356	lower_r: 60.9748	upper_r: 456.086
+Site: 195	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 196	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 197	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 198	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 198	Recurrent weight: 0.00787402	SiteRecurrentCount: 2	TotalReplacementSite: 156	TotalRecurrentCount: 129	TotalRecurrentSite: 31
+Calculate the parameter r for recurrent site 198 with Recurrent number 2 Gamma: 98.1779
+Lower recurrent gamma: 16.3321
+Upper recurrent gamma: 303.104
+Recurrent gamma before correction by weight: 98.1779	lower_r: 16.3321	upper_r: 303.104
+Site: 199	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 200	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 201	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 202	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 203	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 204	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 204	Recurrent weight: 0.00787402	SiteRecurrentCount: 2	TotalReplacementSite: 156	TotalRecurrentCount: 129	TotalRecurrentSite: 31
+Calculate the parameter r for recurrent site 204 with Recurrent number 2 Gamma: 98.1779
+Lower recurrent gamma: 16.3321
+Upper recurrent gamma: 303.104
+Recurrent gamma before correction by weight: 98.1779	lower_r: 16.3321	upper_r: 303.104
+Site: 205	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 206	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 207	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 208	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 209	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 210	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 211	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 212	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 213	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 214	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 214	Recurrent weight: 0.00787402	SiteRecurrentCount: 2	TotalReplacementSite: 156	TotalRecurrentCount: 129	TotalRecurrentSite: 31
+Calculate the parameter r for recurrent site 214 with Recurrent number 2 Gamma: 98.1779
+Lower recurrent gamma: 16.3321
+Upper recurrent gamma: 303.104
+Recurrent gamma before correction by weight: 98.1779	lower_r: 16.3321	upper_r: 303.104
+Site: 215	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 215	Recurrent weight: 0.011811	SiteRecurrentCount: 3	TotalReplacementSite: 156	TotalRecurrentCount: 129	TotalRecurrentSite: 31
+Calculate the parameter r for recurrent site 215 with Recurrent number 3 Gamma: 147.267
+Lower recurrent gamma: 36.6354
+Upper recurrent gamma: 381.819
+Recurrent gamma before correction by weight: 147.267	lower_r: 36.6354	upper_r: 381.819
+Site: 216	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 217	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 218	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 219	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 219	Recurrent weight: 0.0354331	SiteRecurrentCount: 9	TotalReplacementSite: 156	TotalRecurrentCount: 129	TotalRecurrentSite: 31
+Calculate the parameter r for recurrent site 219 with Recurrent number 9 Gamma: 441.8
+Lower recurrent gamma: 212.324
+Upper recurrent gamma: 796.355
+Recurrent gamma before correction by weight: 441.8	lower_r: 212.324	upper_r: 796.355
+Site: 220	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 221	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 222	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 223	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 224	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 225	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 226	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 227	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 228	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 229	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 230	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 231	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 232	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 233	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 233	Recurrent weight: 0.00787402	SiteRecurrentCount: 2	TotalReplacementSite: 156	TotalRecurrentCount: 129	TotalRecurrentSite: 31
+Calculate the parameter r for recurrent site 233 with Recurrent number 2 Gamma: 98.1779
+Lower recurrent gamma: 16.3321
+Upper recurrent gamma: 303.104
+Recurrent gamma before correction by weight: 98.1779	lower_r: 16.3321	upper_r: 303.104
+Site: 234	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 235	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 236	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 237	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 237	Recurrent weight: 0.015748	SiteRecurrentCount: 4	TotalReplacementSite: 156	TotalRecurrentCount: 129	TotalRecurrentSite: 31
+Calculate the parameter r for recurrent site 237 with Recurrent number 4 Gamma: 196.356
+Lower recurrent gamma: 60.9748
+Upper recurrent gamma: 456.086
+Recurrent gamma before correction by weight: 196.356	lower_r: 60.9748	upper_r: 456.086
+Site: 238	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 239	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 240	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 241	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 242	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 243	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 244	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 244	Recurrent weight: 0.015748	SiteRecurrentCount: 4	TotalReplacementSite: 156	TotalRecurrentCount: 129	TotalRecurrentSite: 31
+Calculate the parameter r for recurrent site 244 with Recurrent number 4 Gamma: 196.356
+Lower recurrent gamma: 60.9748
+Upper recurrent gamma: 456.086
+Recurrent gamma before correction by weight: 196.356	lower_r: 60.9748	upper_r: 456.086
+Site: 245	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 246	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 247	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 247	Recurrent weight: 0.0314961	SiteRecurrentCount: 8	TotalReplacementSite: 156	TotalRecurrentCount: 129	TotalRecurrentSite: 31
+Calculate the parameter r for recurrent site 247 with Recurrent number 8 Gamma: 392.711
+Lower recurrent gamma: 179.493
+Upper recurrent gamma: 730.934
+Recurrent gamma before correction by weight: 392.711	lower_r: 179.493	upper_r: 730.934
+Site: 248	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 249	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 250	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 251	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 252	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 253	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 254	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 254	Recurrent weight: 0.011811	SiteRecurrentCount: 3	TotalReplacementSite: 156	TotalRecurrentCount: 129	TotalRecurrentSite: 31
+Calculate the parameter r for recurrent site 254 with Recurrent number 3 Gamma: 147.267
+Lower recurrent gamma: 36.6354
+Upper recurrent gamma: 381.819
+Recurrent gamma before correction by weight: 147.267	lower_r: 36.6354	upper_r: 381.819
+Site: 255	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 256	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 257	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 258	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 259	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 260	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 261	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 262	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 263	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 264	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 264	Recurrent weight: 0.00787402	SiteRecurrentCount: 2	TotalReplacementSite: 156	TotalRecurrentCount: 129	TotalRecurrentSite: 31
+Calculate the parameter r for recurrent site 264 with Recurrent number 2 Gamma: 98.1779
+Lower recurrent gamma: 16.3321
+Upper recurrent gamma: 303.104
+Recurrent gamma before correction by weight: 98.1779	lower_r: 16.3321	upper_r: 303.104
+Site: 265	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 265	Recurrent weight: 0.00787402	SiteRecurrentCount: 2	TotalReplacementSite: 156	TotalRecurrentCount: 129	TotalRecurrentSite: 31
+Calculate the parameter r for recurrent site 265 with Recurrent number 2 Gamma: 98.1779
+Lower recurrent gamma: 16.3321
+Upper recurrent gamma: 303.104
+Recurrent gamma before correction by weight: 98.1779	lower_r: 16.3321	upper_r: 303.104
+Site: 266	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 267	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 268	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 269	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 269	Recurrent weight: 0.00787402	SiteRecurrentCount: 2	TotalReplacementSite: 156	TotalRecurrentCount: 129	TotalRecurrentSite: 31
+Calculate the parameter r for recurrent site 269 with Recurrent number 2 Gamma: 98.1779
+Lower recurrent gamma: 16.3321
+Upper recurrent gamma: 303.104
+Recurrent gamma before correction by weight: 98.1779	lower_r: 16.3321	upper_r: 303.104
+Site: 270	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 271	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 272	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 272	Recurrent weight: 0.0433071	SiteRecurrentCount: 11	TotalReplacementSite: 156	TotalRecurrentCount: 129	TotalRecurrentSite: 31
+Calculate the parameter r for recurrent site 272 with Recurrent number 11 Gamma: 539.978
+Lower recurrent gamma: 280.427
+Upper recurrent gamma: 924.713
+Recurrent gamma before correction by weight: 539.978	lower_r: 280.427	upper_r: 924.713
+Site: 273	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 274	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 275	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 276	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 277	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 277	Recurrent weight: 0.011811	SiteRecurrentCount: 3	TotalReplacementSite: 156	TotalRecurrentCount: 129	TotalRecurrentSite: 31
+Calculate the parameter r for recurrent site 277 with Recurrent number 3 Gamma: 147.267
+Lower recurrent gamma: 36.6354
+Upper recurrent gamma: 381.819
+Recurrent gamma before correction by weight: 147.267	lower_r: 36.6354	upper_r: 381.819
+Site: 278	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 279	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 280	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 281	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 281	Recurrent weight: 0.011811	SiteRecurrentCount: 3	TotalReplacementSite: 156	TotalRecurrentCount: 129	TotalRecurrentSite: 31
+Calculate the parameter r for recurrent site 281 with Recurrent number 3 Gamma: 147.267
+Lower recurrent gamma: 36.6354
+Upper recurrent gamma: 381.819
+Recurrent gamma before correction by weight: 147.267	lower_r: 36.6354	upper_r: 381.819
+Site: 282	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 283	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 284	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 285	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 285	Recurrent weight: 0.015748	SiteRecurrentCount: 4	TotalReplacementSite: 156	TotalRecurrentCount: 129	TotalRecurrentSite: 31
+Calculate the parameter r for recurrent site 285 with Recurrent number 4 Gamma: 196.356
+Lower recurrent gamma: 60.9748
+Upper recurrent gamma: 456.086
+Recurrent gamma before correction by weight: 196.356	lower_r: 60.9748	upper_r: 456.086
+Site: 286	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 287	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 288	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 289	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 290	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 291	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 292	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 293	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 294	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 295	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 296	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 297	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 298	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 299	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 300	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 301	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 302	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 303	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 304	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 305	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 306	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 307	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 308	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 309	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 310	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 311	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 312	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 313	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 314	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 315	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 316	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 317	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 318	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 319	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 320	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 321	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 322	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 323	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 324	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 325	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 326	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 327	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 328	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 329	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 330	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 331	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 332	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 333	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 334	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 335	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 336	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 337	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 338	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 339	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 340	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 341	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 342	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 343	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 344	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 345	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 346	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 347	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 348	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 349	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 350	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 351	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 352	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 353	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 354	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 355	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 356	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 357	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 358	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 359	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 360	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 361	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 362	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 363	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 364	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 365	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 366	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 367	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 368	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 369	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 370	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 371	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 372	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 373	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 374	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 375	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 376	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 377	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 378	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 379	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 380	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 381	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 382	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 383	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 384	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 385	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 386	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 387	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 388	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 389	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 390	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 391	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 392	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 393	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+
+***Finish Estimating Gamma CI by CIr_stochastic!***
+CIr_stochastic (Time elapsed: 0:19)
+
+//Results based on model selection: 
+****** Cancer Divergence synonymous mutation rate ucs: 4.56161e-06
+****** Cancer Divergence replacement mutation rate ucr: 1.32109e-05
+
+Clusters from Divergence Synonymous:
+Note: Divergence Synonymous (DS) =1 or 0. There is not enough information for clustering Divergence Synonymous!
+
+
+Clusters from Divergence Replacement:
+1 amino acid ~ 394 amino acid	Cluster_Start_Position= 1	Cluster_End_Position= 106
+InL_0= -634.318	InL= -423.028	AIC_0= 1268.64	AIC= 848.056	AICc_0= 1268.64	AICc= 848.059	BIC_0= 1268.64	BIC= 853.131
+P0_DivergenceReplacement= 0.180556	Pc_DivergenceReplacement= 0
+
+107 amino acid ~ 394 amino acid	Cluster_Start_Position= 290	Cluster_End_Position= 394
+InL_0= -581.992	InL= -357.777	AIC_0= 1163.98	AIC= 717.554	AICc_0= 1163.98	AICc= 717.559	BIC_0= 1163.98	BIC= 722.315
+P0_DivergenceReplacement= 0.282332	Pc_DivergenceReplacement= 0.0031746
+
+
+//Results based on model averaging: 
+Position	      MS_DivRep	     MA_DivRep	     MS_DivSys	     MA_DivSys	     Gamma_Cancer   	Lower_CI_Gamma_c	Upper_CI_Gamma_c	MutationSymbol_Q2R1S-1*0	MutationStatus 
+1              	0              	0.0614279      	0              	0              	4.70289        	-1.27247       	8.36065        	              0	*
+2              	0              	0.0362249      	0              	0              	4.70287        	-1.27724       	8.34404        	              0	*
+3              	0              	0.0215333      	0              	0              	4.70308        	-1.27724       	8.33703        	              0	*
+4              	0              	0.0129533      	0              	0              	4.70353        	-1.27724       	8.3183         	              0	*
+5              	0              	0.00793312     	0              	0              	4.70421        	-1.27724       	8.31474        	              0	*
+6              	0              	0.00499046     	0              	0              	4.70512        	-1.27724       	8.3036         	              0	*
+7              	0              	0.00326242     	0              	0              	4.70626        	-1.27724       	8.28985        	              0	*
+8              	0              	0.0022458      	0              	0              	4.70764        	-1.27724       	8.28774        	              0	*
+9              	0              	0.00164665     	0              	0              	4.70924        	-1.27724       	8.27273        	              0	*
+10             	0              	0.00129289     	0              	0              	4.71108        	-1.27724       	8.26303        	              0	*
+11             	0              	0.00108366     	0              	0              	4.71314        	-1.27724       	8.26144        	              0	*
+12             	0              	0.000959689    	0              	0              	4.71544        	-1.27724       	8.24591        	              0	*
+13             	0              	0.000886105    	0              	0              	4.71796        	-1.27724       	8.24035        	              0	*
+14             	0              	0.000842354    	0              	0              	4.72072        	-1.27724       	8.23567        	              0	*
+15             	0              	0.000816295    	0              	0              	4.7237         	-1.27724       	8.23462        	              0	*
+16             	0              	0.000800747    	0              	0              	4.7269         	-1.27724       	8.23462        	              0	*
+17             	0              	0.000791455    	0              	0              	4.73033        	-1.27724       	8.21357        	              0	*
+18             	0              	0.000785892    	0              	0              	4.734          	-1.27724       	8.21168        	              0	*
+19             	0              	0.000782557    	0              	0              	4.73788        	-1.27724       	8.21168        	              0	*
+20             	0              	0.000780553    	0              	0              	4.74198        	-1.27724       	8.21168        	              0	*
+21             	0              	0.000779347    	0              	0              	4.7463         	-1.27724       	8.21213        	              0	*
+22             	0              	0.000778621    	0              	0              	4.75083        	-1.27724       	8.21383        	              0	*
+23             	0              	0.000778182    	0              	0              	4.75558        	-1.27724       	8.23462        	              0	*
+24             	0              	0.000777917    	0              	0              	4.76056        	-1.27724       	8.23462        	              0	*
+25             	0              	0.000777756    	0              	0              	4.76577        	-1.27724       	8.24035        	              0	*
+26             	0              	0.000777659    	0              	0              	4.7712         	-1.27724       	8.26144        	              0	*
+27             	0              	0.000777599    	0              	0              	4.77688        	-1.27724       	8.2701         	              0	*
+28             	0              	0.000777563    	0              	0              	4.78281        	-1.27724       	8.28844        	              0	*
+29             	0              	0.000777541    	0              	0              	4.789          	-1.27724       	8.31561        	              0	*
+30             	0              	0.000777528    	0              	0              	4.79547        	-1.27724       	8.34297        	              0	*
+31             	0              	0.00077752     	0              	0              	4.8022         	-1.27724       	8.3705         	              0	*
+32             	0              	0.000777515    	0              	0              	4.80921        	-1.27724       	8.39822        	              0	*
+33             	0              	0.000777512    	0              	0              	4.8165         	-1.27724       	8.42729        	              0	*
+34             	0              	0.00077751     	0              	0              	4.82406        	-1.27724       	8.4612         	              0	*
+35             	0              	0.000777509    	0              	0              	4.8319         	-1.27724       	8.4929         	              0	*
+36             	0              	0.000777508    	0              	0              	4.84           	-1.27724       	8.52238        	              0	*
+37             	0              	0.000777508    	0              	0              	4.84839        	-1.27724       	8.55208        	              0	*
+38             	0              	0.000777507    	0              	0              	4.85704        	-1.27724       	8.58718        	              0	*
+39             	0              	0.000777507    	0              	0              	4.86597        	-1.27724       	8.62281        	              0	*
+40             	0              	0.000777507    	0              	0              	4.87517        	-1.27724       	8.65237        	              0	*
+41             	0              	0.000777507    	0              	0              	4.88464        	-1.27724       	8.68386        	              0	*
+42             	0              	0.000777507    	0              	0              	4.89439        	-1.27724       	8.71568        	              0	*
+43             	0              	0.000777507    	0              	0              	4.9044         	-1.27724       	8.74573        	              0	*
+44             	0              	0.000777507    	0              	0              	4.91469        	-1.27724       	8.77599        	              0	*
+45             	0              	0.000777507    	0              	0              	4.92525        	-1.27724       	8.80646        	              0	*
+46             	0              	0.000777507    	0              	0              	4.93607        	-1.27724       	8.83715        	              0	*
+47             	0              	0.000777507    	0              	0              	4.94717        	-1.27724       	8.86805        	              0	*
+48             	0              	0.000777507    	0              	0              	4.95853        	-1.27724       	8.89916        	              0	*
+49             	0              	0.000777507    	0              	0              	4.97017        	-1.27724       	8.9305         	              0	*
+50             	0              	0.000777507    	0              	0              	4.98208        	-1.27247       	8.96206        	              0	*
+51             	0              	0.000777507    	0              	0              	4.99425        	-1.27247       	8.9961         	              0	*
+52             	0              	0.000777507    	0              	0              	5.00669        	-1.27247       	9.0386         	              0	*
+53             	0              	0.000777507    	0              	0              	5.0194         	-1.27247       	9.07467        	              0	*
+54             	0              	0.000777507    	0              	0              	5.03237        	-1.27247       	9.11652        	              0	*
+55             	0              	0.000777507    	0              	0              	5.04562        	-1.27247       	9.15548        	              0	*
+56             	0              	0.000777507    	0              	0              	5.05913        	-1.26767       	9.18935        	              -2	D
+57             	0              	0.000777507    	0              	0              	5.0729         	-1.26767       	9.22277        	              0	*
+58             	0              	0.000777507    	0              	0              	5.08694        	-1.26767       	9.25643        	              0	*
+59             	0              	0.000777507    	0              	0              	5.10124        	-1.26284       	9.29034        	              0	*
+60             	0              	0.000777507    	0              	0              	5.11581        	-1.26284       	9.32449        	              0	*
+61             	0              	0.000777507    	0              	0              	5.13063        	-1.25796       	9.3589         	              0	*
+62             	0              	0.000777507    	0              	0              	5.14573        	-1.25796       	9.39501        	              0	*
+63             	0              	0.000777507    	0              	0              	5.16108        	-1.25305       	9.43632        	              0	*
+64             	0              	0.000777507    	0              	0              	5.17669        	-1.2481        	9.47663        	              0	*
+65             	0              	0.000777507    	0              	0              	5.19257        	-1.24311       	9.51885        	              0	*
+66             	0              	0.000777507    	0              	0              	5.2087         	-1.23808       	9.56483        	              0	*
+67             	0              	0.000777507    	0              	0              	5.22509        	-1.23302       	9.60705        	              0	*
+68             	0              	0.000777507    	0              	0              	5.24174        	-1.22791       	9.64358        	              0	*
+69             	0              	0.000777508    	0              	0              	5.25865        	-1.21757       	9.68039        	              0	*
+70             	0              	0.000777508    	0              	0              	5.27581        	-1.20706       	9.71748        	              0	*
+71             	0              	0.000777509    	0              	0              	5.29323        	-1.19097       	9.75485        	              0	*
+72             	0              	0.00077751     	0              	0              	5.31088        	-1.16323       	9.80159        	              0	*
+73             	0              	0.000777512    	0              	0              	5.3287         	-0.969859      	9.85498        	              0	*
+74             	0              	0.000777515    	0              	0              	5.34668        	-0.897383      	9.8996         	              0	*
+75             	0              	0.00077752     	0              	0              	5.36479        	-0.728871      	9.94612        	              0	*
+76             	0              	0.000777528    	0              	0              	5.3831         	-0.677742      	9.98528        	              0	*
+77             	0              	0.000777542    	0              	0              	5.40162        	-0.643458      	10.0263        	              -2	D
+78             	0              	0.000777564    	0              	0              	5.42037        	-0.60518       	10.0757        	              0	*
+79             	0              	0.000777601    	0              	0              	5.43935        	-0.564642      	10.1295        	              0	*
+80             	0              	0.000777661    	0              	0              	5.45856        	-0.526495      	10.1858        	              0	*
+81             	0              	0.00077776     	0              	0              	5.47799        	-0.480912      	10.2269        	              0	*
+82             	0              	0.000777923    	0              	0              	5.49764        	-0.454238      	10.2683        	              0	*
+83             	0              	0.000778191    	0              	0              	5.51753        	-0.409329      	10.323         	              0	*
+84             	0              	0.000778635    	0              	0              	5.53764        	-0.361363      	10.3826        	              0	*
+85             	0              	0.00077937     	0              	0              	5.55797        	-0.313243      	10.4373        	              -2	D
+86             	0              	0.000780589    	0              	0              	5.57854        	-0.290997      	10.4804        	              0	*
+87             	0              	0.000782613    	0              	0              	5.59935        	-0.27752       	10.5351        	              0	*
+88             	0              	0.000785982    	0              	0              	5.62042        	-0.265914      	10.594         	              0	*
+89             	0              	0.000791595    	0              	0              	5.64175        	-0.253037      	10.6524        	              0	*
+90             	0              	0.000800966    	0              	0              	5.66334        	-0.244322      	10.7015        	              0	*
+91             	0              	0.000816635    	0              	0              	5.68519        	-0.234391      	10.7561        	              -2	D
+92             	0              	0.00084288     	0              	0              	5.70731        	-0.223194      	10.8185        	              0	*
+93             	0              	0.000886917    	0              	0              	5.7297         	-0.212966      	10.8796        	              0	*
+94             	0              	0.00096093     	0              	0              	5.75237        	-0.203752      	10.9322        	              0	*
+95             	0              	0.00108554     	0              	0              	5.7753         	-0.194419      	10.9952        	              0	*
+96             	0              	0.00129572     	0              	0              	5.79852        	-0.182582      	11.0561        	              0	*
+97             	0              	0.00165081     	0              	0              	5.82203        	-0.17055       	11.1231        	              0	*
+98             	0              	0.00225182     	0              	0              	5.84582        	-0.160779      	11.173         	              0	*
+99             	0              	0.00327087     	0              	0              	5.86992        	-0.150876      	11.2372        	              0	*
+100            	0              	0.00500181     	0              	0              	5.89433        	-0.140837      	11.3097        	              0	*
+101            	0              	0.00794727     	0              	0              	5.91906        	-0.130659      	11.3734        	              0	*
+102            	0              	0.0129685      	0              	0              	5.94412        	-0.120337      	11.4246        	              0	*
+103            	0              	0.0215441      	0              	0              	5.96954        	-0.109869      	11.5008        	              0	*
+104            	0              	0.0362169      	0              	0              	5.99534        	-0.0992494     	11.5785        	              0	*
+105            	0              	0.0613686      	0              	0              	6.02157        	-0.0871171     	11.6342        	              0	*
+106            	0              	0.104564       	0              	0              	6.04824        	-0.0733992     	11.7093        	              0	*
+107            	0.282332       	0.281049       	0              	0              	8.21824        	0.959785       	14.6852        	              2	Q
+108            	0.282332       	0.281049       	0              	0              	7.54271        	0.879571       	12.4523        	              -2	D
+109            	0.282332       	0.281049       	0              	0              	7.58234        	0.928154       	12.5129        	              -2	D
+110            	0.282332       	0.281049       	0              	0              	7.62328        	0.974482       	12.5753        	              -2	D
+111            	0.282332       	0.281049       	0              	0              	7.66569        	1.01541        	12.6368        	              1	R
+112            	0.282332       	0.281049       	0              	0              	7.70605        	1.06925        	12.6928        	              0	*
+113            	0.282332       	0.281049       	0              	0              	7.74796        	1.1264         	12.7631        	              1	R
+114            	0.282332       	0.281049       	0              	0              	7.7895         	1.17473        	12.8177        	              -2	D
+115            	0.282332       	0.281049       	0              	0              	7.83242        	1.22564        	12.8744        	              -2	D
+116            	0.282332       	0.281049       	0              	0              	7.87654        	1.32167        	12.9401        	              0	*
+117            	0.282332       	0.281049       	0              	0              	7.92167        	1.43601        	13.0065        	              0	*
+118            	0.282332       	0.281049       	0              	0              	7.96773        	1.55077        	13.0735        	              0	*
+119            	0.282332       	0.281049       	0              	0              	8.01474        	1.66017        	13.1426        	              0	*
+120            	0.282332       	0.281049       	0              	0              	8.06265        	1.76481        	13.2226        	              0	*
+121            	0.282332       	0.281049       	0              	0              	8.11144        	1.93353        	13.2949        	              0	*
+122            	0.282332       	0.281049       	0              	0              	8.16107        	2.07034        	13.377         	              -2	D
+123            	0.282332       	0.281049       	0              	0              	8.21164        	2.17946        	13.4688        	              0	*
+124            	0.282332       	0.281049       	0              	0              	8.26312        	2.31475        	13.5579        	              -2	D
+125            	0.282332       	0.281049       	0              	0              	8.31546        	2.41768        	13.6509        	              -1	S
+126            	0.282332       	0.281049       	0              	0              	9.07586        	2.59151        	16.0313        	              2	Q
+127            	0.282332       	0.281049       	0              	0              	8.41996        	2.53602        	13.8063        	              1	R
+128            	0.282332       	0.281049       	0              	0              	8.46974        	2.60374        	13.881         	              0	*
+129            	0.282332       	0.281049       	0              	0              	8.52091        	2.67172        	13.9594        	              0	*
+130            	0.282332       	0.281049       	0              	0              	8.57349        	2.73551        	14.0387        	              1	R
+131            	0.282332       	0.281049       	0              	0              	8.62485        	2.78299        	14.1317        	              -2	D
+132            	0.282332       	0.281049       	0              	0              	11.6333        	3.74657        	21.1941        	              2	Q
+133            	0.282332       	0.281049       	0              	0              	8.72132        	2.87846        	14.2821        	              1	R
+134            	0.282332       	0.281049       	0              	0              	8.76351        	2.91335        	14.3335        	              0	*
+135            	0.282332       	0.281049       	0              	0              	9.51099        	3.05167        	16.6649        	              2	Q
+136            	0.282332       	0.281049       	0              	0              	8.84639        	2.97669        	14.4253        	              1	R
+137            	0.282332       	0.281049       	0              	0              	8.88435        	3.00338        	14.4492        	              0	*
+138            	0.282332       	0.281049       	0              	0              	8.92388        	3.03386        	14.5005        	              0	*
+139            	0.282332       	0.281049       	0              	0              	8.96503        	3.06133        	14.5449        	              0	*
+140            	0.282332       	0.281049       	0              	0              	9.00775        	3.09907        	14.5887        	              0	*
+141            	0.282332       	0.281049       	0              	0              	12.0017        	4.04747        	21.6081        	              2	Q
+142            	0.282332       	0.281049       	0              	0              	9.08678        	3.15779        	14.6739        	              -2	D
+143            	0.282332       	0.281049       	0              	0              	9.12286        	3.17922        	14.7149        	              -2	D
+144            	0.282332       	0.281049       	0              	0              	9.16034        	3.20616        	14.7469        	              0	*
+145            	0.282332       	0.281049       	0              	0              	9.19923        	3.23056        	14.7755        	              0	*
+146            	0.282332       	0.281049       	0              	0              	9.23954        	3.26785        	14.8193        	              0	*
+147            	0.282332       	0.281049       	0              	0              	9.28121        	3.28681        	14.8754        	              -2	D
+148            	0.282332       	0.281049       	0              	0              	9.32418        	3.31242        	14.9159        	              0	*
+149            	0.282332       	0.281049       	0              	0              	9.36843        	3.35617        	14.9635        	              0	*
+150            	0.282332       	0.281049       	0              	0              	9.41396        	3.4052         	15.0242        	              0	*
+151            	0.282332       	0.281049       	0              	0              	9.46096        	3.46028        	15.1043        	              1	R
+152            	0.282332       	0.281049       	0              	0              	9.50794        	3.52428        	15.1419        	              0	*
+153            	0.282332       	0.281049       	0              	0              	9.55639        	3.58035        	15.2238        	              0	*
+154            	0.282332       	0.281049       	0              	0              	9.60631        	3.64411        	15.3241        	              0	*
+155            	0.282332       	0.281049       	0              	0              	9.65777        	3.7343         	15.4144        	              1	R
+156            	0.282332       	0.281049       	0              	0              	9.70819        	3.83505        	15.5239        	              -2	D
+157            	0.282332       	0.281049       	0              	0              	10.4564        	4.03039        	17.8993        	              2	Q
+158            	0.282332       	0.281049       	0              	0              	9.80732        	4.00921        	15.7255        	              1	R
+159            	0.282332       	0.281049       	0              	0              	9.85303        	4.0896         	15.8516        	              0	*
+160            	0.282332       	0.281049       	0              	0              	9.90048        	4.1984         	15.9266        	              0	*
+161            	0.282332       	0.281049       	0              	0              	9.94969        	4.35273        	16.039         	              1	R
+162            	0.282332       	0.281049       	0              	0              	9.99729        	4.58115        	16.1151        	              -2	D
+163            	0.282332       	0.281049       	0              	0              	10.7402        	4.94936        	18.4909        	              2	Q
+164            	0.282332       	0.281049       	0              	0              	10.0909        	5.03455        	16.363         	              0	*
+165            	0.282332       	0.281049       	0              	0              	10.1368        	5.13501        	16.363         	              0	*
+166            	0.282332       	0.281049       	0              	0              	10.1839        	5.21442        	16.5016        	              0	*
+167            	0.282332       	0.281049       	0              	0              	10.2325        	5.2879         	16.6312        	              -2	D
+168            	0.282332       	0.281049       	0              	0              	10.2823        	5.3703         	16.7653        	              1	R
+169            	0.282332       	0.281049       	0              	0              	10.3319        	5.45423        	16.9084        	              0	*
+170            	0.282332       	0.281049       	0              	0              	10.3827        	5.56333        	17.0623        	              0	*
+171            	0.282332       	0.281049       	0              	0              	10.4346        	5.68802        	17.2555        	              0	*
+172            	0.282332       	0.281049       	0              	0              	10.487         	5.87384        	17.4187        	              -2	D
+173            	0.282332       	0.281049       	0              	0              	13.4661        	6.91916        	24.5509        	              2	Q
+174            	0.282332       	0.281049       	0              	0              	10.5855        	6.22846        	17.8068        	              -2	D
+175            	0.282332       	0.281049       	0              	0              	53.4885        	31.0382        	86.279         	              2	Q
+176            	0.282332       	0.281049       	0              	0              	13.5746        	7.29288        	24.8667        	              2	Q
+177            	0.282332       	0.281049       	0              	0              	10.6599        	6.477          	17.9067        	              0	*
+178            	0.282332       	0.281049       	0              	0              	10.6713        	6.5134         	17.8505        	              0	*
+179            	0.282332       	0.281049       	0              	0              	15.3056        	8.14934        	27.8393        	              2	Q
+180            	0.282332       	0.281049       	0              	0              	10.6872        	6.5765         	17.7042        	              0	*
+181            	0.282332       	0.281049       	0              	0              	10.6916        	6.60811        	17.6325        	              0	*
+182            	0.282332       	0.281049       	0              	0              	10.6973        	6.6378         	17.5751        	              0	*
+183            	0.282332       	0.281049       	0              	0              	10.7043        	6.66639        	17.553         	              -2	D
+184            	0.282332       	0.281049       	0              	0              	10.7128        	6.70102        	17.5214        	              0	*
+185            	0.282332       	0.281049       	0              	0              	10.7228        	6.73308        	17.4818        	              0	*
+186            	0.282332       	0.281049       	0              	0              	10.7341        	6.76831        	17.4538        	              0	*
+187            	0.282332       	0.281049       	0              	0              	10.7469        	6.80355        	17.4538        	              1	R
+188            	0.282332       	0.281049       	0              	0              	10.76          	6.83954        	17.4235        	              0	*
+189            	0.282332       	0.281049       	0              	0              	10.7746        	6.87394        	17.4187        	              0	*
+190            	0.282332       	0.281049       	0              	0              	10.7905        	6.90881        	17.4235        	              0	*
+191            	0.282332       	0.281049       	0              	0              	10.8076        	6.93965        	17.4538        	              -2	D
+192            	0.282332       	0.281049       	0              	0              	10.826         	6.97946        	17.4723        	              -2	D
+193            	0.282332       	0.281049       	0              	0              	29.7449        	16.4319        	50.7254        	              2	Q
+194            	0.282332       	0.281049       	0              	0              	12.4549        	7.38838        	21.7397        	              2	Q
+195            	0.282332       	0.281049       	0              	0              	13.7577        	7.89345        	24.2698        	              2	Q
+196            	0.282332       	0.281049       	0              	0              	10.8205        	7.02244        	17.3034        	              -2	D
+197            	0.282332       	0.281049       	0              	0              	10.8065        	7.00217        	17.2167        	              1	R
+198            	0.282332       	0.281049       	0              	0              	10.7916        	6.97579        	17.1422        	              -2	D
+199            	0.282332       	0.281049       	0              	0              	11.4665        	7.0313         	19.3328        	              2	Q
+200            	0.282332       	0.281049       	0              	0              	10.762         	6.93104        	16.969         	              0	*
+201            	0.282332       	0.281049       	0              	0              	10.7471        	6.90312        	16.9224        	              -2	D
+202            	0.282332       	0.281049       	0              	0              	10.7336        	6.88283        	16.8588        	              0	*
+203            	0.282332       	0.281049       	0              	0              	10.7216        	6.86736        	16.8092        	              0	*
+204            	0.282332       	0.281049       	0              	0              	10.7112        	6.86189        	16.7391        	              -2	D
+205            	0.282332       	0.281049       	0              	0              	11.3913        	6.93417        	18.9056        	              2	Q
+206            	0.282332       	0.281049       	0              	0              	10.6912        	6.84025        	16.6269        	              0	*
+207            	0.282332       	0.281049       	0              	0              	10.6816        	6.83196        	16.6001        	              0	*
+208            	0.282332       	0.281049       	0              	0              	10.6737        	6.82976        	16.5448        	              0	*
+209            	0.282332       	0.281049       	0              	0              	10.6673        	6.82917        	16.5091        	              0	*
+210            	0.282332       	0.281049       	0              	0              	10.6625        	6.82917        	16.4939        	              0	*
+211            	0.282332       	0.281049       	0              	0              	10.6592        	6.82976        	16.4879        	              -2	D
+212            	0.282332       	0.281049       	0              	0              	10.6576        	6.83288        	16.363         	              0	*
+213            	0.282332       	0.281049       	0              	0              	10.6576        	6.83608        	16.363         	              -2	D
+214            	0.282332       	0.281049       	0              	0              	10.6593        	6.84269        	16.363         	              0	*
+215            	0.282332       	0.281049       	0              	0              	11.3515        	6.9275         	18.6208        	              2	Q
+216            	0.282332       	0.281049       	0              	0              	12.2764        	7.20535        	20.6794        	              2	Q
+217            	0.282332       	0.281049       	0              	0              	10.6569        	6.84141        	16.363         	              0	*
+218            	0.282332       	0.281049       	0              	0              	10.6527        	6.83394        	16.363         	              0	*
+219            	0.282332       	0.281049       	0              	0              	10.6502        	6.82976        	16.363         	              0	*
+220            	0.282332       	0.281049       	0              	0              	25.9265        	14.1105        	44.0005        	              2	Q
+221            	0.282332       	0.281049       	0              	0              	10.6283        	6.80644        	16.363         	              -2	D
+222            	0.282332       	0.281049       	0              	0              	10.6081        	6.78464        	16.363         	              0	*
+223            	0.282332       	0.281049       	0              	0              	10.5892        	6.75999        	16.2321        	              0	*
+224            	0.282332       	0.281049       	0              	0              	10.5716        	6.73769        	16.1925        	              0	*
+225            	0.282332       	0.281049       	0              	0              	10.5552        	6.70734        	16.1791        	              0	*
+226            	0.282332       	0.281049       	0              	0              	10.5402        	6.67436        	16.1325        	              0	*
+227            	0.282332       	0.281049       	0              	0              	10.5267        	6.627          	16.1206        	              0	*
+228            	0.282332       	0.281049       	0              	0              	10.5145        	6.57807        	16.1112        	              0	*
+229            	0.282332       	0.281049       	0              	0              	10.5039        	6.54518        	16.1073        	              0	*
+230            	0.282332       	0.281049       	0              	0              	10.495         	6.5134         	16.1093        	              0	*
+231            	0.282332       	0.281049       	0              	0              	10.4878        	6.4993         	16.1151        	              0	*
+232            	0.282332       	0.281049       	0              	0              	10.4826        	6.48194        	16.1223        	              1	R
+233            	0.282332       	0.281049       	0              	0              	10.4773        	6.46726        	16.1419        	              0	*
+234            	0.282332       	0.281049       	0              	0              	11.1646        	6.5368         	18.4404        	              2	Q
+235            	0.282332       	0.281049       	0              	0              	10.4667        	6.44601        	16.187         	              0	*
+236            	0.282332       	0.281049       	0              	0              	10.4613        	6.42563        	16.196         	              0	*
+237            	0.282332       	0.281049       	0              	0              	10.4577        	6.41991        	16.2321        	              0	*
+238            	0.282332       	0.281049       	0              	0              	13.3833        	7.27284        	23.2877        	              2	Q
+239            	0.282332       	0.281049       	0              	0              	10.444         	6.38934        	16.363         	              -2	D
+240            	0.282332       	0.281049       	0              	0              	10.434         	6.35905        	16.363         	              0	*
+241            	0.282332       	0.281049       	0              	0              	10.426         	6.33956        	16.363         	              1	R
+242            	0.282332       	0.281049       	0              	0              	10.4173        	6.31552        	16.363         	              0	*
+243            	0.282332       	0.281049       	0              	0              	10.4103        	6.29343        	16.363         	              0	*
+244            	0.282332       	0.281049       	0              	0              	10.4049        	6.2815         	16.363         	              0	*
+245            	0.282332       	0.281049       	0              	0              	13.3293        	7.13042        	23.2877        	              2	Q
+246            	0.282332       	0.281049       	0              	0              	10.388         	6.24374        	16.4908        	              1	R
+247            	0.282332       	0.281049       	0              	0              	10.3742        	6.21791        	16.496         	              1	R
+248            	0.282332       	0.281049       	0              	0              	22.4018        	11.6445        	39.0107        	              2	Q
+249            	0.282332       	0.281049       	0              	0              	10.3267        	6.13609        	16.4898        	              0	*
+250            	0.282332       	0.281049       	0              	0              	10.2956        	6.0808         	16.363         	              -2	D
+251            	0.282332       	0.281049       	0              	0              	10.2659        	6.03381        	16.363         	              0	*
+252            	0.282332       	0.281049       	0              	0              	10.2378        	5.99078        	16.363         	              1	R
+253            	0.282332       	0.281049       	0              	0              	10.209         	5.94182        	16.363         	              0	*
+254            	0.282332       	0.281049       	0              	0              	10.1818        	5.90136        	16.363         	              0	*
+255            	0.282332       	0.281049       	0              	0              	11.7755        	6.20755        	20.6794        	              2	Q
+256            	0.282332       	0.281049       	0              	0              	10.1237        	5.76955        	16.363         	              -2	D
+257            	0.282332       	0.281049       	0              	0              	10.0925        	5.66404        	16.363         	              0	*
+258            	0.282332       	0.281049       	0              	0              	10.0627        	5.51766        	16.363         	              1	R
+259            	0.282332       	0.281049       	0              	0              	10.0322        	5.45423        	16.363         	              0	*
+260            	0.282332       	0.281049       	0              	0              	10.0033        	5.3728         	16.363         	              0	*
+261            	0.282332       	0.281049       	0              	0              	9.97593        	5.31362        	16.363         	              0	*
+262            	0.282332       	0.281049       	0              	0              	9.95006        	5.2628         	16.363         	              0	*
+263            	0.282332       	0.281049       	0              	0              	9.92588        	5.236          	16.363         	              0	*
+264            	0.282332       	0.281049       	0              	0              	9.90344        	5.20625        	16.363         	              0	*
+265            	0.282332       	0.281049       	0              	0              	10.5778        	5.26466        	18.6208        	              2	Q
+266            	0.282332       	0.281049       	0              	0              	10.5536        	5.23058        	18.6208        	              2	Q
+267            	0.282332       	0.281049       	0              	0              	9.82929        	5.07137        	16.363         	              0	*
+268            	0.282332       	0.281049       	0              	0              	9.80217        	5.02751        	16.4939        	              0	*
+269            	0.282332       	0.281049       	0              	0              	9.77698        	4.9798         	16.5028        	              0	*
+270            	0.282332       	0.281049       	0              	0              	10.4499        	5.02658        	18.8744        	              2	Q
+271            	0.282332       	0.281049       	0              	0              	9.7259         	4.86718        	16.6357        	              -2	D
+272            	0.282332       	0.281049       	0              	0              	9.70011        	4.81232        	16.6578        	              1	R
+273            	0.282332       	0.281049       	0              	0              	32.639         	16.6889        	56.0488        	              2	Q
+274            	0.282332       	0.281049       	0              	0              	9.62401        	4.65924        	16.6357        	              1	R
+275            	0.282332       	0.281049       	0              	0              	9.57392        	4.57725        	16.5028        	              0	*
+276            	0.282332       	0.281049       	0              	0              	9.52519        	4.4935         	16.4908        	              1	R
+277            	0.282332       	0.281049       	0              	0              	9.47546        	4.41856        	16.363         	              -2	D
+278            	0.282332       	0.281049       	0              	0              	11.0549        	4.71939        	20.6794        	              2	Q
+279            	0.282332       	0.281049       	0              	0              	9.37316        	4.2253         	16.363         	              1	R
+280            	0.282332       	0.281049       	0              	0              	9.3182         	4.06744        	16.2361        	              1	R
+281            	0.282332       	0.281049       	0              	0              	9.26206        	3.93996        	16.1151        	              1	R
+282            	0.282332       	0.281049       	0              	0              	10.8352        	4.10094        	20.3227        	              2	Q
+283            	0.282332       	0.281049       	0              	0              	9.14237        	3.46169        	15.8633        	              0	*
+284            	0.282332       	0.281049       	0              	0              	9.08024        	3.17922        	15.7085        	              0	*
+285            	0.282332       	0.281049       	0              	0              	9.0184         	2.87846        	15.5448        	              0	*
+286            	0.282332       	0.281049       	0              	0              	11.9083        	3.63269        	22.3496        	              2	Q
+287            	0.282332       	0.254508       	0              	0              	8.88944        	2.48067        	15.2345        	              0	*
+288            	0.282332       	0.243034       	0              	0              	8.82223        	2.3322         	15.0643        	              0	*
+289            	0.282332       	0.238049       	0              	0              	8.75573        	2.11883        	14.9149        	              1	R
+290            	0.0031746      	0.105334       	0              	0              	8.69705        	1.95554        	14.7383        	              0	*
+291            	0.0031746      	0.0479776      	0              	0              	8.63913        	1.76481        	14.6098        	              -2	D
+292            	0.0031746      	0.0230727      	0              	0              	8.58197        	1.63329        	14.4492        	              0	*
+293            	0.0031746      	0.0122083      	0              	0              	8.52559        	1.50998        	14.3176        	              -2	D
+294            	0.0031746      	0.00744705     	0              	0              	8.46995        	1.34598        	14.1812        	              0	*
+295            	0.0031746      	0.0053509      	0              	0              	8.41496        	1.18721        	14.0541        	              0	*
+296            	0.0031746      	0.0044239      	0              	0              	8.36061        	1.02858        	13.9306        	              -2	D
+297            	0.0031746      	0.00401211     	0              	0              	8.30688        	0.90084        	13.8034        	              0	*
+298            	0.0031746      	0.00382838     	0              	0              	8.25374        	0.735074       	13.6784        	              0	*
+299            	0.0031746      	0.00374604     	0              	0              	8.20115        	0.540695       	13.5668        	              0	*
+300            	0.0031746      	0.00370898     	0              	0              	8.14907        	0.416874       	13.4632        	              0	*
+301            	0.0031746      	0.00369223     	0              	0              	8.09773        	0.366277       	13.3421        	              0	*
+302            	0.0031746      	0.00368462     	0              	0              	8.04714        	0.239624       	13.2276        	              0	*
+303            	0.0031746      	0.00368116     	0              	0              	7.99715        	0.0712887      	13.14          	              -2	D
+304            	0.0031746      	0.00367957     	0              	0              	7.94777        	-0.0232865     	13.02          	              0	*
+305            	0.0031746      	0.00367884     	0              	0              	7.89912        	-0.102806      	12.932         	              0	*
+306            	0.0031746      	0.0036785      	0              	0              	7.85115        	-0.217529      	12.8278        	              -2	D
+307            	0.0031746      	0.00367835     	0              	0              	7.8039         	-0.282733      	12.7361        	              0	*
+308            	0.0031746      	0.00367827     	0              	0              	7.75744        	-0.323131      	12.6518        	              -2	D
+309            	0.0031746      	0.00367824     	0              	0              	7.71177        	-0.361363      	12.5674        	              0	*
+310            	0.0031746      	0.00367822     	0              	0              	7.66694        	-0.388743      	12.4831        	              0	*
+311            	0.0031746      	0.00367822     	0              	0              	7.62293        	-0.415102      	12.4101        	              0	*
+312            	0.0031746      	0.00367821     	0              	0              	7.57974        	-0.432142      	12.3254        	              0	*
+313            	0.0031746      	0.00367821     	0              	0              	7.5374         	-0.448779      	12.2494        	              0	*
+314            	0.0031746      	0.00367821     	0              	0              	7.49589        	-0.46503       	12.1725        	              0	*
+315            	0.0031746      	0.00367821     	0              	0              	7.45521        	-0.480912      	12.1118        	              0	*
+316            	0.0031746      	0.00367821     	0              	0              	7.41537        	-0.49644       	12.0475        	              0	*
+317            	0.0031746      	0.00367821     	0              	0              	7.37635        	-0.49644       	11.98          	              0	*
+318            	0.0031746      	0.00367821     	0              	0              	7.33816        	-0.51163       	11.9175        	              0	*
+319            	0.0031746      	0.00367821     	0              	0              	7.30081        	-0.526495      	11.8521        	              0	*
+320            	0.0031746      	0.00367821     	0              	0              	7.26428        	-0.526495      	11.791         	              0	*
+321            	0.0031746      	0.00367821     	0              	0              	7.22857        	-0.541048      	11.7351        	              -2	D
+322            	0.0031746      	0.00367821     	0              	0              	7.19368        	-0.541048      	11.6747        	              0	*
+323            	0.0031746      	0.00367821     	0              	0              	7.15961        	-0.555301      	11.6201        	              0	*
+324            	0.0031746      	0.00367821     	0              	0              	7.12637        	-0.555301      	11.5608        	              0	*
+325            	0.0031746      	0.00367821     	0              	0              	7.09395        	-0.569266      	11.5008        	              0	*
+326            	0.0031746      	0.00367821     	0              	0              	7.06235        	-0.569266      	11.4389        	              0	*
+327            	0.0031746      	0.00367821     	0              	0              	7.03156        	-0.569266      	11.3862        	              0	*
+328            	0.0031746      	0.00367821     	0              	0              	7.0016         	-0.569266      	11.334         	              -2	D
+329            	0.0031746      	0.00367821     	0              	0              	6.97245        	-0.569266      	11.2818        	              0	*
+330            	0.0031746      	0.00367821     	0              	0              	6.94412        	-0.569266      	11.2295        	              0	*
+331            	0.0031746      	0.00367821     	0              	0              	6.91661        	-0.569266      	11.1775        	              -2	D
+332            	0.0031746      	0.00367821     	0              	0              	6.88992        	-0.582955      	11.1268        	              0	*
+333            	0.0031746      	0.00367821     	0              	0              	6.86405        	-0.582955      	11.0754        	              -2	D
+334            	0.0031746      	0.00367821     	0              	0              	6.83902        	-0.582955      	11.02          	              0	*
+335            	0.0031746      	0.00367821     	0              	0              	6.81482        	-0.582955      	10.9624        	              0	*
+336            	0.0031746      	0.00367821     	0              	0              	6.79146        	-0.582955      	10.9087        	              0	*
+337            	0.0031746      	0.00367821     	0              	0              	6.76896        	-0.569266      	10.861         	              0	*
+338            	0.0031746      	0.00367821     	0              	0              	6.74731        	-0.569266      	10.8138        	              0	*
+339            	0.0031746      	0.00367821     	0              	0              	6.72653        	-0.569266      	10.767         	              0	*
+340            	0.0031746      	0.00367821     	0              	0              	6.70666        	-0.569266      	10.7206        	              0	*
+341            	0.0031746      	0.00367821     	0              	0              	6.68775        	-0.569266      	10.6804        	              0	*
+342            	0.0031746      	0.00367821     	0              	0              	6.66984        	-0.569266      	10.6477        	              1	R
+343            	0.0031746      	0.00367821     	0              	0              	6.66667        	-0.569266      	10.6082        	              0	*
+344            	0.0031746      	0.00367821     	0              	0              	6.66443        	-0.569266      	10.5837        	              0	*
+345            	0.0031746      	0.00367821     	0              	0              	6.66304        	-0.569266      	10.5487        	              0	*
+346            	0.0031746      	0.00367821     	0              	0              	6.66242        	-0.569266      	10.5362        	              0	*
+347            	0.0031746      	0.00367821     	0              	0              	6.66254        	-0.569266      	10.5083        	              0	*
+348            	0.0031746      	0.00367821     	0              	0              	6.66337        	-0.582955      	10.4944        	              0	*
+349            	0.0031746      	0.00367821     	0              	0              	6.66488        	-0.582955      	10.4723        	              0	*
+350            	0.0031746      	0.00367821     	0              	0              	6.66708        	-0.582955      	10.456         	              0	*
+351            	0.0031746      	0.00367821     	0              	0              	6.66995        	-0.582955      	10.4411        	              0	*
+352            	0.0031746      	0.00367821     	0              	0              	6.67349        	-0.582955      	10.4254        	              0	*
+353            	0.0031746      	0.00367821     	0              	0              	6.67768        	-0.582955      	10.4189        	              0	*
+354            	0.0031746      	0.00367821     	0              	0              	6.68254        	-0.569266      	10.4056        	              0	*
+355            	0.0031746      	0.00367821     	0              	0              	6.68805        	-0.569266      	10.3945        	              0	*
+356            	0.0031746      	0.00367821     	0              	0              	6.69421        	-0.569266      	10.3927        	              0	*
+357            	0.0031746      	0.00367821     	0              	0              	6.701          	-0.569266      	10.3892        	              0	*
+358            	0.0031746      	0.00367821     	0              	0              	6.70843        	-0.569266      	10.3869        	              0	*
+359            	0.0031746      	0.00367821     	0              	0              	6.71648        	-0.569266      	10.3905        	              0	*
+360            	0.0031746      	0.00367821     	0              	0              	6.72517        	-0.569266      	10.3945        	              0	*
+361            	0.0031746      	0.00367821     	0              	0              	6.73448        	-0.555301      	10.4056        	              0	*
+362            	0.0031746      	0.00367821     	0              	0              	6.74443        	-0.555301      	10.4202        	              0	*
+363            	0.0031746      	0.00367821     	0              	0              	6.75503        	-0.541048      	10.4373        	              0	*
+364            	0.0031746      	0.00367821     	0              	0              	6.76626        	-0.541048      	10.4692        	              0	*
+365            	0.0031746      	0.00367821     	0              	0              	6.77818        	-0.526495      	10.4891        	              0	*
+366            	0.0031746      	0.00367821     	0              	0              	6.7908         	-0.526495      	10.5315        	              0	*
+367            	0.0031746      	0.00367821     	0              	0              	6.80413        	-0.51163       	10.5678        	              0	*
+368            	0.0031746      	0.00367821     	0              	0              	6.8182         	-0.49644       	10.612         	              0	*
+369            	0.0031746      	0.00367821     	0              	0              	6.83301        	-0.49644       	10.6619        	              0	*
+370            	0.0031746      	0.00367821     	0              	0              	6.84856        	-0.480912      	10.7118        	              0	*
+371            	0.0031746      	0.00367821     	0              	0              	6.86485        	-0.46503       	10.7651        	              0	*
+372            	0.0031746      	0.00367821     	0              	0              	6.88187        	-0.448779      	10.8192        	              0	*
+373            	0.0031746      	0.00367821     	0              	0              	6.89963        	-0.432142      	10.8796        	              0	*
+374            	0.0031746      	0.00367822     	0              	0              	6.91814        	-0.397639      	10.9322        	              0	*
+375            	0.0031746      	0.00367823     	0              	0              	6.93737        	-0.379733      	10.9795        	              0	*
+376            	0.0031746      	0.00367825     	0              	0              	6.95733        	-0.342504      	11.0355        	              0	*
+377            	0.0031746      	0.00367829     	0              	0              	6.978          	-0.282733      	11.1           	              0	*
+378            	0.0031746      	0.00367839     	0              	0              	6.99927        	-0.0570673     	11.1635        	              0	*
+379            	0.0031746      	0.0036786      	0              	0              	7.02102        	0.0882695      	11.2224        	              0	*
+380            	0.0031746      	0.00367905     	0              	0              	7.04332        	0.198918       	11.2723        	              0	*
+381            	0.0031746      	0.00368002     	0              	0              	7.06627        	0.282565       	11.3282        	              0	*
+382            	0.0031746      	0.00368215     	0              	0              	7.08989        	0.343714       	11.3971        	              0	*
+383            	0.0031746      	0.00368681     	0              	0              	7.11423        	0.376145       	11.4763        	              0	*
+384            	0.0031746      	0.00369704     	0              	0              	7.1393         	0.409942       	11.5285        	              0	*
+385            	0.0031746      	0.00371965     	0              	0              	7.16513        	0.445214       	11.5844        	              0	*
+386            	0.0031746      	0.00376978     	0              	0              	7.19172        	0.482085       	11.6639        	              0	*
+387            	0.0031746      	0.00388145     	0              	0              	7.21909        	0.505031       	11.7414        	              0	*
+388            	0.0031746      	0.00413127     	0              	0              	7.24727        	0.540695       	11.7966        	              0	*
+389            	0.0031746      	0.00469264     	0              	0              	7.27625        	0.565354       	11.8572        	              0	*
+390            	0.0031746      	0.0059598      	0              	0              	7.30608        	0.603763       	11.9378        	              0	*
+391            	0.0031746      	0.0088331      	0              	0              	7.3368         	0.637169       	12.0166        	              0	*
+392            	0.0031746      	0.0153782      	0              	0              	7.36843        	0.671948       	12.0834        	              0	*
+393            	0.0031746      	0.0303567      	0              	0              	7.40106        	0.715645       	12.1554        	              0	*
+394            	0.0031746      	0.064795       	0              	0              	7.43473        	0.761678       	12.2458        	              0	*
+
+
+Abbreviation: MS=Model Selection; MA=Model Averaging; CI=Confidence Interval; ds=Divergence Synonymous; dr=Divergence Replacement; Gamma=N*s (Gamma: scaled selection coefficient (selection intensity); s: selection coefficient); gamma >1 Negative selection, <1 Positive selection); INF=Infinite; N-INF=Negative Infinite; NULL=Not enough information for this site
+Abbreviation: MutationSymbol_Q2R1S-1*0: Q stands for Recurrent using 2; R stands for Replacement using 1; S stands for Silent using -1; * stands for conserved using 0.
+
+#End of clustering
+
+
+Mission accomplished. (Time elapsed: 0:21)

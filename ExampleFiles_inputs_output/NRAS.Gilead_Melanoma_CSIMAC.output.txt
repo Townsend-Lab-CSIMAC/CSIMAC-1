@@ -1,0 +1,866 @@
+
+CIS-MAC, Version: 1.0 [Last Update: January 25th, 2014]
+Reference: Zi-Ming Zhao, Ning Li and Jeffrey P. Townsend. (2014)
+
+Read cancer divergence consensus input file: NRAS_mut_scaled1_Gilead_Melanoma_570_NM_002524_5.txt
+
+Read fasta: NRAS_mut_scaled1_Gilead_Melanoma_570_NM_002524_5.txt
+Sequence Name:
+NRAS_mut_scaled1_Gilead_Melanoma570NM_002524total_5_R_5_S_0_B_0
+Sequence string:
+**********************************R**R**********************************************************************************************************************************************RRR***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************
+Finish reading for the fasta file NRAS_mut_scaled1_Gilead_Melanoma_570_NM_002524_5.txt
+
+Divergence Consensus Sequences:
+>NRAS_mut_scaled1_Gilead_Melanoma570NM_002524total_5_R_5_S_0_B_0
+**********************************R**R**********************************************************************************************************************************************RRR***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************
+
+
+Get Recurrent list: 
+***The size of the recurrent: 4
+RecurrentSite:	181	Count: 13
+RecurrentSite:	182	Count: 23
+RecurrentSite:	183	Count: 6
+RecurrentSite:	35	Count: 2
+The size of the lookup LambdaCI: 99
+Test Lambda lookup table:
+Recurrent count: 2	LowerCI: 0.332705	UpperCI: 6.17459
+Divergence Synonymous Counts (DS): 0
+Divergence Replacement Counts (DR): 5
+The gene length: 570 bp
+ Two time-consuming steps ClusterSubSeq and CI_r_stochastic.
+Cancer Divergence synonymous mutation rate: 8.86839e-06
+The ratio of Nonsynonymous and Synonymous is 0.345291
+Cancer Divergence replacement mutation rate (Silent*RatioNS): 2.56838e-05
+
+***Step: Start ClusterSubSeq for cancer Replacement!***
+The total number of models in ClusterSubSeq: 162735 for the region 0 to 569
+The size of selected models in ClusterSubSeq: 1
+The total number of models in ClusterSubSeq: 16290 for the region 0 to 179
+The size of selected models in ClusterSubSeq: 2
+The total number of models in ClusterSubSeq: 10 for the region 34 to 37
+Finish ClusterSubSeq for the region from the start position 0 to the end position 179
+The total number of models in ClusterSubSeq: 6 for the region 180 to 182
+Finish ClusterSubSeq for the region from the start position 0 to the end position 569
+***Step: Finish ClusterSubSeq for cancer Replacement!***
+ClusterSubSeq (Time elapsed: 0:4)
+
+***Start to Estimate gamma for human cancer replacement!***
+***End to Estimate gamma for human cancer replacement!***
+rc_SitePRF (Time elapsed: 0:0)
+
+***Start Estimating Gamma CI by CIr_stochastic!***
+Start CIr_stochastic at Position 1 (Time elapsed: 0:0)
+Site: 0	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 1	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 2	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 3	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 4	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 5	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 6	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 7	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 8	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 9	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 10	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 11	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 12	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 13	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 14	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 15	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 16	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 17	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 18	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 19	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 20	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 21	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 22	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 23	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 24	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 25	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 26	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 27	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 28	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 29	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 30	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 31	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 32	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 33	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 34	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 35	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 35	Recurrent weight: 0.0222222	SiteRecurrentCount: 2	TotalReplacementSite: 5	TotalRecurrentCount: 44	TotalRecurrentSite: 4
+Calculate the parameter r for recurrent site 35 with Recurrent number 2 Gamma: 207.101
+Lower recurrent gamma: 34.4518
+Upper recurrent gamma: 639.383
+Recurrent gamma before correction by weight: 207.101	lower_r: 34.4518	upper_r: 639.383
+Site: 36	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 37	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 38	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 39	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 40	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 41	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 42	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 43	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 44	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 45	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 46	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 47	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 48	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 49	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 50	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 51	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 52	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 53	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 54	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 55	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 56	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 57	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 58	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 59	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 60	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 61	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 62	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 63	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 64	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 65	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 66	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 67	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 68	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 69	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 70	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 71	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 72	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 73	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 74	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 75	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 76	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 77	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 78	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 79	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 80	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 81	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 82	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 83	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 84	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 85	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 86	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 87	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 88	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 89	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 90	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 91	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 92	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 93	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 94	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 95	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 96	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 97	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 98	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 99	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 100	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 101	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 102	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 103	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 104	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 105	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 106	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 107	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 108	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 109	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 110	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 111	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 112	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 113	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 114	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 115	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 116	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 117	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 118	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 119	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 120	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 121	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 122	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 123	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 124	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 125	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 126	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 127	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 128	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 129	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 130	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 131	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 132	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 133	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 134	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 135	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 136	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 137	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 138	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 139	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 140	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 141	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 142	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 143	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 144	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 145	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 146	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 147	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 148	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 149	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 150	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 151	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 152	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 153	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 154	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 155	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 156	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 157	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 158	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 159	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 160	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 161	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 162	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 163	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 164	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 165	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 166	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 167	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 168	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 169	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 170	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 171	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 172	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 173	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 174	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 175	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 176	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 177	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 178	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 179	Model size: 16290******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 180	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 181	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 181	Recurrent weight: 0.266667	SiteRecurrentCount: 13	TotalReplacementSite: 5	TotalRecurrentCount: 44	TotalRecurrentSite: 4
+Calculate the parameter r for recurrent site 181 with Recurrent number 13 Gamma: 1346.16
+Lower recurrent gamma: 740.626
+Upper recurrent gamma: 2215.91
+Recurrent gamma before correction by weight: 1346.16	lower_r: 740.626	upper_r: 2215.91
+Site: 182	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 182	Recurrent weight: 0.488889	SiteRecurrentCount: 23	TotalReplacementSite: 5	TotalRecurrentCount: 44	TotalRecurrentSite: 4
+Calculate the parameter r for recurrent site 182 with Recurrent number 23 Gamma: 2381.67
+Lower recurrent gamma: 1536.29
+Upper recurrent gamma: 3491.64
+Recurrent gamma before correction by weight: 2381.67	lower_r: 1536.29	upper_r: 3491.64
+Site: 183	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+For Site: 183	Recurrent weight: 0.111111	SiteRecurrentCount: 6	TotalReplacementSite: 5	TotalRecurrentCount: 44	TotalRecurrentSite: 4
+Calculate the parameter r for recurrent site 183 with Recurrent number 6 Gamma: 621.304
+Lower recurrent gamma: 246.993
+Upper recurrent gamma: 1258.85
+Recurrent gamma before correction by weight: 621.304	lower_r: 246.993	upper_r: 1258.85
+Site: 184	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 185	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 186	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 187	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 188	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 189	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 190	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 191	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 192	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 193	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 194	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 195	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 196	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 197	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 198	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 199	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 200	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 201	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 202	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 203	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 204	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 205	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 206	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 207	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 208	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 209	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 210	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 211	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 212	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 213	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 214	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 215	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 216	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 217	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 218	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 219	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 220	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 221	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 222	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 223	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 224	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 225	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 226	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 227	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 228	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 229	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 230	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 231	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 232	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 233	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 234	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 235	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 236	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 237	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 238	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 239	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 240	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 241	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 242	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 243	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 244	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 245	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 246	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 247	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 248	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 249	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 250	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 251	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 252	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 253	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 254	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 255	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 256	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 257	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 258	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 259	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 260	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 261	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 262	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 263	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 264	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 265	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 266	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 267	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 268	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 269	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 270	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 271	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 272	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 273	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 274	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 275	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 276	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 277	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 278	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 279	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 280	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 281	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 282	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 283	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 284	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 285	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 286	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 287	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 288	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 289	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 290	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 291	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 292	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 293	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 294	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 295	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 296	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 297	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 298	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 299	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 300	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 301	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 302	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 303	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 304	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 305	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 306	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 307	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 308	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 309	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 310	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 311	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 312	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 313	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 314	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 315	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 316	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 317	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 318	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 319	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 320	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 321	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 322	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 323	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 324	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 325	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 326	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 327	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 328	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 329	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 330	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 331	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 332	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 333	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 334	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 335	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 336	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 337	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 338	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 339	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 340	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 341	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 342	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 343	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 344	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 345	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 346	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 347	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 348	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 349	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 350	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 351	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 352	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 353	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 354	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 355	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 356	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 357	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 358	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 359	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 360	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 361	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 362	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 363	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 364	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 365	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 366	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 367	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 368	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 369	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 370	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 371	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 372	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 373	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 374	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 375	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 376	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 377	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 378	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 379	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 380	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 381	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 382	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 383	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 384	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 385	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 386	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 387	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 388	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 389	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 390	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 391	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 392	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 393	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 394	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 395	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 396	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 397	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 398	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 399	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 400	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 401	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 402	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 403	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 404	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 405	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 406	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 407	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 408	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 409	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 410	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 411	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 412	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 413	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 414	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 415	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 416	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 417	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 418	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 419	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 420	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 421	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 422	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 423	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 424	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 425	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 426	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 427	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 428	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 429	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 430	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 431	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 432	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 433	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 434	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 435	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 436	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 437	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 438	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 439	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 440	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 441	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 442	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 443	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 444	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 445	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 446	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 447	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 448	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 449	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 450	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 451	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 452	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 453	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 454	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 455	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 456	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 457	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 458	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 459	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 460	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 461	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 462	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 463	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 464	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 465	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 466	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 467	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 468	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 469	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 470	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 471	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 472	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 473	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 474	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 475	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 476	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 477	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 478	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 479	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 480	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 481	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 482	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 483	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 484	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 485	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 486	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 487	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 488	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 489	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 490	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 491	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 492	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 493	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 494	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 495	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 496	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 497	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 498	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 499	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 500	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 501	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 502	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 503	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 504	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 505	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 506	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 507	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 508	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 509	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 510	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 511	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 512	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 513	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 514	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 515	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 516	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 517	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 518	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 519	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 520	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 521	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 522	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 523	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 524	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 525	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 526	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 527	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 528	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 529	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 530	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 531	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 532	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 533	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 534	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 535	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 536	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 537	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 538	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 539	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 540	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 541	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 542	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 543	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 544	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 545	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 546	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 547	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 548	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 549	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 550	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 551	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 552	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 553	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 554	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 555	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 556	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 557	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 558	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 559	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 560	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 561	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 562	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 563	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 564	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 565	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 566	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 567	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 568	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+Site: 569	Model size: 162735******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
+
+***Finish Estimating Gamma CI by CIr_stochastic!***
+CIr_stochastic (Time elapsed: 3:51)
+
+//Results based on model selection: 
+****** Cancer Divergence synonymous mutation rate ucs: 8.86839e-06
+****** Cancer Divergence replacement mutation rate ucr: 2.56838e-05
+
+Clusters from Divergence Synonymous:
+Note: Divergence Synonymous (DS) =1 or 0. There is not enough information for clustering Divergence Synonymous!
+
+
+Clusters from Divergence Replacement:
+1 amino acid ~ 190 amino acid	Cluster_Start_Position= 61	Cluster_End_Position= 61
+InL_0= -28.659	InL= -13.2909	AIC_0= 57.318	AIC= 30.5818	AICc_0= 57.318	AICc= 30.6029	BIC_0= 57.318	BIC= 39.2731
+P0_DivergenceReplacement= 0.00352734	Pc_DivergenceReplacement= 1
+
+1 amino acid ~ 60 amino acid	Cluster_Start_Position= 12	Cluster_End_Position= 13
+InL_0= -10.9885	InL= -2.77259	AIC_0= 21.9769	AIC= 9.54518	AICc_0= 21.9769	AICc= 9.61297	BIC_0= 21.9769	BIC= 15.9311
+P0_DivergenceReplacement= 0	Pc_DivergenceReplacement= 0.5
+
+
+//Results based on model averaging: 
+Position	      MS_DivRep	     MA_DivRep	     MS_DivSys	     MA_DivSys	     Gamma_Cancer   	Lower_CI_Gamma_c	Upper_CI_Gamma_c	MutationSymbol_Q2R1S-1*0	MutationStatus 
+1              	0              	0.00602845     	0              	0              	1.55051        	0.649008       	3.5077         	              0	*
+2              	0              	0.00671612     	0              	0              	1.57757        	0.717201       	3.65253        	              0	*
+3              	0              	0.00755377     	0              	0              	1.60542        	0.79126        	3.83429        	              0	*
+4              	0              	0.00859223     	0              	0              	1.63406        	0.877065       	4.03351        	              0	*
+5              	0              	0.00990861     	0              	0              	1.66353        	0.974156       	4.22683        	              0	*
+6              	0              	0.0116259      	0              	0              	1.69386        	1.0006         	4.50307        	              0	*
+7              	0              	0.0139529      	0              	0              	1.72523        	1.0006         	4.74298        	              0	*
+8              	0              	0.0172756      	0              	0              	1.75784        	1.0006         	5.05305        	              0	*
+9              	0              	0.0223952      	0              	0              	1.79177        	1.0006         	5.45245        	              0	*
+10             	0              	0.0313021      	0              	0              	1.82725        	1.0006         	5.80755        	              0	*
+11             	0              	0.0507555      	0              	0              	1.86464        	1.0006         	6.27962        	              0	*
+12             	0.333333       	0.103844       	0              	0              	3.41938        	1.24838        	11.5142        	              2	Q
+13             	0.333333       	0.103825       	0              	0              	1.89902        	1.0006         	6.82914        	              1	R
+14             	0              	0.0506251      	0              	0              	1.86347        	1.0006         	6.27962        	              0	*
+15             	0              	0.0310701      	0              	0              	1.82527        	1.0006         	5.80755        	              0	*
+16             	0              	0.0220811      	0              	0              	1.78901        	1.0006         	5.45245        	              0	*
+17             	0              	0.0168944      	0              	0              	1.75436        	1.0006         	5.05305        	              0	*
+18             	0              	0.0135162      	0              	0              	1.72111        	1.0006         	4.70808        	              0	*
+19             	0              	0.0111426      	0              	0              	1.68911        	1.0006         	4.46969        	              0	*
+20             	0              	0.00938606     	0              	0              	1.65822        	0.961158       	4.22683        	              0	*
+21             	0              	0.00803622     	0              	0              	1.62822        	0.862978       	3.98231        	              0	*
+22             	0              	0.00696904     	0              	0              	1.59905        	0.77847        	3.76428        	              0	*
+23             	0              	0.00610657     	0              	0              	1.57071        	0.705451       	3.63155        	              0	*
+24             	0              	0.00539733     	0              	0              	1.54319        	0.638155       	3.44883        	              0	*
+25             	0              	0.00480596     	0              	0              	1.51645        	0.58589        	3.28324        	              0	*
+26             	0              	0.00430737     	0              	0              	1.49052        	0.527199       	3.18117        	              0	*
+27             	0              	0.00388326     	0              	0              	1.46542        	0.478254       	3.03905        	              0	*
+28             	0              	0.00352003     	0              	0              	1.44122        	0.454792       	2.90861        	              0	*
+29             	0              	0.0032073      	0              	0              	1.41804        	0.446191       	2.81407        	              0	*
+30             	0              	0.0029371      	0              	0              	1.39598        	0.437681       	2.71333        	              0	*
+31             	0              	0.00270316     	0              	0              	1.37512        	0.429259       	2.60756        	              0	*
+32             	0              	0.00250053     	0              	0              	1.35554        	0.420923       	2.50915        	              0	*
+33             	0              	0.00232527     	0              	0              	1.33738        	0.415423       	2.43705        	              0	*
+34             	0              	0.00217421     	0              	0              	1.32073        	0.40995        	2.35942        	              0	*
+35             	0              	0.00204478     	0              	0              	1.30572        	0.404505       	2.27709        	              0	*
+36             	0              	0.00193492     	0              	0              	1.29245        	0.40181        	2.1997         	              0	*
+37             	0              	0.00184296     	0              	0              	1.28104        	0.39642        	2.12678        	              0	*
+38             	0              	0.00176757     	0              	0              	1.27159        	0.39642        	2.05794        	              0	*
+39             	0              	0.00170771     	0              	0              	1.26419        	0.393751       	1.99279        	              0	*
+40             	0              	0.00166257     	0              	0              	1.25886        	0.388414       	1.958          	              0	*
+41             	0              	0.00163157     	0              	0              	1.25539        	0.388414       	1.92429        	              0	*
+42             	0              	0.00161432     	0              	0              	1.25363        	0.388414       	1.91103        	              0	*
+43             	0              	0.00161061     	0              	0              	1.25351        	0.388414       	1.91103        	              0	*
+44             	0              	0.00162042     	0              	0              	1.25503        	0.388414       	1.92429        	              0	*
+45             	0              	0.00164391     	0              	0              	1.25826        	0.388414       	1.958          	              0	*
+46             	0              	0.0016814      	0              	0              	1.26337        	0.391083       	1.99279        	              0	*
+47             	0              	0.00173342     	0              	0              	1.27056        	0.39642        	2.05794        	              0	*
+48             	0              	0.00180073     	0              	0              	1.27982        	0.39642        	2.12678        	              0	*
+49             	0              	0.00188431     	0              	0              	1.29107        	0.399115       	2.1997         	              0	*
+50             	0              	0.00198541     	0              	0              	1.30421        	0.404505       	2.27709        	              0	*
+51             	0              	0.00210563     	0              	0              	1.31911        	0.407228       	2.35942        	              0	*
+52             	0              	0.00224695     	0              	0              	1.33568        	0.412672       	2.44725        	              0	*
+53             	0              	0.00241183     	0              	0              	1.35379        	0.420923       	2.50915        	              0	*
+54             	0              	0.00260334     	0              	0              	1.37335        	0.42648        	2.60756        	              0	*
+55             	0              	0.0028253      	0              	0              	1.39422        	0.434874       	2.71333        	              0	*
+56             	0              	0.00308251     	0              	0              	1.41631        	0.443355       	2.82741        	              0	*
+57             	0              	0.00338105     	0              	0              	1.43954        	0.451925       	2.90861        	              0	*
+58             	0              	0.00372872     	0              	0              	1.46382        	0.472397       	3.03905        	              0	*
+59             	0              	0.00413562     	0              	0              	1.48902        	0.517808       	3.18117        	              0	*
+60             	0              	0.00461509     	0              	0              	1.51507        	0.575817       	3.3005         	              0	*
+61             	1              	0.660959       	0              	0              	508.617        	316.395        	768.529        	              2	Q
+62             	0.00352734     	0.0609888      	0              	0              	24.0765        	9.3948         	49.8354        	              2	Q
+63             	0.00352734     	0.0166882      	0              	0              	1.095          	0.243187       	3.2492         	              0	*
+64             	0.00352734     	0.0104027      	0              	0              	1.08374        	0.229312       	3.16448        	              0	*
+65             	0.00352734     	0.008181       	0              	0              	1.07258        	0.214253       	3.0754         	              0	*
+66             	0.00352734     	0.00707177     	0              	0              	1.06151        	0.198092       	3.00888        	              0	*
+67             	0.00352734     	0.00639975     	0              	0              	1.05052        	0.179535       	2.9242         	              0	*
+68             	0.00352734     	0.00593953     	0              	0              	1.03958        	0.156801       	2.86361        	              0	*
+69             	0.00352734     	0.00559748     	0              	0              	1.02868        	0.122087       	2.78822        	              0	*
+70             	0.00352734     	0.00532855     	0              	0              	1.01762        	-0.00978145    	2.73608        	              0	*
+71             	0.00352734     	0.00510859     	0              	0              	1.00642        	-0.0440213     	2.66519        	              0	*
+72             	0.00352734     	0.00492349     	0              	0              	0.995249       	-0.068663      	2.61416        	              0	*
+73             	0.00352734     	0.00476446     	0              	0              	0.984142       	-0.0875106     	2.55332        	              0	*
+74             	0.00352734     	0.00462569     	0              	0              	0.973106       	-0.102386      	2.50617        	              0	*
+75             	0.00352734     	0.00450315     	0              	0              	0.962151       	-0.11422       	2.44978        	              0	*
+76             	0.00352734     	0.00439394     	0              	0              	0.951283       	-0.124499      	2.40606        	              0	*
+77             	0.00352734     	0.00429589     	0              	0              	0.940509       	-0.13195       	2.35487        	              0	*
+78             	0.00352734     	0.00420733     	0              	0              	0.929832       	-0.139989      	2.31293        	              0	*
+79             	0.00352734     	0.00412695     	0              	0              	0.919252       	-0.144639      	2.2675         	              0	*
+80             	0.00352734     	0.0040537      	0              	0              	0.908776       	-0.14926       	2.22488        	              0	*
+81             	0.00352734     	0.00398672     	0              	0              	0.898403       	-0.153196      	2.19017        	              0	*
+82             	0.00352734     	0.00392529     	0              	0              	0.888135       	-0.156461      	2.14676        	              0	*
+83             	0.00352734     	0.00386879     	0              	0              	0.877976       	-0.159062      	2.11107        	              0	*
+84             	0.00352734     	0.00381672     	0              	0              	0.867925       	-0.161007      	2.0753         	              0	*
+85             	0.00352734     	0.00376864     	0              	0              	0.857987       	-0.162947      	2.03768        	              0	*
+86             	0.00352734     	0.00372415     	0              	0              	0.848162       	-0.163593      	2.00594        	              0	*
+87             	0.00352734     	0.00368292     	0              	0              	0.838453       	-0.164882      	1.97174        	              0	*
+88             	0.00352734     	0.00364467     	0              	0              	0.828863       	-0.165526      	1.93856        	              0	*
+89             	0.00352734     	0.00360912     	0              	0              	0.819393       	-0.165526      	1.90931        	              0	*
+90             	0.00352734     	0.00357604     	0              	0              	0.810044       	-0.167454      	1.87993        	              0	*
+91             	0.00352734     	0.00354523     	0              	0              	0.80082        	-0.167454      	1.84716        	              0	*
+92             	0.00352734     	0.00351651     	0              	0              	0.791722       	-0.168095      	1.82256        	              0	*
+93             	0.00352734     	0.00348971     	0              	0              	0.782752       	-0.169377      	1.79133        	              0	*
+94             	0.00352734     	0.00346468     	0              	0              	0.773914       	-0.169377      	1.76482        	              0	*
+95             	0.00352734     	0.00344128     	0              	0              	0.765209       	-0.170016      	1.73968        	              0	*
+96             	0.00352734     	0.0034194      	0              	0              	0.75664        	-0.171294      	1.71507        	              0	*
+97             	0.00352734     	0.00339892     	0              	0              	0.74821        	-0.171294      	1.68957        	              0	*
+98             	0.00352734     	0.00337975     	0              	0              	0.739922       	-0.171932      	1.66398        	              0	*
+99             	0.00352734     	0.00336179     	0              	0              	0.731779       	-0.173207      	1.6403         	              0	*
+100            	0.00352734     	0.00334496     	0              	0              	0.723783       	-0.173207      	1.61514        	              0	*
+101            	0.00352734     	0.00332918     	0              	0              	0.715937       	-0.173843      	1.59319        	              0	*
+102            	0.00352734     	0.00331439     	0              	0              	0.708245       	-0.175115      	1.57166        	              0	*
+103            	0.00352734     	0.00330052     	0              	0              	0.700709       	-0.175115      	1.54993        	              0	*
+104            	0.00352734     	0.00328751     	0              	0              	0.693333       	-0.175115      	1.52803        	              0	*
+105            	0.00352734     	0.00327531     	0              	0              	0.68612        	-0.177017      	1.5078         	              0	*
+106            	0.00352734     	0.00326387     	0              	0              	0.679073       	-0.177017      	1.48794        	              0	*
+107            	0.00352734     	0.00325314     	0              	0              	0.672194       	-0.177017      	1.46787        	              0	*
+108            	0.00352734     	0.00324309     	0              	0              	0.665488       	-0.178282      	1.44761        	              0	*
+109            	0.00352734     	0.00323368     	0              	0              	0.658958       	-0.178915      	1.42888        	              0	*
+110            	0.00352734     	0.00322487     	0              	0              	0.652605       	-0.178915      	1.41158        	              0	*
+111            	0.00352734     	0.00321662     	0              	0              	0.646434       	-0.178915      	1.39457        	              0	*
+112            	0.00352734     	0.00320892     	0              	0              	0.640448       	-0.180808      	1.37677        	              0	*
+113            	0.00352734     	0.00320173     	0              	0              	0.634649       	-0.180808      	1.35822        	              0	*
+114            	0.00352734     	0.00319503     	0              	0              	0.62904        	-0.180808      	1.34054        	              0	*
+115            	0.00352734     	0.00318879     	0              	0              	0.623625       	-0.180808      	1.32367        	              0	*
+116            	0.00352734     	0.003183       	0              	0              	0.618405       	-0.182066      	1.30707        	              0	*
+117            	0.00352734     	0.00317763     	0              	0              	0.613384       	-0.182695      	1.28977        	              0	*
+118            	0.00352734     	0.00317267     	0              	0              	0.608565       	-0.182695      	1.27663        	              0	*
+119            	0.00352734     	0.0031681      	0              	0              	0.60395        	-0.182695      	1.25986        	              0	*
+120            	0.00352734     	0.0031639      	0              	0              	0.599541       	-0.182695      	1.2443         	              0	*
+121            	0.00352734     	0.00316007     	0              	0              	0.595343       	-0.182695      	1.22899        	              0	*
+122            	0.00352734     	0.00315659     	0              	0              	0.591357       	-0.182695      	1.21345        	              0	*
+123            	0.00352734     	0.00315345     	0              	0              	0.587582       	-0.184579      	1.20129        	              0	*
+124            	0.00352734     	0.00315064     	0              	0              	0.584014       	-0.184579      	1.18929        	              0	*
+125            	0.00352734     	0.00314816     	0              	0              	0.580648       	-0.184579      	1.1783         	              0	*
+126            	0.00352734     	0.00314599     	0              	0              	0.577478       	-0.184579      	1.1696         	              0	*
+127            	0.00352734     	0.00314413     	0              	0              	0.574503       	-0.184579      	1.16184        	              0	*
+128            	0.00352734     	0.00314257     	0              	0              	0.57172        	-0.184579      	1.15542        	              0	*
+129            	0.00352734     	0.00314131     	0              	0              	0.569128       	-0.184579      	1.14904        	              0	*
+130            	0.00352734     	0.00314034     	0              	0              	0.566725       	-0.184579      	1.14439        	              0	*
+131            	0.00352734     	0.00313966     	0              	0              	0.564511       	-0.184579      	1.14019        	              0	*
+132            	0.00352734     	0.00313928     	0              	0              	0.562486       	-0.184579      	1.13725        	              0	*
+133            	0.00352734     	0.00313919     	0              	0              	0.56065        	-0.184579      	1.13516        	              0	*
+134            	0.00352734     	0.00313938     	0              	0              	0.559004       	-0.184579      	1.13141        	              0	*
+135            	0.00352734     	0.00313986     	0              	0              	0.55755        	-0.184579      	1.13141        	              0	*
+136            	0.00352734     	0.00314064     	0              	0              	0.556288       	-0.184579      	1.13141        	              0	*
+137            	0.00352734     	0.00314171     	0              	0              	0.55522        	-0.184579      	1.13266        	              0	*
+138            	0.00352734     	0.00314307     	0              	0              	0.55435        	-0.184579      	1.13516        	              0	*
+139            	0.00352734     	0.00314474     	0              	0              	0.55368        	-0.184579      	1.13767        	              0	*
+140            	0.00352734     	0.00314672     	0              	0              	0.553214       	-0.184579      	1.14145        	              0	*
+141            	0.00352734     	0.003149       	0              	0              	0.552957       	-0.183951      	1.14777        	              0	*
+142            	0.00352734     	0.00315161     	0              	0              	0.552914       	-0.182695      	1.15414        	              0	*
+143            	0.00352734     	0.00315455     	0              	0              	0.55309        	-0.182695      	1.16313        	              0	*
+144            	0.00352734     	0.00315782     	0              	0              	0.553491       	-0.182695      	1.17351        	              0	*
+145            	0.00352734     	0.00316144     	0              	0              	0.55412        	-0.182695      	1.18532        	              0	*
+146            	0.00352734     	0.00316543     	0              	0              	0.554979       	-0.182695      	1.19727        	              0	*
+147            	0.00352734     	0.00316978     	0              	0              	0.556069       	-0.182695      	1.20803        	              0	*
+148            	0.00352734     	0.00317452     	0              	0              	0.557387       	-0.182695      	1.21754        	              0	*
+149            	0.00352734     	0.00317967     	0              	0              	0.558932       	-0.182695      	1.2299         	              0	*
+150            	0.00352734     	0.00318523     	0              	0              	0.560703       	-0.182066      	1.24243        	              0	*
+151            	0.00352734     	0.00319123     	0              	0              	0.562699       	-0.180808      	1.25511        	              0	*
+152            	0.00352734     	0.00319769     	0              	0              	0.564917       	-0.180808      	1.26797        	              0	*
+153            	0.00352734     	0.00320463     	0              	0              	0.567357       	-0.180808      	1.28099        	              0	*
+154            	0.00352734     	0.00321207     	0              	0              	0.570016       	-0.180808      	1.29419        	              0	*
+155            	0.00352734     	0.00322004     	0              	0              	0.572892       	-0.180808      	1.30757        	              0	*
+156            	0.00352734     	0.00322858     	0              	0              	0.575984       	-0.178915      	1.32113        	              0	*
+157            	0.00352734     	0.0032377      	0              	0              	0.579288       	-0.178915      	1.33488        	              0	*
+158            	0.00352734     	0.00324745     	0              	0              	0.582802       	-0.178915      	1.34882        	              0	*
+159            	0.00352734     	0.00325786     	0              	0              	0.586523       	-0.178915      	1.36296        	              0	*
+160            	0.00352734     	0.00326896     	0              	0              	0.590449       	-0.178915      	1.3773         	              0	*
+161            	0.00352734     	0.00328081     	0              	0              	0.594577       	-0.177017      	1.39184        	              0	*
+162            	0.00352734     	0.00329345     	0              	0              	0.598904       	-0.177017      	1.4066         	              0	*
+163            	0.00352734     	0.00330693     	0              	0              	0.603427       	-0.177017      	1.42158        	              0	*
+164            	0.00352734     	0.0033213      	0              	0              	0.608144       	-0.177017      	1.44189        	              0	*
+165            	0.00352734     	0.00333663     	0              	0              	0.613052       	-0.175749      	1.4574         	              0	*
+166            	0.00352734     	0.00335298     	0              	0              	0.618148       	-0.175115      	1.47314        	              0	*
+167            	0.00352734     	0.00337042     	0              	0              	0.623429       	-0.175115      	1.49093        	              0	*
+168            	0.00352734     	0.00338902     	0              	0              	0.628893       	-0.175115      	1.50992        	              0	*
+169            	0.00352734     	0.00340888     	0              	0              	0.634536       	-0.173843      	1.52741        	              0	*
+170            	0.00352734     	0.00343008     	0              	0              	0.640356       	-0.173207      	1.54616        	              0	*
+171            	0.00352734     	0.00345272     	0              	0              	0.646351       	-0.173207      	1.56715        	              0	*
+172            	0.00352734     	0.00347692     	0              	0              	0.652516       	-0.172569      	1.58563        	              0	*
+173            	0.00352734     	0.00350279     	0              	0              	0.658851       	-0.171294      	1.60843        	              0	*
+174            	0.00352734     	0.00353046     	0              	0              	0.665352       	-0.171294      	1.62662        	              0	*
+175            	0.00352734     	0.00356008     	0              	0              	0.672017       	-0.171294      	1.65137        	              0	*
+176            	0.00352734     	0.0035918      	0              	0              	0.678844       	-0.170016      	1.67137        	              0	*
+177            	0.00352734     	0.00362581     	0              	0              	0.68583        	-0.169377      	1.69607        	              0	*
+178            	0.00352734     	0.00366228     	0              	0              	0.692972       	-0.169377      	1.72136        	              0	*
+179            	0.00352734     	0.00370144     	0              	0              	0.70027        	-0.168736      	1.74268        	              0	*
+180            	0.00352734     	0.00374351     	0              	0              	0.70772        	-0.167454      	1.77022        	              0	*
+181            	0.00352734     	0.00378874     	0              	0              	0.715321       	-0.167454      	1.79609        	              0	*
+182            	0.00352734     	0.00383744     	0              	0              	0.723072       	-0.166811      	1.82255        	              0	*
+183            	0.00352734     	0.0038899      	0              	0              	0.730971       	-0.165526      	1.84962        	              0	*
+184            	0.00352734     	0.00394649     	0              	0              	0.739016       	-0.165526      	1.87993        	              0	*
+185            	0.00352734     	0.00400759     	0              	0              	0.747206       	-0.164882      	1.90845        	              0	*
+186            	0.00352734     	0.00407364     	0              	0              	0.755538       	-0.163593      	1.93766        	              0	*
+187            	0.00352734     	0.00414513     	0              	0              	0.764009       	-0.163593      	1.97177        	              0	*
+188            	0.00352734     	0.00422261     	0              	0              	0.772618       	-0.162947      	2.0026         	              0	*
+189            	0.00352734     	0.0043067      	0              	0              	0.781364       	-0.161655      	2.03867        	              0	*
+190            	0.00352734     	0.00439811     	0              	0              	0.790246       	-0.161655      	2.07128        	              0	*
+
+
+Abbreviation: MS=Model Selection; MA=Model Averaging; CI=Confidence Interval; ds=Divergence Synonymous; dr=Divergence Replacement; Gamma=N*s (Gamma: scaled selection coefficient (selection intensity); s: selection coefficient); gamma >1 Negative selection, <1 Positive selection); INF=Infinite; N-INF=Negative Infinite; NULL=Not enough information for this site
+Abbreviation: MutationSymbol_Q2R1S-1*0: Q stands for Recurrent using 2; R stands for Replacement using 1; S stands for Silent using -1; * stands for conserved using 0.
+
+#End of clustering
+
+
+Mission accomplished. (Time elapsed: 3:55)

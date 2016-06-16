@@ -205,7 +205,8 @@ int cPRFCluster::Run(int argc, const char*argv[]) {
    }
    //Calculate the gamma and 95% CI gamma for recurrent site, using formula 2r/(1-e^(-2r))=RecurrentNumber/(ReplacementRate*TumorNumber)
    //Get the lookup table read for CI for all different k
-   string input_lookup_file="LookupTable_cMACPRF_CI_Recurrent_v9.dat";
+   #ZMZ 06/16/2016 update LookupTable_CSIMAC_CI_Recurrent_v10.dat from v9, now with 1000 recur counts
+   string input_lookup_file="LookupTable_CSIMAC_CI_Recurrent_v10.dat";
    LambdaCIs.clear();
    LambdaCILookupTable(input_lookup_file);
    cout<<"The size of the lookup LambdaCI: "<<LambdaCIs.size()<<endl;

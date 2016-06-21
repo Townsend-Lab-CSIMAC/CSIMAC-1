@@ -26,7 +26,7 @@ cPRFCluster::cPRFCluster() {
   flag_N_div=0; //divergence
 
   confidence_interval=0.95;
-  confidence_interval=(1.0-confidence_interval)/2.0; //0.025
+  quantile_for_CI=(1.0-confidence_interval)/2.0; //0.025
 
   divergent_time=0.0;
   
@@ -1245,7 +1245,7 @@ int cPRFCluster::CI_MA(struct SiteModels *pointer,long N){
     double upper=0.0;
 
 
-    while (lower<confidence_interval || upper<confidence_interval) {
+    while (lower<quantile_for_CI || upper<quantile_for_CI) {
       long min_pos=0, max_pos=0;
       long j = 0;
       //flag_lower==0, max_pos is in front of min_pos
@@ -1257,7 +1257,7 @@ int cPRFCluster::CI_MA(struct SiteModels *pointer,long N){
         j++;
       }
 
-      if(lower<confidence_interval){
+      if(lower<quantile_for_CI){
         if(max_pos>min_pos){
           flag_lower=1;
         }
@@ -1268,7 +1268,7 @@ int cPRFCluster::CI_MA(struct SiteModels *pointer,long N){
         CIs.erase(CIs.begin() + min_pos); //truncate the list
       }
 
-      if(upper<confidence_interval){
+      if(upper<quantile_for_CI){
         if(flag_lower==1 && max_pos!=0){
           max_pos--;
         }
@@ -1281,9 +1281,9 @@ int cPRFCluster::CI_MA(struct SiteModels *pointer,long N){
 
       //For some sites,one weight is significant hight than others, so lower=upper
       if(CIs.size()==0){
-        if(upper > confidence_interval){
+        if(upper > quantile_for_CI){
           vec_lower_rate[i]=vec_upper_rate[i];
-        }else if(lower > confidence_interval){
+        }else if(lower > quantile_for_CI){
           vec_upper_rate[i]=vec_lower_rate[i];
         }
         break;
@@ -1291,7 +1291,7 @@ int cPRFCluster::CI_MA(struct SiteModels *pointer,long N){
 
 
       if(CIs.size()==1){
-        if(lower<confidence_interval && upper<confidence_interval){
+        if(lower<quantile_for_CI && upper<quantile_for_CI){
           vec_lower_rate[i]=CIs[0].p;
           vec_upper_rate[i]=CIs[0].p;
 
@@ -1875,8 +1875,8 @@ int cPRFCluster::CI_UpLow_rc(long site,double min_weight_c, vector<rModels> vec_
 	vec_rModels_c_indiv[0].weight=vec_rModels_c_indiv[0].weight/all_weight;
 	rWeightSums_indiv.push_back(vec_rModels_c_indiv[0].weight);
 	long last_item=vec_rModels_c_indiv.size()-1;
-	double lci=confidence_interval;
-	double uci=1-confidence_interval;
+	double lci=quantile_for_CI;
+	double uci=1-quantile_for_CI;
 	double averaged_gamma=0; // average only for weights between 95% CI
   	double medium_gamma=0; // model medium gamma
   	double medium=0.5;

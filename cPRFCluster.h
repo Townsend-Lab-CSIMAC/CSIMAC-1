@@ -447,8 +447,11 @@ class cPRFCluster: public Base {
   int criterion_type;
 
   //Confidence interval for model averaging, default=0.95
-  double confidence_interval;
+  float confidence_interval;
   
+  //Threshold quantile for upper and lower bound of confidence interval for model averaging, default=0.025
+  float quantile_for_CI;
+
   //Only model selection, default=0
   int MS_only;
 

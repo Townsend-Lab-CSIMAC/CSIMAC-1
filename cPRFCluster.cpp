@@ -104,7 +104,7 @@ cPRFCluster::~cPRFCluster() {
 }
 
 /***************************************************
-* Function: Change the size of the vectors and initialization; remove elements in the vector
+* Function: initialization; change the size of the vectors based on gene length and empty the vector
 ***************************************************/
 int cPRFCluster::init(long N){
   vec_r_c.resize(N,0.0);
@@ -509,7 +509,7 @@ int cPRFCluster::RunML(vector<string> div_cons_seq) {
    //use only one format of input for the final version
    div_codon_consensus = div_cons_seq[0]; // Get divergence sequence with synonymous (S) and replacement (R) sites labeled 
    long N=div_codon_consensus.length(); //polymorphism and divergence sequence length, the two are equal.
-   init(N); //sequence length  // JT: what is the function of this init?
+   init(N); //initialization subfunction: change the size of the vectors based on gene length and empty the vector
 
   double ds=0.0;// initializing synonymous divergence at zero
   double dr=0.0;// initializing replacement divergence at zero

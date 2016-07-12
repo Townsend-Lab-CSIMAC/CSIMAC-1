@@ -15,10 +15,7 @@ unsigned int NUM_CPU = std::thread::hardware_concurrency();
 #endif
 
 /***************************************************
-* Function:
-* Input Parameter:
-* Output:
-* Return Value:
+* Function: Initialization of parameters
 ***************************************************/
 //Declare and initiate variables for the function cPRFCluster
 cPRFCluster::cPRFCluster() {
@@ -27,9 +24,6 @@ cPRFCluster::cPRFCluster() {
 
   confidence_interval=0.95;
   quantile_for_CI=(1.0-confidence_interval)/2.0; //0.025
-
-  divergent_time=0.0;
-  
 
   flag_found_pr=0; //polymorphism replacement
   flag_found_dr=0; //divergence replacement
@@ -53,13 +47,13 @@ cPRFCluster::cPRFCluster() {
 
   genetic_code = 1;
   criterion_type = 0;
-  Sys_cluster=0; // By default, option for clustering Synonymous sites in the polymorphism and divergence sequence is off. Users need to use '-s 1' to turn it on.
+  Do_Synonymous_Cluster=0; // By default, option for clustering Synonymous sites in the polymorphism and divergence sequence is off. Users need to use '-s 1' to turn it on.
   MS_only=0;
   ci_ma=0; // confidence interval for model average
   Div_time=0.0; // Species divergent time; can be initiate by the user using prior species divergent time, or it will be estimated based on the given sequence, and it may be biased by the gene.
-  r_estimate=1; // variable for the estimated selection coefficient r.
-  ci_r=1; // confidence intervals for selection coefficient
-  ci_r_exact=0; //exact algorithm estimated r confidence interval
+  Do_r_estimate=1; // variable for the estimated selection coefficient r.
+  Do_ci_r=1; // confidence intervals for selection coefficient
+  Do_ci_r_exact=0; //exact algorithm estimated r confidence interval
   //ZMZ 04/28/2016  added option - regional gamma only
   regional_gamma_only=0; //regional only gamma option when regional_gamma_only=1, default weighted gamma
   Nuc_replace=1;
@@ -71,10 +65,7 @@ cPRFCluster::cPRFCluster() {
 }
 
 /***************************************************
-* Function:
-* Input Parameter:
-* Output:
-* Return Value:
+* Function: remove elements in the vector
 ***************************************************/
 cPRFCluster::~cPRFCluster() {
 
@@ -113,10 +104,7 @@ cPRFCluster::~cPRFCluster() {
 }
 
 /***************************************************
-* Function: Change the size of the vectors and initiations; remove elements in the vector
-* Input Parameter:
-* Output:
-* Return Value:
+* Function: Change the size of the vectors and initialization; remove elements in the vector
 ***************************************************/
 int cPRFCluster::init(long N){
   vec_r_c.resize(N,0.0);
@@ -140,13 +128,11 @@ int cPRFCluster::init(long N){
   vec_upper_rate_ds.resize(N,0.0);
   vec_upper_rate_dr.resize(N,0.0);
 
-
   vec_SelectedModels_ds.clear();
   vec_SelectedModels_dr.clear();
 
   vec_AllModels_ds.clear();
   vec_AllModels_dr.clear();
-
 
   vec_SelectedModels.clear();
   vec_AllModels.clear();
@@ -167,7 +153,7 @@ int cPRFCluster::Run(int argc, const char*argv[]) {
   int i, flag=1;
   srand(1234); // to fix random number generator, to make sure the program is repeatable; need to remove for the final version of the program
   try {		
-	    //Write in the output file with program name,Version, LastUpdate, and Reference.
+	    //Write in the output file with program name, Version, LastUpdate, and Reference.
 	    cout<<endl<<NAME<<", Version: "<<VERSION<<" [Last Update: "<<LASTUPDATE<<"]"<<endl;
 	    cout<<"Reference: "<<REFERENCE<<endl<<endl;
 
@@ -176,54 +162,46 @@ int cPRFCluster::Run(int argc, const char*argv[]) {
 	  //Parse input parameters
     if (parseParameter(argc, argv)!=1) throw "Error in parsing parameters!";
     
-    //Check input file names and sequence numbers for divergence
-    if(div_cons_seqfile=="" || tumor_num_s=="") throw "Failed to input all required files! Use -H to find out.";
+    //Check for presence of the input file and whether the number of tumors is specified
+    if(div_cons_seqfile=="" || tumor_num_s=="") throw "Failed to specify the input file and/or the number of tumors! Use -H to find out.";
     //convert the format for the sequence number from string to int
     tumor_num=CONVERT<int>(tumor_num_s);
 
-
-
     cout<<"Read cancer divergence consensus input file: "<<div_cons_seqfile<<endl<<endl;
-    if (readFasta(div_cons_seqfile, div_cons_seqname, div_cons_seq)!=1) throw "Error in reading divergent sequences.";
+    if (readFasta(div_cons_seqfile, div_cons_seqname, div_cons_seq)!=1) throw "Error in reading divergent sequence.";
 
-    //Print the divergence consensus sequences and their taxon names
-    cout<<endl<<"Divergence Consensus Sequences:"<<endl<<">"<<div_cons_seqname[0].c_str()<<endl;
+    //Print the divergence consensus sequence and the gene name
+    cout<<endl<<"Divergence Consensus Sequence:"<<endl<<">"<<div_cons_seqname[0].c_str()<<endl;
     cout<<div_cons_seq[0].c_str()<<endl<<endl<<endl;
     //Check sequence length for divergence
-   if(div_cons_seq[0].size()%3!=0) cout<< "Warning: the length of divergence sequences can be divided by 3 (codon size)."<<endl;
+   if(div_cons_seq[0].size()%3!=0) cout<< "Warning: the length of the specified divergence sequence cannot be divided by 3 (codon size)."<<endl;
 
    //Get the recurrent position and count in Recurrents by taking recurrent.txt as an input as the seq file, flag
-   cout<<"Get Recurrent list: "<<endl;
-   RecurrentList(recurrent_file);
-   cout<<"***The size of the recurrent: "<<Recurrents.size()<<endl;
+   cout<<"Recurrent positions and counts: "<<endl;
+   GetRecurrentList(recurrent_file); // JT: rename as GetRecurrentList - ZMZ fixed
+   cout<<"Number of recurrent positions: "<<Recurrents.size()<<endl;
    long jj;
    for (jj=0;jj<Recurrents.size();jj++){
-	   cout<<"RecurrentSite:\t"<<Recurrents[jj].sites<<"\tCount: "<<Recurrents[jj].counts<<endl;
+	   cout<<"Recurrent Site:\t"<<Recurrents[jj].sites<<"\tCount: "<<Recurrents[jj].counts<<endl;
 	   int count=Recurrents[jj].counts;
 	   TotalRecurrentCount+=count;
 	   TotalRecurrentSite+=1;
    }
-   //Calculate the gamma and 95% CI gamma for recurrent site, using formula 2r/(1-e^(-2r))=RecurrentNumber/(ReplacementRate*TumorNumber)
+   //Calculate the gamma and 95% CI gamma for each recurrent site, using 2r/(1-e^(-2r))=RecurrentNumber/(ReplacementRate*TumorNumber)
    //Get the lookup table read for CI for all different k
    //ZMZ 06/16/2016 update LookupTable_CSIMAC_CI_Recurrent_v10.dat from v9, now with 1000 recur counts
    string input_lookup_file="LookupTable_CSIMAC_CI_Recurrent_v10.dat";
    LambdaCIs.clear();
    LambdaCILookupTable(input_lookup_file);
-   cout<<"The size of the lookup LambdaCI: "<<LambdaCIs.size()<<endl;
-   if (LambdaCIs.size()==0) throw "The LambdaCILookupTable is empty...\n";
-
-   cout<<"Test Lambda lookup table:"<<endl;
-   cout<<"Recurrent count: "<<LambdaCIs[0].count<<"\t";
-   cout<<"LowerCI: "<<LambdaCIs[0].lowerCIlambda<<"\t";
-   cout<<"UpperCI: "<<LambdaCIs[0].upperCIlambda<<endl;
-
-
+   cout<<"Maximum recurrent count currently permitted by CSIMAC: "<<LambdaCIs.size()<<endl;
+   if (LambdaCIs.size()==0) 
+   {   
+    cout<<"Error: The LambdaCILookupTable "<<input_lookup_file<<" is empty...\n"; // JT: fix this with a stringconcat or something - ZMZ fixed
+    throw;   
+   }
 
    //**** Main Step: Run the main function Maximum Likelihood for cancer divergence sequences, to get site specific gamma and 95% CI gamma
    RunML(div_cons_seq);
-
-   //Calculate the gamma and 95% CI gamma for recurrent site, using formula 2r/(1-e^(-2r))=(1-(1-p)^RecurrentNumber)/(ReplacementRate*TumorNumber)
-
 
     //Display on screen after finish running the program and print out the time used.
     cout<<endl<<"Mission accomplished. (Time elapsed: ";
@@ -247,41 +225,35 @@ int cPRFCluster::Run(int argc, const char*argv[]) {
 
 
 /***************************************************
-* Function: Print out the cluster information for Replacement sites in the Divergence sequences by default. The cluster status for Synonymous sites in the Divergence sequences can be printed out if the user assign '-s 1' when run './cMAC-PRF'.
-* Input Parameter:
-* Output:
-* Return Value:
+* Function: Print out the cluster information and gamma values for replacement divergence by default; and information for synonymous divergence can be printed out if the user assign '-s 1'.
 ***************************************************/
 int cPRFCluster::output(long N){
   
    cout<<endl<<"//Results based on model selection: "<<endl;
-   cout<<"****** Cancer Divergence synonymous mutation rate ucs: "<<ucs<<endl;
-   cout<<"****** Cancer Divergence replacement mutation rate ucr: "<<ucr<<endl;
-
+   cout<<"Cancer divergence synonymous mutation rate (ucs): "<<ucs<<endl;
+   cout<<"Cancer divergence replacement mutation rate (ucr): "<<ucr<<endl;
 
   // Print out cluster information for synonymous sites in the Divergence sequence if the user assigns '-s 1'.
-  if(Sys_cluster==1){
-    cout<<endl<<"Clusters from Divergence Synonymous:"<<endl;
+  if(Do_Synonymous_Cluster==1){
+    cout<<endl<<"Clusters of synonymous divergence:"<<endl;
     if(vec_SelectedModels_ds.size()==0){
-      cout<<"Note: Divergence Synonymous (DS) =1 or 0. There is not enough information for clustering Divergence Synonymous!"<<endl<<endl;
+      cout<<"Note: Synonymous divergence (DS) = 1 or 0. There are not enough synonymous divergent sites for clustering!"<<endl<<endl;
     }else if(vec_SelectedModels_ds.size()==1 && vec_SelectedModels_ds[0].pos_start==vec_SelectedModels_ds[0].cs && vec_SelectedModels_ds[0].pos_end==vec_SelectedModels_ds[0].ce){
-      cout<<"Note: There is no cluster for synonymous sites in this Divergence sequence."<<endl<<endl;
+      cout<<"Note: CSIMAC identified no clustering of synonymous sites in this gene."<<endl<<endl;
     }else{
+      // JT: to debug vec_SelectedModels_dr and vec_SelectedModels_ds output models.
       for(long i=0; i<vec_SelectedModels_ds.size(); i++){
     	  if (output_format_num==1)
     	{
-    		cout<<(vec_SelectedModels_ds[i].pos_start*Scale+1)<<" nucleotide ~ "<<(vec_SelectedModels_ds[i].pos_end*Scale+1)<<" nucleotide";
-    		cout<<"\tCluser_Start_Position= "<<(vec_SelectedModels_ds[i].cs*Scale+1)<<"\tCluster_End_Position= "<<(vec_SelectedModels_ds[i].ce*Scale+1);
+    		cout<<"\nNucleotide\nStart_Position = "<<(vec_SelectedModels_ds[i].pos_start*Scale+1)<<"\tEnd_Position = "<<(vec_SelectedModels_ds[i].pos_end*Scale+1);
+    		cout<<"\tCluster_Start_Position = "<<(vec_SelectedModels_ds[i].cs*Scale+1)<<"\tCluster_End_Position = "<<(vec_SelectedModels_ds[i].ce*Scale+1);
     	}
     	else if (output_format_num==0)
     	{
-    		cout<<(vec_SelectedModels_ds[i].pos_start*Scale/3+1)<<" amino acid ~ "<<(vec_SelectedModels_ds[i].pos_end*Scale/3+1)<<" amino acid";
-    		cout<<"\tCluser_Start_Position= "<<(vec_SelectedModels_ds[i].cs*Scale/3+1)<<"\tCluster_End_Position= "<<(vec_SelectedModels_ds[i].ce*Scale/3+1);
+    		cout<<"\nAmino Acid\nStart_Position = "<<(vec_SelectedModels_ds[i].pos_start*Scale/3+1)<<"\tEnd_Position = "<<(vec_SelectedModels_ds[i].pos_end*Scale/3+1);
+    		cout<<"\tCluster_Start_Position= "<<(vec_SelectedModels_ds[i].cs*Scale/3+1)<<"\tCluster_End_Position= "<<(vec_SelectedModels_ds[i].ce*Scale/3+1);
     	}
-
-
-	cout<<endl;
-	
+	cout<<endl;	
 	cout<<"InL_0= "<<vec_SelectedModels_ds[i].InL0<<"\tInL= "<<vec_SelectedModels_ds[i].InL;
 	cout<<"\tAIC_0= "<<vec_SelectedModels_ds[i].AIC0<<"\tAIC= "<<vec_SelectedModels_ds[i].AIC;
 	cout<<"\tAICc_0= "<<vec_SelectedModels_ds[i].AICc0<<"\tAICc= "<<vec_SelectedModels_ds[i].AICc;
@@ -295,22 +267,23 @@ int cPRFCluster::output(long N){
   }
 
   // Print out cluster information for Replacement sites in the Divergence sequence by default.
-  cout<<endl<<"Clusters from Divergence Replacement:"<<endl;
+  cout<<endl<<"Clusters of replacement divergence:"<<endl;
   if(vec_SelectedModels_dr.size()==0){
-    cout<<"Note: Divergence Replacement (DR) =1 or 0. There is not enough information for clustering Divergence Replacement!"<<endl<<endl;
+    cout<<"Note: Replacement divergence (DR) = 1 or 0. There is not enough replacement divergent sites for clustering!"<<endl<<endl;
   }else if(vec_SelectedModels_dr.size()==1 && vec_SelectedModels_dr[0].pos_start==vec_SelectedModels_dr[0].cs && vec_SelectedModels_dr[0].pos_end==vec_SelectedModels_dr[0].ce){
-    cout<<"Note: There is no cluster for replacement sites in this Divergence sequence."<<endl<<endl;
-  }else{
-    for(long i=0; i<vec_SelectedModels_dr.size(); i++){
+    cout<<"Note: There is no cluster of replacement sites in this gene."<<endl<<endl;
+  }else{  
+    // JT: to debug vec_SelectedModels_dr and vec_SelectedModels_ds output models.
+    for(long i=0; i<vec_SelectedModels_dr.size(); i++){ 
 
-  	  if (output_format_num==1)
+  	  if (output_format_num==1) //0: amino acid output || 1: nucleotide output, default=0
   	{
-  		cout<<(vec_SelectedModels_dr[i].pos_start*Scale+1)<<" nucleotide ~ "<<(vec_SelectedModels_dr[i].pos_end*Scale+1)<<" nucleotide";
+  		cout<<"\nNucleotide\nStart_Position = "<<(vec_SelectedModels_dr[i].pos_start*Scale+1)<<"\tEnd_Position = "<<(vec_SelectedModels_dr[i].pos_end*Scale+1);
   		cout<<"\tCluster_Start_Position= "<<(vec_SelectedModels_dr[i].cs*Scale+1)<<"\tCluster_End_Position= "<<(vec_SelectedModels_dr[i].ce*Scale+1);
   	}
-  	else if (output_format_num==0)
+  	else if (output_format_num==0) //0: amino acid output || 1: nucleotide output, default=0
   	{
-  		cout<<(vec_SelectedModels_dr[i].pos_start*Scale/3+1)<<" amino acid ~ "<<(vec_SelectedModels_dr[i].pos_end*Scale/3+1)<<" amino acid";
+  		cout<<"\nAmino Acid\nStart_Position = "<<(vec_SelectedModels_dr[i].pos_start*Scale/3+1)<<"\tEnd_Position = "<<(vec_SelectedModels_dr[i].pos_end*Scale/3+1);
   		cout<<"\tCluster_Start_Position= "<<(vec_SelectedModels_dr[i].cs*Scale/3+1)<<"\tCluster_End_Position= "<<(vec_SelectedModels_dr[i].ce*Scale/3+1);
   	}
      /* cout<<vec_SelectedModels_dr[i].pos_start<<" ~ "<<vec_SelectedModels_dr[i].pos_end;
@@ -330,7 +303,7 @@ int cPRFCluster::output(long N){
     }
   }
 
-  if (N*Scale%3!=0) { cout<< "Warning: the length of divergence sequence can not be divided by 3 (codon size)."<<endl;}
+  if (N*Scale%3!=0) { cout<< "Warning: the length of divergence sequence cannot be divided by 3 (codon size)."<<endl;}
 
   //Print the results of Model Averaging for each position
   if (MS_only==0) {
@@ -340,7 +313,7 @@ int cPRFCluster::output(long N){
 
     //Output the title
     cout.width(width); cout<<"Position\t";
-    if(Sys_cluster==1){
+    if(Do_Synonymous_Cluster==1){ // JT: could we change to Do_Syn_cluster or Do_SynSite_Cluster or Do_Synonymous_Cluster? - ZMZ fixed
         cout.width(width); cout<<"MS_DivRep\t";
         cout.width(width); cout<<"MA_DivRep\t";
     	cout.width(width); cout<<"MS_DivSys\t";
@@ -353,30 +326,28 @@ int cPRFCluster::output(long N){
       }
     }
 
-
-
-    if(r_estimate==1){
+    if(Do_r_estimate==1){ // JT: change to Do_r_estimate - ZMZ fixed
         cout.width(width); cout<<"Gamma_Cancer";
-      if(ci_r==1){
+      if(Do_ci_r==1){ // JT: change do Do_ci_r - ZMZ fixed
 	cout.width(width); cout<<"\tLower_CI_Gamma_c\t";
 	cout.width(width); cout<<"Upper_CI_Gamma_c";
 
-	cout.width(width); cout<<"\tMutationSymbol_Q2R1S-1*0\t";
-	cout.width(width); cout<<"MutationStatus";
+	cout.width(width); cout<<"\tMutSymbol_Q2_D-2_R1_S-1_*0\t"; //Q stands for Recurrent using 2; D stands for Damaging using -2; R stands for Replacement using 1; S stands for Silent using -1; * stands for conserved using 0
+	cout.width(width); cout<<"MutationStatus"; // MutationStatus: Q (recurrent), D (Damaging), R (replacement), S (silent) or *(no mutation); 
       }
     }
     cout<<endl;
 
 
-    //Output the data in the format of nucleotide/codon sequence
-    if (output_format_num==1 or (output_format_num==0 and Scale!=1))
+    //Output the data in the format of nucleotide or amino acid sequence
+    if (output_format_num==1 or (output_format_num==0 and Scale!=1)) // 0: amino acid output || 1: nucleotide output, default=0
     {
 
     for(long i=0; i<N; i++) {
-    	for (long j=0;j<Scale/3;j++)
+    	for (long j=0;j<Scale/3;j++) // JT: fix this Scale/3 = 1/3 ???
     	{
-    	    cout.width(width);cout<<Scale/3*i+j+1<<"\t";
-			if(Sys_cluster==1){
+    	    cout.width(width);cout<<Scale/3*i+j+1<<"\t"; 
+			if(Do_Synonymous_Cluster==1){
 				cout.width(width);cout<<vec_MS_rate_dr[i]<<"\t";
 				cout.width(width);cout<<vec_MA_rate_dr[i]<<"\t";
 				cout.width(width);cout<<vec_MS_rate_ds[i]<<"\t";
@@ -389,8 +360,8 @@ int cPRFCluster::output(long N){
 				}
 			  }
 
-    	      //r_estimate: cancer divergence gamma
-    	    if(r_estimate==1){
+    	    //Do_r_estimate: cancer divergence gamma
+    	    if(Do_r_estimate==1){
     		cout.width(width); //cancer gamma
 
     		if(vec_r_c[i]==299){
@@ -403,7 +374,7 @@ int cPRFCluster::output(long N){
     		  cout.width(width);cout<<vec_r_c[i];
     		}
 
-    	//ci_r_c: cancer divergent gamma Lower and Upper confidence intervals
+    	//Do_ci_r: cancer divergent gamma Lower and Upper confidence intervals
     		  if(vec_lower_r_c[i]==299){
     		    cout<<"\t";cout.width(width);cout<<"INF"<<"\t";
     		  }else if(vec_lower_r_c[i]==-299){
@@ -429,7 +400,7 @@ int cPRFCluster::output(long N){
  
     	      else if (div_codon_consensus[i]=='S') { cout.width(width);cout<<"\t"<<-1; } //Re-ordered
     	      else if (div_codon_consensus[i]=='R') { cout.width(width);cout<<"\t"<<1; }
-    	      else if (div_codon_consensus[i]=='Q') { cout.width(width);cout<<"\t"<<2; }//recurrent sites
+    	      else if (div_codon_consensus[i]=='Q') { cout.width(width);cout<<"\t"<<2; } //recurrent sites
     	      else if (div_codon_consensus[i]=='D') { cout.width(width);cout<<"\t"<<-2; } //Added Damaging mutation records
     	      cout<<"\t"<<div_codon_consensus[i];
     	      cout<<endl;
@@ -440,14 +411,14 @@ int cPRFCluster::output(long N){
     }
 
 
-  //Default Output the data in the format of amino acids
-  if (output_format_num==0 and Scale==1)
+  //Default: output the data in the format of amino acids
+  if (output_format_num==0 and Scale==1) // 0: amino acid output || 1: nucleotide output, default=0
   {
-  for(long i=0; i<N/3; i++) {
-	  for (long j=0;j<Scale;j++)
+  for(long i=0; i<N/3; i++) { 
+	  for (long j=0;j<Scale;j++) // JT: is this loop just extra? No need for loop?
 	  {
 		   cout.width(width);cout<<i*Scale+j+1<<"\t";
-		      if(Sys_cluster==1){
+		      if(Do_Synonymous_Cluster==1){
 		          cout.width(width);cout<<(vec_MS_rate_dr[i*3]+vec_MS_rate_dr[i*3+1]+vec_MS_rate_dr[i*3+2])/3<<"\t";
 		          cout.width(width);cout<<(vec_MA_rate_dr[i*3]+vec_MA_rate_dr[i*3+1]+vec_MA_rate_dr[i*3+2])/3<<"\t";
 		      	cout.width(width);cout<<(vec_MS_rate_ds[i*3]+vec_MS_rate_ds[i*3+1]+vec_MS_rate_ds[i*3+2])/3<<"\t";
@@ -460,9 +431,9 @@ int cPRFCluster::output(long N){
 			}
 		    }
 
-		    //r_estimate: human polymorphism gamma and cancer divergence gamma
-		    if(r_estimate==1){
-			cout.width(width); //cancer gamma
+		    //Do_r_estimate: cancer selection intensity gamma estimation
+		    if(Do_r_estimate==1){
+			cout.width(width);
 
 			if(vec_r_c[i*3]==299 or vec_r_c[i*3+1]==299 or vec_r_c[i*3+2]==299){
 			  cout.width(width);cout<<"INF";
@@ -474,7 +445,7 @@ int cPRFCluster::output(long N){
 			  cout.width(width);cout<<(vec_r_c[i*3]+vec_r_c[i*3+1]+vec_r_c[i*3+2])/3;
 			}
 
-		//ci_r_c: cancer divergent gamma Lower and Upper confidence intervals
+		//Do_ci_r: cancer divergent gamma Lower and Upper confidence intervals
 			  if(vec_lower_r_c[i*3]==299 or vec_lower_r_c[i*3+1]==299 or vec_lower_r_c[i*3+2]==299){
 			    cout<<"\t";cout.width(width);cout<<"INF"<<"\t";
 			  }else if(vec_lower_r_c[i*3]==-299 or vec_lower_r_c[i*3+1]==-299 or vec_lower_r_c[i*3+2]==-299){
@@ -520,7 +491,7 @@ int cPRFCluster::output(long N){
 }
 
   cout<<endl<<"Abbreviation: MS=Model Selection; MA=Model Averaging; CI=Confidence Interval; ds=Divergence Synonymous; dr=Divergence Replacement; Gamma=N*s (Gamma: scaled selection coefficient (selection intensity); s: selection coefficient); gamma >1 Negative selection, <1 Positive selection); INF=Infinite; N-INF=Negative Infinite; NULL=Not enough information for this site"<<endl;
-  cout<<"Abbreviation: MutationSymbol_Q2R1S-1*0: Q stands for Recurrent using 2; R stands for Replacement using 1; S stands for Silent using -1; * stands for conserved using 0."<<endl;
+  cout<<"Abbreviation: MutSymbol_Q2_D-2_R1_S-1_*0: Q stands for Recurrent using 2; D stands for Damaging using -2; R stands for Replacement using 1; S stands for Silent using -1; * stands for conserved using 0."<<endl;
   cout<<endl<<"#End of clustering"<<endl<<endl;
   return 1;
 }
@@ -536,56 +507,52 @@ int cPRFCluster::output(long N){
 int cPRFCluster::RunML(vector<string> div_cons_seq) {
 
    //use only one format of input for the final version
-   div_codon_consensus = div_cons_seq[0]; // Get divergence sequence with synonymous (S) and replacement (R) sites labeled.
+   div_codon_consensus = div_cons_seq[0]; // Get divergence sequence with synonymous (S) and replacement (R) sites labeled 
    long N=div_codon_consensus.length(); //polymorphism and divergence sequence length, the two are equal.
-   init(N); //sequence length
+   init(N); //sequence length  // JT: what is the function of this init?
 
-  //Print the #Divergence & #Polymorphism codon sequences with synonymous and replacement sites labeled with 'S' and 'R'
-  //Other consensus sites labeled with '*'
-  double ds=0.0;//divergence synonymous
-  double dr=0.0;//divergence replacement
-
-  // Count divergence synonymous sites 'S' by finding symbol 'S' from the divergence sequence from start position 0 to the end position N-1
+  double ds=0.0;// initializing synonymous divergence at zero
+  double dr=0.0;// initializing replacement divergence at zero
+ 
+  // Count synonymous divergent sites by finding symbol 'S' in the divergent sequence from start position 0 to the end position N-1
   ds=getDifference(div_codon_consensus,0,N-1,'S');
-  // Count divergence replacement sites by finding symbol 'R' from the divergence sequence from start position 0 to the end position N-1
+  // Count replacement divergent sites by finding symbol 'R' in the divergent sequence from start position 0 to the end position N-1
   dr=getDifference(div_codon_consensus,0,N-1,'R');
   TotalReplacementSite=dr;
   TotalSilentSite=ds;
 
-  cout<<"Divergence Synonymous Counts (DS): "<<ds<<endl;
-  cout<<"Divergence Replacement Counts (DR): "<<dr<<endl;
+//Print the # of divergent synonymous and replacement sites labeled with 'S' and 'R'
+  cout<<"Synonymous divergent count (DS): "<<ds<<endl;
+  cout<<"Replacement divergent count (DR): "<<dr<<endl;
 
 
-  //Need to input the number of sequences within species used for polymorphism, polymorphism_num.
-  //cout<<"The number of divergence species number: "<<tumor_num<<endl;
+  cout<<"Number of tumor samples: "<<tumor_num<<endl;
   long N_ScaledBack=N*Scale; //ScaledProbability
-  cout<<"The gene length: "<<N_ScaledBack<<" bp"<<endl;
-  //cout<<" Estimated time: "<<(12*N/1000+8)<<" minutes for this gene with 20000 models."<<endl;
-  cout<<" Two time-consuming steps ClusterSubSeq and CI_r_stochastic."<<endl;
-  //cout<<" ClusterSubSeq depends on the model number, rate: ~4 minutes for each additional 10000 models, ~6 hours for 1 million models"<<endl;
-  //cout<<" CI_r_stochastic is determined by gene length, with the speed rate 12 minutes per 1000 sites."<<endl;
+  cout<<"Gene length: "<<N_ScaledBack<<" bp"<<endl;
 
-//Get the synonymous rate from the sequence or input MutSigCV SilentRate, the latter as priority.
+//Get the synonymous mutation rate (ucs) based on the number of silent mutations in the gene or from user-input (MutSigCV SilentRate). The latter is preferred.
   ucs=CancerSynonymousRate(tumor_num, N);
 
    //double ratio_NS=CalculateNS(ref_seq_gene); // calculate the ratio of replacement and synonymous N/S
-   double ratio_NS= 0.345291479; //the ratio is (0.77/2.23), based on the first and third position of being nonsynonymous is 5% and 72% based on Nei and Gojobori's paper 1986
-   cout<<"The ratio of Nonsynonymous and Synonymous is "<<ratio_NS<<endl;
-  ucr=ReplacementRate(ratio_NS, ucs); // Get replacement rate for cancer divergence
-  cout<<"Cancer Divergence replacement mutation rate (Silent*RatioNS): "<<ucr<<endl;
+   double ratio_NS= 0.345291479; //the ratio is (0.77/2.23), assuming that the first and third position will be nonsynonymous 5% and 72% of the time. See Nei and Gojobori's paper 1986
+   cout<<"The ratio of replacement mutations to synonymous mutations is "<<ratio_NS<<endl;
+  ucr=ReplacementRate(ratio_NS, ucs); // Get replacement rate for cancer divergence (ucr)
+  cout<<"Cancer replacement divergence mutation rate: "<<ucr<<endl;
 
-  //Use the positions and numbers of synonymous and replacements from the newly generated divergence sequences (ds/dr) to find the presence of cluster.
-  //flag_seq==0 means using the polymorphism sequence, pol_seq
-  int flag_seq=1; // indicating the use of divergence sequence
+  int flag_seq=1; // indicating the use of divergent sequence  JT: eliminate the flag_seq from CSIMAC?
 
 //// Fixed bug due to the new OS X 10.9 system [error: variable length array of non-POD element type 'struct SiteModels']. Solution: use a very large number instead of the parameter N for the gene length, for keeping all models for each gene site, to make sure the number is larger than the gene length.
   // struct SiteModels sm_pol[N];
   struct SiteModels sm_div[10000];
-  if (N>10000) { cout<<"The length of the gene exceeds 10000, Revise the SiteModels upper-boundary array size!"<<endl; throw 1;}
+  if (N>10000) { cout<<"The length of the gene exceeds 10000. Scale it down or revise the SiteModels upper-boundary array size!"<<endl; throw 1;}
 
+  //cout<<" Estimated time: "<<(12*N/1000+8)<<" minutes for this gene with 20000 models."<<endl;
+  cout<<"CSIMAC is conducting the two time-consuming steps, ClusterSubSeq and Do_ci_r_stochastic."<<endl;
+  //cout<<" ClusterSubSeq depends on the model number, rate: ~4 minutes for each additional 10000 models, ~6 hours for 1 million models"<<endl;
+  //cout<<" Do_ci_r_stochastic is determined by gene length, with the speed rate 12 minutes per 1000 sites."<<endl;
 
-  // Clustering and 95% CI for the clusters, this will be calculated for Divergence Silent if (Sys_cluster==1)
-  if(Sys_cluster==1){
+  // Clustering and 95% CI for the clusters, this will be calculated for Silent divergence if (Do_Synonymous_Cluster==1)
+  if(Do_Synonymous_Cluster==1){
     //Initialize for DS
     vec_SelectedModels.clear();
     vec_MS_rate.clear();
@@ -604,19 +571,19 @@ int cPRFCluster::RunML(vector<string> div_cons_seq) {
     vec_MA_rate_ds.resize(N,0.0);
 
 
-    ClusterSubSeq(0, N-1,'S',flag_seq,sm_div); // Major step for clustering
+    ClusterSubSeq(0, N-1,'S',flag_seq,sm_div); // Major subroutine for clustering of synonymous variants
     vec_SelectedModels_ds=vec_SelectedModels;
     vec_MS_rate_ds=vec_MS_rate;
     vec_MA_rate_ds=vec_MA_rate;
     if(MS_only==0 && ci_ma==1 && ds >0){
-      CI_MA(sm_div,N); // Major step for 95% CI of clusterings for each site
+      CI_MA(sm_div,N); // Major subroutine for 95% CI for probability of synonymous variant for each site
     }
     vec_lower_rate_ds=vec_lower_rate;
     vec_upper_rate_ds=vec_upper_rate;
   }
 
 
-  //Empty vectors and re-size for Divergence Replacement - DR
+  //Empty vectors and re-size for replacement divergence (DR)
   vec_SelectedModels.clear();
   vec_SelectedModels_dr.clear();
   vec_MS_rate.clear();
@@ -635,12 +602,12 @@ int cPRFCluster::RunML(vector<string> div_cons_seq) {
   vec_MA_rate_dr.resize(N,0.0);
 
 
-// ****  Major Step: Find cluster and calculate probability using different models for Divergence Replacement
-  cout<<endl<<"***Step: Start ClusterSubSeq for cancer Replacement!***"<<endl;
+// ****  Major Step: Find cluster and calculate probability using multiple models for replacement divergence
+  cout<<endl<<"Starting the clustering of replacement variants"<<endl;
   time_t time_start1 = time(NULL); // Record the start time
   ClusterSubSeq(0, N-1,'R',flag_seq,sm_div); //find clusters in the sequence, flag_seq=1 represents divergent sequence.
-  cout<<"***Step: Finish ClusterSubSeq for cancer Replacement!***"<<endl;
-  cout<<"ClusterSubSeq (Time elapsed: ";
+  cout<<"Finished clustering of replacement variants."<<endl;
+  cout<<"Time elapsed during clustering of replacement variants: ";
   time_t t2 = time(NULL)-time_start1;
   int h=t2/3600, m=(t2%3600)/60, s=t2-(t2/60)*60;
   if(h)  cout<<h<<":"<<m<<":"<<s<<")"<<endl;
@@ -652,11 +619,11 @@ int cPRFCluster::RunML(vector<string> div_cons_seq) {
 
   // Calculate the 95% CI for the clustering probability
   if(MS_only==0 && ci_ma==1 && dr>0){
-	  cout<<endl<<"***Step: Start CI_MA for cancer Replacement!***"<<endl;
+	  cout<<endl<<"Starting model-averaging analysis to yield CIs for replacement divergence"<<endl;
 	  time_t time_start1 = time(NULL); // Record the start time
       CI_MA(sm_div,N);
-	  cout<<endl<<"***Step: Finish CI_MA for cancer Replacement!***"<<endl;
-	  cout<<"CI_MA (Time elapsed: ";
+	  cout<<endl<<"Finished model-averaging analysis to yield CIs for replacement divergence"<<endl;
+	  cout<<"Time elapsed during model-averaging analysis to yield CIs: ";
 	  time_t t2 = time(NULL)-time_start1;
 	  int h=t2/3600, m=(t2%3600)/60, s=t2-(t2/60)*60;
 	  if(h)  cout<<h<<":"<<m<<":"<<s<<")"<<endl;
@@ -673,7 +640,7 @@ int cPRFCluster::RunML(vector<string> div_cons_seq) {
   }
 */
  //Do model averaging and estimate gamma for Replacement sites
-  if (MS_only==0 && r_estimate==1) {
+  if (MS_only==0 && Do_r_estimate==1) {
     //If pr & dr ==1 or 0, r couldn't be estimated.
     if(dr>0){
       cout<<endl<<"***Start to Estimate gamma for human cancer replacement!***"<<endl;
@@ -686,9 +653,6 @@ int cPRFCluster::RunML(vector<string> div_cons_seq) {
       if(h)  cout<<h<<":"<<m<<":"<<s<<")"<<endl;
       else   cout<<m<<":"<<s<<")"<<endl;
         //Calculate gamma for recurrent mutation  recurrent_SiteGamma(int tumor_num, double ucr, int RecurrentNum, int Site)
-
-
-
     }else{
       cout<<endl<<"*************"<<endl;
       cout<<"Note: There are not enough Replacement sites for estimating gamma!"<<endl;
@@ -696,8 +660,8 @@ int cPRFCluster::RunML(vector<string> div_cons_seq) {
     }
 
     //calculate r Confidence Intervals using exact or stochastic algorithm.
-    if( dr >0 && ci_r==1){
-      if(ci_r_exact==1){
+    if( dr >0 && Do_ci_r==1){
+      if(Do_ci_r_exact==1){
           //exact algorithm to calculate r Confidence Intervals
         cout<<endl<<"***Start Estimating Gamma CI by CIr_exact!***"<<endl;
         time_t time_start1 = time(NULL); // Record the start time
@@ -708,8 +672,6 @@ int cPRFCluster::RunML(vector<string> div_cons_seq) {
           int h=t2/3600, m=(t2%3600)/60, s=t2-(t2/60)*60;
           if(h)  cout<<h<<":"<<m<<":"<<s<<")"<<endl;
           else   cout<<m<<":"<<s<<")"<<endl;
-
-
       }else{
           //stochastic algorithm to calculate r Confidence Intervals
         cout<<endl<<"***Start Estimating Gamma CI by CIr_stochastic!***"<<endl;
@@ -721,26 +683,22 @@ int cPRFCluster::RunML(vector<string> div_cons_seq) {
           int h=t2/3600, m=(t2%3600)/60, s=t2-(t2/60)*60;
           if(h)  cout<<h<<":"<<m<<":"<<s<<")"<<endl;
           else   cout<<m<<":"<<s<<")"<<endl;
-
       }
     }
     //for cases replacement sites in the polymorphism and divergence sequences are too few.
-    else if(ci_r==1){
+    else if(Do_ci_r==1){
       cout<<endl<<"*************"<<endl;
       cout<<"Note: There are not enough Replacement sites for estimating confidence interval of gamma!"<<endl;
       cout<<"*************"<<endl;
-    }
-    
+    }    
 
   }
-   
-    
+       
   if(MS_only==1){
     cout<<endl<<"*************"<<endl;
     cout<<"Warning:"<<endl<<"In terms of NO model averaging, it won't estimate selection coefficient (gamma) and its confidence intervals. Please check tutorial for more details!"<<endl;
     cout<<"*************"<<endl;
   }
-
 
   //Calculate Recurrent gamma and 95% CI gamma, using Lookup table (Lookup table contains 95% CI Lambda (occurrence) for Lammda=k, based on poisson maximum likelihood distribution, Lambda^k*e^(-Lambda)/k!
   int rs=0;
@@ -777,9 +735,9 @@ Input: the file name, use the same format of the Recurrent.txt
 Output: recurrent list
 ***************************************************/
 
-int cPRFCluster::RecurrentList(string input_f){
+int cPRFCluster::GetRecurrentList(string input_f){
 	ifstream myfileFn2(input_f.c_str());
-	if (!myfileFn2) throw "Error in opening Recurrent File for RecurrentList...\n";
+	if (!myfileFn2) throw "Error in opening Recurrent File for GetRecurrentList...\n";
 
 	//Read the file; remove the empty lines at the end of the file
 	string str;
@@ -791,7 +749,7 @@ int cPRFCluster::RecurrentList(string input_f){
 		{
 			//cout<<"The position1: "<<position1<<endl;
 		}
-		else {cout<<"Error! Failed to find the marker => in the recurrent file for RecurrentList!\n";}
+		else {cout<<"Error! Failed to find the marker => in the recurrent file for GetRecurrentList!\n";}
 		unsigned position2=str.find("	", position1+2);
 		//Get the recurrent position and recurrent count
 		if (position1<20 and position1>0)
@@ -952,14 +910,6 @@ double cPRFCluster::LogLikelihoodNonCluster(long cs, long ce, long start, long e
 	return  n * log(lambda) - N * lambda - M;
 }
 
-
-/*
-bool cPRFCluster::Cmp (struct ClusterModelRecord *a, struct ClusterModelRecord *b)
-{
-    return (a->LogLikelihood) < (b->LogLikelihood);
-}
-*/
-
 /***************************************************
 * Function: Determine the hot and cold spots by calculating the percentage of symbol counts in the cluster (nc/cent_len) and non-cluster regions (nw-nc)/non_cent_len.
 * Input Parameter: sequence start and end as pos_start, pos_end;cluster start and end as cs and ce; probablity of cluster and non-cluster region as pc and p0; number of symbol (Synonymous or Replacement) counts in the whole sequence and in the cluster only (nw and nc)
@@ -979,13 +929,10 @@ double cPRFCluster::getp0pc_MK(int pos_start, int pos_end, int cs, int ce, float
     //nw means the number of symbols in the whole sequence;nc means the number of symbols in the cluster region.
 	  p0=(float)(nw-nc)/non_cent_len_ScaledBack; //percentage of symbols (Synonymous or Replacement) in the non-cluster region
   }
-
   //pc means the cluster part; nc means number of symbols (Synonymous or Replacement) in the cluster region
   int cent_len=ce-cs+1; // the length for the cluster
   int cent_len_ScaledBack=cent_len*Scale;  //ScaledProbability
   pc=(float)nc/cent_len_ScaledBack; // percentage of symbols (Synonymous or Replacement) in the cluster region
-
-
   return 1;
 }
 
@@ -1451,12 +1398,8 @@ void cPRFCluster::CIr_exact_threaded(struct SiteModels *dr, long N, long i, ostr
 			//CI_UpLow_rc_exact(i,min_weight_c); // Get the upper and lower boundaries of gamma for site i by exact algorithm
 			CI_UpLow_rc(i,min_weight_c,vec_rModels_c_indiv,myout); // Get the upper and lower boundaries of gamma for site i by exact algorithm; and model averaged gamma
 		}
-		vec_rModels_c_indiv.clear();
-
-	
+		vec_rModels_c_indiv.clear();	
 }
-
-
 
 /***************************************************
 * Function: Stochastic algorithm (or exact for models less than 100) estimating confidence intervals for parameter gamma (r) at each site
@@ -1663,8 +1606,6 @@ void cPRFCluster::CIr_stochastic_threaded(struct SiteModels *dr, long N, long i,
 		}	
 }
 
-
-
 /***************************************************
 * Function: Get a random model by choosing a value from 0 to 1, and select the clustering model for p with the weight above the random value;
 * Function: create a partial summed weight models first, then find the model with the weight according to the random number by NumberOfModels/2
@@ -1786,8 +1727,6 @@ double cPRFCluster::CIs_rc_PRF (double ucr, double dr, long tumor_num){
 }
 
 
-
-
 /***************************************************
 * Function: rank by gamma, create a partial summed weight models first, then find the model with the weight according to the CI
 * Function: Use the same one for both Stochastic and Exact to find the gamma CI
@@ -1810,7 +1749,7 @@ int cPRFCluster::CI_UpLow_rc(long site,double min_weight_c, vector<rModels> vec_
   int flag_lower=0;
 	double lower=0.0, upper=0.0;
 
-	//Recurrent Site related: Get recurrent weight, recurrentSite gamma, 95% CI_r based on recurrentCount.
+	//Recurrent Site related: Get recurrent weight, recurrentSite gamma, 95% Do_ci_r based on recurrentCount.
 	int SiteRecurrentCount=1;
 	int jj=0;
 	double recur_weight=0.0;
@@ -2020,7 +1959,7 @@ bool cPRFCluster::parseParameter(int argc, const char* argv[]) {
 	
   try {	
     if (argc==4 or argc==2) {
-      temp = stringtoUpper(argv[1]);
+      temp = stringtoUpper(argv[1]); // Read in user input parameters 'temp' and make them all upper cases to be recognized below.
       if (temp=="-H") showHelpInfo();
       else {cout<<"argc number problems, 2, 4!\n"; throw 1;}
     }
@@ -2032,7 +1971,7 @@ bool cPRFCluster::parseParameter(int argc, const char* argv[]) {
     else {			
       //parse parameters
    //default values for parameters
-      int recur_flag=0, output_flag=0, div_num_flag=0, div_cons_flag=0,code_flag=0, criterion_flag=0,ms_flag=0, synonymous_flag=0,scale_flag=0,ci_ma_flag=0,r_flag=0,ci_r_flag=0,ci_method_flag=0, nuc_replace_flag=0;
+      int recur_flag=0, output_flag=0, div_num_flag=0, div_cons_flag=0,code_flag=0, criterion_flag=0,ms_flag=0, synonymous_flag=0,scale_flag=0,ci_ma_flag=0,r_flag=0,Do_ci_r_flag=0,ci_method_flag=0, nuc_replace_flag=0;
       SilentRate_flag=0;
       for (i=1; i<argc; i++) {				
 	temp = stringtoUpper(argv[i]);
@@ -2055,7 +1994,8 @@ bool cPRFCluster::parseParameter(int argc, const char* argv[]) {
 	  recur_flag++;
 	}
 
-    //Choice of the output format, amino acid or nucleotide level output
+    //Choice of the output format, amino acid or nucleotide output 
+    //0: amino acid output || 1: nucleotide output, default=0
 	else if (temp=="-O" && (i+1)<argc && output_flag==0) {
 
 		  int format = CONVERT<int>(argv[++i]);
@@ -2119,7 +2059,7 @@ bool cPRFCluster::parseParameter(int argc, const char* argv[]) {
 	else if (temp=="-S" && (i+1)<argc && synonymous_flag==0){
 	  int num=CONVERT<int>(argv[++i]);
 	  if(num==0 || num==1){
-	    Sys_cluster = num;
+	    Do_Synonymous_Cluster = num;
 	    synonymous_flag=1;
 	  }else{
 	    throw 1;
@@ -2153,18 +2093,18 @@ bool cPRFCluster::parseParameter(int argc, const char* argv[]) {
 	else if(temp=="-R" && (i+1)<argc && r_flag==0){
           int num=CONVERT<int>(argv[++i]);
 	  if(num==0 || num==1){
-            r_estimate=num;
+            Do_r_estimate=num;
 	    r_flag=1;
           }else{
             throw 1;
           }
         }
 	//Confidence Intervals of gamma
-	else if(temp=="-CI_R" && (i+1)<argc && ci_r_flag==0){
+	else if(temp=="-CI_R" && (i+1)<argc && Do_ci_r_flag==0){
           int num=CONVERT<int>(argv[++i]);	  
 	  if(num==0 || num==1){
-            ci_r=num;
-	    ci_r_flag=1;
+            Do_ci_r=num;
+	    Do_ci_r_flag=1;
           }else{
             throw 1;
           }
@@ -2173,7 +2113,7 @@ bool cPRFCluster::parseParameter(int argc, const char* argv[]) {
 	else if(temp=="-EXACT" && (i+1)<argc && ci_method_flag==0){
           int num=CONVERT<int>(argv[++i]);
 	  if(num==0 || num==1){
-            ci_r_exact=num;
+            Do_ci_r_exact=num;
 	    ci_method_flag=1;
           }else{
             throw 1;
@@ -2206,8 +2146,6 @@ bool cPRFCluster::parseParameter(int argc, const char* argv[]) {
     else{
           throw 1;
         }
-
-
       }			
     }
   }
@@ -2280,10 +2218,6 @@ void cPRFCluster::showHelpInfo() {
 }
 
 
-
-//To be deleted
-
-
 /***************************************************
 Subfunction - open and read the lookup table, to extract the values for k - the count of recurrent mutations for a particular site.
 Input: the lookup table file name, the struct LambdaCI;
@@ -2331,7 +2265,6 @@ int cPRFCluster::LambdaCILookupTable(string input_f_name){
 
  return 1;
 }
-
 
 
 /***************************************************
@@ -2552,77 +2485,4 @@ int cPRFCluster::rc_SitePRF(int tumor_num, double ucr, long N){
 
   return 1;
 }
-
-
-
-
-
-//To be deleted
-/***************************************************
-* Function: Calculate human sysnonymous polymorphism germline mutation rate based on Formula (1) us(h)= Nsp/L(n)*n
-* Input Parameter: the sample number of human polymorphism, and the sequence length
-* Output: human sysnonymous polymorphism germline mutation rate
-* Return Value: human sysnonymous polymorphism germline mutation rate
-***************************************************/
-
-double cPRFCluster::PolymorphismSynonymousRate(long polymorphism_num, long N){
-  double ps=0.0; //count of synonymous sites in the polymorphism sequence
-  ps=getDifference(pol_codon_consensus,0,N-1,'S'); // Count polymorphism sysnonymous sites
-
-//???The treatment of polymorphism synonymous when it is zero
-  if(ps==0.0){
-    ps=0.0001;
-  }
-
-// calculation of L(n) in Formula (1)
-  double tmp=0.0; //L(n)
-  double j;
- // calculation of L(n)
-  for(j=1.0;j<=polymorphism_num-1;j++){
-    tmp=tmp+(1/j);
-  }
-
-
-// Calculate human sysnonymous polymorphism germline mutation rate based on Formula (1) us(h)= Nps/[L(n)*N]
-
-  double us_h=ps/(tmp*N);
-
-  cout<<"In PolymorphismSynonymousRate, the number of Synonymous mutation Nps: "<<ps<<endl<<"Species number n: "<<polymorphism_num<<endl<<"Sequence length N: "<<N<<endl;
-  cout<<"Ln: "<<tmp<<endl<<"The human polymorphism synonymous rate Nps/[L(n)*N]: "<<us_h<<endl;
-  return(us_h);
-}
-
-
-
-/***************************************************
-* Function: Rank weight descendingly, if same weight, rank probability descendingly.
-* Input Parameter: SiteModels, site
-* Output: ranked site weight and probability
-* Return Value: ranked site weight and probability
-***************************************************/
-// Is BubbleSort making the program slow?
-int cPRFCluster::BubbleSort(struct SiteModels *p, long site){
-
-  //Descending
-  for(long i=0;i<p[site].sms.size();i++){
-    for(long j=i+1;j<p[site].sms.size();j++){
-      //the following site has larger weight than current site, or has the same weight, but the probability at the site is larger than current site
-      if((p[site].sms[j].weight > p[site].sms[i].weight) || ((p[site].sms[j].weight==p[site].sms[i].weight) && (p[site].sms[j].p>p[site].sms[i].p))){
-		double tmp_w=0.0;
-		double tmp_p=0.0;
-
-		tmp_w=p[site].sms[j].weight;
-		p[site].sms[j].weight=p[site].sms[i].weight; // move smaller weight back, descending weight
-		p[site].sms[i].weight=tmp_w; // move larger weight ahead, descending weight
-
-		tmp_p=p[site].sms[j].p;
-        p[site].sms[j].p=p[site].sms[i].p; // move smaller probability back, descending probability
-        p[site].sms[i].p=tmp_p; // move larger probability ahead, descending probability
-      }
-    }
-
-  }
-  return 1;
-}
-
 

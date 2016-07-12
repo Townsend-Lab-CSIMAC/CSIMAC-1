@@ -8,7 +8,7 @@
 #define NAME "CSI-MAC"	//Program name
 #define FULLNAME "Cancer Selection Intensity - Model Averaged Clustering"
 #define VERSION    "1.0"
-#define LASTUPDATE "May 3rd, 2016"
+#define LASTUPDATE "July 12th, 2016"
 #define FUNCTION "Estimate selection intensity for each single site in coding sequences by using divergence data in tumors."
 #define REFERENCE "Zi-Ming Zhao, Sachith Gullapalli, Ning Li and Jeffrey P. Townsend. (2016)"
 
@@ -211,7 +211,7 @@ class cPRFCluster: public Base {
   //Lookup table from Mathematica to get the integration for gamma calculation
   //vector<double> GammaLookupTable(int tmp_n, string input_f_name, vector<double> Fn);
   int LambdaCILookupTable(string input_f_name);
-  int RecurrentList(string input_f);
+  int GetRecurrentList(string input_f);
   //Clustering using maximum likelihood
   int RunML(vector<string> div_seq);
   
@@ -362,7 +362,6 @@ class cPRFCluster: public Base {
   int TotalRecurrentSite;
   int TotalReplacementSite;
   int TotalSilentSite;
-  double divergent_time;
   double uhs;// synonymous human polymorphism germline mutation rate
   double ucs;// synonymous cancer divergence mutation rate
 
@@ -460,13 +459,13 @@ class cPRFCluster: public Base {
   int ci_ma;
   
   //Estimate selection coefficient r, default 1
-  int r_estimate;
+  int Do_r_estimate;
   
-  //Calculate 95% confidence intervals for selection coefficient ci_r, default 1
-  int ci_r;
+  //Calculate 95% confidence intervals for selection coefficient Do_ci_r, default 1
+  int Do_ci_r;
   
-  //Algorithm for calculating 95% confidence interval for selection coefficient ci_r_exact, default 0
-  int ci_r_exact;
+  //Algorithm for calculating 95% confidence interval for selection coefficient Do_ci_r_exact, default 0
+  int Do_ci_r_exact;
   
   //ZMZ 04/28/2016  added option - regional gamma only
   //regional only gamma or weighted gamma of regional and recurrent; default is weighted gamma
@@ -475,7 +474,7 @@ class cPRFCluster: public Base {
   //Cluster synonymous sites for polymorphism and divergence. 
   //Default is 0 without showing the clustering results of synonymous from polymorphism and divergent sequences
   //User could choose 1 to show the clustering results of synonymous.
-  int Sys_cluster;
+  int Do_Synonymous_Cluster;
   
   //The scale parameter, for the input sequence, from 0, 1,2,3,..., the sequence length is three times of the scale, and the selected length
   int Scale;

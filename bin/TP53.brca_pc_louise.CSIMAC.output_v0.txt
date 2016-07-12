@@ -50,7 +50,7 @@ RecurrentSite:	272	Count: 11
 RecurrentSite:	277	Count: 3
 RecurrentSite:	281	Count: 3
 RecurrentSite:	285	Count: 4
-The size of the lookup LambdaCI: 1000
+The size of the lookup LambdaCI: 99
 Test Lambda lookup table:
 Recurrent count: 2	LowerCI: 0.332705	UpperCI: 6.17459
 Divergence Synonymous Counts (DS): 1
@@ -74,7 +74,7 @@ The total number of models in ClusterSubSeq: 16836 for the region 106 to 288
 Finish ClusterSubSeq for the region from the start position 106 to the end position 393
 Finish ClusterSubSeq for the region from the start position 0 to the end position 393
 ***Step: Finish ClusterSubSeq for cancer Replacement!***
-ClusterSubSeq (Time elapsed: 0:1)
+ClusterSubSeq (Time elapsed: 0:2)
 
 ***Start to Estimate gamma for human cancer replacement!***
 ***End to Estimate gamma for human cancer replacement!***
@@ -634,7 +634,7 @@ Site: 392	Model size: 41616******Use exact algorithm to estimate gamma CI since 
 Site: 393	Model size: 41616******Use exact algorithm to estimate gamma CI since model size smaller than defined.******
 
 ***Finish Estimating Gamma CI by CIr_stochastic!***
-CIr_stochastic (Time elapsed: 0:11)
+CIr_stochastic (Time elapsed: 0:19)
 
 //Results based on model selection: 
 ****** Cancer Divergence synonymous mutation rate ucs: 4.56161e-06
@@ -666,13 +666,13 @@ Position	      MS_DivRep	     MA_DivRep	     MS_DivSys	     MA_DivSys	     Gamma
 8              	0              	0.0022458      	0              	0              	4.70764        	-1.27724       	8.28774        	              0	*
 9              	0              	0.00164665     	0              	0              	4.70924        	-1.27724       	8.27273        	              0	*
 10             	0              	0.00129289     	0              	0              	4.71108        	-1.27724       	8.26303        	              0	*
-11             	0              	0.00108366     	0              	0              	4.71315        	-1.27724       	8.26144        	              0	*
+11             	0              	0.00108366     	0              	0              	4.71314        	-1.27724       	8.26144        	              0	*
 12             	0              	0.000959689    	0              	0              	4.71544        	-1.27724       	8.24591        	              0	*
 13             	0              	0.000886105    	0              	0              	4.71796        	-1.27724       	8.24035        	              0	*
 14             	0              	0.000842354    	0              	0              	4.72072        	-1.27724       	8.23567        	              0	*
 15             	0              	0.000816295    	0              	0              	4.7237         	-1.27724       	8.23462        	              0	*
 16             	0              	0.000800747    	0              	0              	4.7269         	-1.27724       	8.23462        	              0	*
-17             	0              	0.000791455    	0              	0              	4.73034        	-1.27724       	8.21357        	              0	*
+17             	0              	0.000791455    	0              	0              	4.73033        	-1.27724       	8.21357        	              0	*
 18             	0              	0.000785892    	0              	0              	4.734          	-1.27724       	8.21168        	              0	*
 19             	0              	0.000782557    	0              	0              	4.73788        	-1.27724       	8.21168        	              0	*
 20             	0              	0.000780553    	0              	0              	4.74198        	-1.27724       	8.21168        	              0	*
@@ -716,7 +716,7 @@ Position	      MS_DivRep	     MA_DivRep	     MS_DivSys	     MA_DivSys	     Gamma
 58             	0              	0.000777507    	0              	0              	5.08694        	-1.26767       	9.25643        	              0	*
 59             	0              	0.000777507    	0              	0              	5.10124        	-1.26284       	9.29034        	              0	*
 60             	0              	0.000777507    	0              	0              	5.11581        	-1.26284       	9.32449        	              0	*
-61             	0              	0.000777507    	0              	0              	5.13064        	-1.25796       	9.3589         	              0	*
+61             	0              	0.000777507    	0              	0              	5.13063        	-1.25796       	9.3589         	              0	*
 62             	0              	0.000777507    	0              	0              	5.14573        	-1.25796       	9.39501        	              0	*
 63             	0              	0.000777507    	0              	0              	5.16108        	-1.25305       	9.43632        	              0	*
 64             	0              	0.000777507    	0              	0              	5.17669        	-1.2481        	9.47663        	              0	*
@@ -737,7 +737,7 @@ Position	      MS_DivRep	     MA_DivRep	     MS_DivSys	     MA_DivSys	     Gamma
 79             	0              	0.000777601    	0              	0              	5.43935        	-0.564642      	10.1295        	              0	*
 80             	0              	0.000777661    	0              	0              	5.45856        	-0.526495      	10.1858        	              0	*
 81             	0              	0.00077776     	0              	0              	5.47799        	-0.480912      	10.2269        	              0	*
-82             	0              	0.000777923    	0              	0              	5.49764        	-0.452877      	10.2683        	              0	*
+82             	0              	0.000777923    	0              	0              	5.49764        	-0.454238      	10.2683        	              0	*
 83             	0              	0.000778191    	0              	0              	5.51753        	-0.409329      	10.323         	              0	*
 84             	0              	0.000778635    	0              	0              	5.53764        	-0.361363      	10.3826        	              0	*
 85             	0              	0.00077937     	0              	0              	5.55797        	-0.313243      	10.4373        	              -2	D
@@ -795,7 +795,7 @@ Position	      MS_DivRep	     MA_DivRep	     MS_DivSys	     MA_DivSys	     Gamma
 137            	0.282332       	0.281049       	0              	0              	8.88435        	3.00338        	14.4492        	              0	*
 138            	0.282332       	0.281049       	0              	0              	8.92388        	3.03386        	14.5005        	              0	*
 139            	0.282332       	0.281049       	0              	0              	8.96503        	3.06133        	14.5449        	              0	*
-140            	0.282332       	0.281049       	0              	0              	9.00776        	3.09907        	14.5887        	              0	*
+140            	0.282332       	0.281049       	0              	0              	9.00775        	3.09907        	14.5887        	              0	*
 141            	0.282332       	0.281049       	0              	0              	12.0017        	4.04747        	21.6081        	              2	Q
 142            	0.282332       	0.281049       	0              	0              	9.08678        	3.15779        	14.6739        	              -2	D
 143            	0.282332       	0.281049       	0              	0              	9.12286        	3.17922        	14.7149        	              -2	D
@@ -967,7 +967,7 @@ Position	      MS_DivRep	     MA_DivRep	     MS_DivSys	     MA_DivSys	     Gamma
 309            	0.0031746      	0.00367824     	0              	0              	7.71177        	-0.361363      	12.5674        	              0	*
 310            	0.0031746      	0.00367822     	0              	0              	7.66694        	-0.388743      	12.4831        	              0	*
 311            	0.0031746      	0.00367822     	0              	0              	7.62293        	-0.415102      	12.4101        	              0	*
-312            	0.0031746      	0.00367821     	0              	0              	7.57975        	-0.432142      	12.3254        	              0	*
+312            	0.0031746      	0.00367821     	0              	0              	7.57974        	-0.432142      	12.3254        	              0	*
 313            	0.0031746      	0.00367821     	0              	0              	7.5374         	-0.448779      	12.2494        	              0	*
 314            	0.0031746      	0.00367821     	0              	0              	7.49589        	-0.46503       	12.1725        	              0	*
 315            	0.0031746      	0.00367821     	0              	0              	7.45521        	-0.480912      	12.1118        	              0	*
@@ -1008,7 +1008,7 @@ Position	      MS_DivRep	     MA_DivRep	     MS_DivSys	     MA_DivSys	     Gamma
 350            	0.0031746      	0.00367821     	0              	0              	6.66708        	-0.582955      	10.456         	              0	*
 351            	0.0031746      	0.00367821     	0              	0              	6.66995        	-0.582955      	10.4411        	              0	*
 352            	0.0031746      	0.00367821     	0              	0              	6.67349        	-0.582955      	10.4254        	              0	*
-353            	0.0031746      	0.00367821     	0              	0              	6.67769        	-0.582955      	10.4189        	              0	*
+353            	0.0031746      	0.00367821     	0              	0              	6.67768        	-0.582955      	10.4189        	              0	*
 354            	0.0031746      	0.00367821     	0              	0              	6.68254        	-0.569266      	10.4056        	              0	*
 355            	0.0031746      	0.00367821     	0              	0              	6.68805        	-0.569266      	10.3945        	              0	*
 356            	0.0031746      	0.00367821     	0              	0              	6.69421        	-0.569266      	10.3927        	              0	*
@@ -1058,4 +1058,4 @@ Abbreviation: MutationSymbol_Q2R1S-1*0: Q stands for Recurrent using 2; R stands
 #End of clustering
 
 
-Mission accomplished. (Time elapsed: 0:12)
+Mission accomplished. (Time elapsed: 0:21)

@@ -527,7 +527,7 @@ int cPRFCluster::RunML(vector<string> div_cons_seq) {
 
 
   cout<<"Number of tumor samples: "<<tumor_num<<endl;
-  long N_ScaledBack=N*Scale; //ScaledProbability
+  long N_ScaledBack=N*Scale; //Scale the gene length back 
   cout<<"Gene length: "<<N_ScaledBack<<" bp"<<endl;
 
 //Get the synonymous mutation rate (ucs) based on the number of silent mutations in the gene or from user-input (MutSigCV SilentRate). The latter is preferred.
@@ -639,43 +639,40 @@ int cPRFCluster::RunML(vector<string> div_cons_seq) {
 */
  //Do model averaging and estimate gamma for Replacement sites
   if (MS_only==0 && Do_r_estimate==1) {
-    //If pr & dr ==1 or 0, r couldn't be estimated.
+    //If dr == 0, r can't be estimated.
     if(dr>0){
-      cout<<endl<<"***Start to Estimate gamma for human cancer replacement!***"<<endl;
+      cout<<endl<<"Starting estimation of gamma for human cancer replacement divergence."<<endl;
       time_t time_start1 = time(NULL); // Record the start time
-        rc_SitePRF(tumor_num,ucr, N);//estimate gamma for cancer divergence
-      cout<<"***End to Estimate gamma for human cancer replacement!***"<<endl;
-      cout<<"rc_SitePRF (Time elapsed: ";
+        rc_SitePRF(tumor_num,ucr, N); //estimate gamma for cancer divergence
+      cout<<"Estimation of gamma for human cancer replacement divergence completed."<<endl;
+      cout<<"Time elapsed during estimation of gamma for human cancer replacement divergence: ";
       time_t t2 = time(NULL)-time_start1;
       int h=t2/3600, m=(t2%3600)/60, s=t2-(t2/60)*60;
       if(h)  cout<<h<<":"<<m<<":"<<s<<")"<<endl;
       else   cout<<m<<":"<<s<<")"<<endl;
-        //Calculate gamma for recurrent mutation  recurrent_SiteGamma(int tumor_num, double ucr, int RecurrentNum, int Site)
     }else{
       cout<<endl<<"*************"<<endl;
-      cout<<"Note: There are not enough Replacement sites for estimating gamma!"<<endl;
+      cout<<"There are no replacement sites to estimate gamma!"<<endl;
       cout<<"*************"<<endl;
     }
 
-    //calculate r Confidence Intervals using exact or stochastic algorithm.
-    if( dr >0 && Do_ci_r==1){
-      if(Do_ci_r_exact==1){
-          //exact algorithm to calculate r Confidence Intervals
-        cout<<endl<<"***Start Estimating Gamma CI by CIr_exact!***"<<endl;
+    // Calculate confidence intervals for r using the exact or stochastic algorithm.
+    if(dr>0 && Do_ci_r==1){
+      if(Do_ci_r_exact==1){ // Use exact algorithm to calculate confidence intervals for r
+        cout<<endl<<"Starting the estimation of CIs for Gamma by the exact algorithm."<<endl;
         time_t time_start1 = time(NULL); // Record the start time
         CIr_exact(sm_div,N);
-        cout<<endl<<"***Finish Estimating Gamma CI by CIr_exact!***"<<endl;
-        cout<<"CIr_exact (Time elapsed: ";
+        cout<<endl<<"Estimation of CIs for Gamma by exact algorithm complete."<<endl;
+        cout<<"Time elapsed during estimation of CIs for Gamma by exact algorithm: ";
           time_t t2 = time(NULL)-time_start1;
           int h=t2/3600, m=(t2%3600)/60, s=t2-(t2/60)*60;
           if(h)  cout<<h<<":"<<m<<":"<<s<<")"<<endl;
           else   cout<<m<<":"<<s<<")"<<endl;
-      }else{
-          //stochastic algorithm to calculate r Confidence Intervals
-        cout<<endl<<"***Start Estimating Gamma CI by CIr_stochastic!***"<<endl;
+      }else{ // Use stochastic algorithm to calculate r Confidence Intervals
+        cout<<endl<<"Starting the estimation of CIs for Gamma by stochastic algorithm."<<endl;
         time_t time_start1 = time(NULL); // Record the start time
         CIr_stochastic(sm_div,N);
-        cout<<endl<<"***Finish Estimating Gamma CI by CIr_stochastic!***"<<endl;
+        cout<<endl<<"Estimation of CIs for Gamma by stochastic algorithm complete."<<endl;
         cout<<"CIr_stochastic (Time elapsed: ";
           time_t t2 = time(NULL)-time_start1;
           int h=t2/3600, m=(t2%3600)/60, s=t2-(t2/60)*60;
@@ -683,10 +680,10 @@ int cPRFCluster::RunML(vector<string> div_cons_seq) {
           else   cout<<m<<":"<<s<<")"<<endl;
       }
     }
-    //for cases replacement sites in the polymorphism and divergence sequences are too few.
+    //for cases replacement sites  and divergence sequences are too few.
     else if(Do_ci_r==1){
       cout<<endl<<"*************"<<endl;
-      cout<<"Note: There are not enough Replacement sites for estimating confidence interval of gamma!"<<endl;
+      cout<<"There are no replacement sites to estimate CIs for gamma!"<<endl;
       cout<<"*************"<<endl;
     }    
 
@@ -694,11 +691,11 @@ int cPRFCluster::RunML(vector<string> div_cons_seq) {
        
   if(MS_only==1){
     cout<<endl<<"*************"<<endl;
-    cout<<"Warning:"<<endl<<"In terms of NO model averaging, it won't estimate selection coefficient (gamma) and its confidence intervals. Please check tutorial for more details!"<<endl;
+    cout<<"Warning:"<<endl<<"If only model selection to find the probability of the site being a variant is performed, there is no estimate of the selection coefficient (gamma) and its confidence intervals. Please check tutorial for more details!"<<endl;
     cout<<"*************"<<endl;
   }
 
-  //Calculate Recurrent gamma and 95% CI gamma, using Lookup table (Lookup table contains 95% CI Lambda (occurrence) for Lammda=k, based on poisson maximum likelihood distribution, Lambda^k*e^(-Lambda)/k!
+  // JT: confirm that this is alright
   int rs=0;
   int RecurSize=Recurrents.size();
   for (rs=0;rs<RecurSize;rs++)
@@ -708,7 +705,7 @@ int cPRFCluster::RunML(vector<string> div_cons_seq) {
 	   div_codon_consensus[pos]='Q'; //Record recurrent sites as Q
 
 
-	   /*  Alternative
+	   /*  Alternative location for calculation of gamma and 95% CI for gamma for recurrent sites, using the lookup table (which contains the 95% CI Lambda (occurrence) for Lammda=k, based on poisson maximum likelihood distribution, Lambda^k*e^(-Lambda)/k!
 	      //Calculate the gamma and 95% CI gamma for recurrent site, using formula 2r/(1-e^(-2r))=RecurrentNumber/(ReplacementRate*TumorNumber)
 	    recurrent_SiteGamma(tumor_num, ucr, count, pos,sm_div); //calculate recurrent site gamma
 		double lowCI, upCI;
@@ -721,7 +718,7 @@ int cPRFCluster::RunML(vector<string> div_cons_seq) {
 		Alternative */
 
   }
-//print the output cMACPRF main results (gamma, 95% CI gamma) in the output file
+//print CSIMAC main results (gamma, 95% CI gamma) to the output file
   output(N);
   return 1;
 }
@@ -833,15 +830,15 @@ double cPRFCluster::factorial(int n) {
 double cPRFCluster::LogLikelihoodCluster(long cs, long ce, long start, long end) {
 	//ZMZ added 04/26/2016
 	double M = 0;
-	long N = (ce - cs + 1)*Scale;
+	long N_cluster_ScaledBack = (ce - cs + 1)*Scale;
 	long n = getDifference(div_codon_consensus,cs,ce,'R');
-	double lambda = (double)n/N;
+	double lambda = (double)n/N_cluster_ScaledBack;
 	
 	//ZMZ added 04/27/2016
 	/*
 	if (n==0) {	
 		lambda = ucr * tumor_num;
-		return  lambda * N * log(lambda) - N * lambda - M; }	
+		return  lambda * N_cluster_ScaledBack * log(lambda) - N_cluster_ScaledBack * lambda - M; }	
 	*/
 	
 	//ZMZ 04/28/2016
@@ -864,25 +861,25 @@ double cPRFCluster::LogLikelihoodCluster(long cs, long ce, long start, long end)
 		
 	}
 	
-	double LogLikelihoodCluster_num=n * log(lambda) - N * lambda - M;
+	double LogLikelihoodCluster_num=n * log(lambda) - N_cluster_ScaledBack * lambda - M;
 	//ZMZ found problem of M 04/25/2016
 	//cout<<"\nLogLikelihoodCluster information: "<<"lambda:\t"<<lambda<<"\tn:\t"<<n<<"\tM:\t"<<M<<"\tlog(lambda):\t"<<log(lambda)<<"\tLogLikelihoodCluster_num:\t"<<LogLikelihoodCluster_num<<endl;
 	//ZMZ fixed bug 04/27/2016
-	return  n * log(lambda) - N * lambda - M;
+	return  n * log(lambda) - N_cluster_ScaledBack * lambda - M;
 }
 
 double cPRFCluster::LogLikelihoodNonCluster(long cs, long ce, long start, long end) {
 	//ZMZ added 04/26/2016
 	double M = 0;
-	long N = ((end-start + 1)-(ce - cs + 1))*Scale;
+	long N_noncluster_ScaledBack = ((end-start + 1)-(ce - cs + 1))*Scale;
 	long n = getDifference(div_codon_consensus,start,cs-1,'R') + getDifference(div_codon_consensus,ce+1,end,'R');
-	double lambda = (double)n/N;
+	double lambda = (double)n/N_noncluster_ScaledBack;
 	
 	//ZMZ added 04/27/2016
 	/*
 	if (n==0) {	
 		lambda = ucr * tumor_num;
-		return  lambda * N * log(lambda) - N * lambda - M; }	
+		return  lambda * N_noncluster_ScaledBack * log(lambda) - N_noncluster_ScaledBack * lambda - M; }	
 	*/
 	//ZMZ 04/28/2016
 	if (n==0) {	return 0; }
@@ -905,7 +902,7 @@ double cPRFCluster::LogLikelihoodNonCluster(long cs, long ce, long start, long e
 	
 	//return  n * (log(lambda) - 1) - M;
 	//ZMZ fixed bug 04/27/2016
-	return  n * log(lambda) - N * lambda - M;
+	return  n * log(lambda) - N_noncluster_ScaledBack * lambda - M;
 }
 
 /***************************************************
@@ -919,7 +916,7 @@ double cPRFCluster::getp0pc_MK(int pos_start, int pos_end, int cs, int ce, float
 
   //p0 means the whole sequence except the cluster part.
   int non_cent_len=pos_end-pos_start-ce+cs; //the length for non-cluster sequence.
-  int non_cent_len_ScaledBack=non_cent_len*Scale;  //ScaledProbability
+  int non_cent_len_ScaledBack=non_cent_len*Scale;  //Scale the length for non-cluster sequence back 
   //if the cluster part is the whole sequence, then the non-cluster sequence will be none.
   if(cs==pos_start && ce==pos_end){
     p0=0.0;
@@ -929,7 +926,7 @@ double cPRFCluster::getp0pc_MK(int pos_start, int pos_end, int cs, int ce, float
   }
   //pc means the cluster part; nc means number of symbols (Synonymous or Replacement) in the cluster region
   int cent_len=ce-cs+1; // the length for the cluster
-  int cent_len_ScaledBack=cent_len*Scale;  //ScaledProbability
+  int cent_len_ScaledBack=cent_len*Scale;  //Scale the length for the cluster back 
   pc=(float)nc/cent_len_ScaledBack; // percentage of symbols (Synonymous or Replacement) in the cluster region
   return 1;
 }
@@ -945,7 +942,7 @@ int cPRFCluster::ClusterSubSeq(int pos_start, int pos_end, char symbol, struct S
 	time_t time_start1 = time(NULL); // Record the start time
 
 	long N = pos_end - pos_start + 1; // total sequence length
-	long N_ScaledBack=N*Scale; //ScaledProbability
+	long N_ScaledBack=N*Scale; //Scale the gene length back 
 
 	long symbol_n = 0;//declare the counts for the symbol of Synonymous or Replacement
 	symbol_n=getDifference(div_codon_consensus, pos_start, pos_end, symbol); // Get the counts for Synonymous or Replacement in the Divergence sequence
@@ -990,7 +987,7 @@ int cPRFCluster::ClusterSubSeq(int pos_start, int pos_end, char symbol, struct S
 			///symbol_cn=symbol_cn/Scale; // Is B(1000,20)=?B(100,2)
 			///symbol_n=symbol_n/Scale; // Is B(1000,20)=?B(100,2)
 
-			long CN_ScaledBack=(ce-cs+1)*Scale;  //ScaledProbability
+			long CN_ScaledBack=(ce-cs+1)*Scale;  //Scale the length of the cluster back 
 			
 			//ZMZ 04/27/2016
 			/*
@@ -1281,8 +1278,7 @@ double cPRFCluster::CancerSynonymousRate(long tumor_num, long N){
   ds=getDifference(div_codon_consensus,0,N-1,'S'); // Count cancer divergence sysnonymous sites
 
   double us_c=0.0;
-  int L=N;
-  int L_ScaledBack=L*Scale; //ScaledProbability
+  int N_ScaledBack=N*Scale; //Scale the gene length back 
 
   //Use the input MutSigCV mutation rate as the priority, if no input, calculate silent rate using silent mutations in the gene
   if (SilentRate_flag==1)
@@ -1295,7 +1291,7 @@ double cPRFCluster::CancerSynonymousRate(long tumor_num, long N){
 	  {
 		  // Calculate cancer divergence silent mutation rate based on Formula us(c)= NumberOfSilentMutation/(tumor_num*GeneLength)
 		  cout<<"Warning: No input silent mutation rate.Calculate cancer divergence silent mutation rate based on Formula us(c)= NumberOfSilentMutation/(tumor_num*GeneLength)\n";
-		  us_c=ds/(L_ScaledBack*tumor_num);
+		  us_c=ds/(N_ScaledBack*tumor_num);
 	  }
 	  else
 	  {
@@ -1315,7 +1311,7 @@ double cPRFCluster::CancerSynonymousRate(long tumor_num, long N){
 * Return Value: vec_r_c, vec_upper_r_c,vec_lower_r_c
 ***************************************************/
 int cPRFCluster::CIr_exact(struct SiteModels *dr, long N){
-  cout<<"******CIr_exact******"<<endl;
+  cout<<"Executing the exact algorithm for calculation of the model-averaged estimate of gamma and CIs for gamma"<<endl;
   vector<thread> exact_threads;
   int index=0;
   ostringstream* thread_outputs = new ostringstream[NUM_CPU];
@@ -1348,9 +1344,10 @@ void cPRFCluster::CIr_exact_threaded(struct SiteModels *dr, long N, long i, ostr
 	double min_weight_c=1000000;
 	int parameters=2;
 
-
+		// JT: through "break", code can be deleted if we do not use the code commented out below
 		long position=i+1;
-		SiteRecurrentCount=1; //Need to assign back RecurrentCount to 1 for each site, since it will be a recurrent count after a recurrent site.
+		SiteRecurrentCount=1;
+		//Need to reassign RecurrentCount to 1 for each site, since it will be a recurrent count after a recurrent site.
 		//Find the position in the recurrent list, if find the recurrent site, keep the RecurrentCount
 		for (jj=0;jj<Recurrents.size();jj++){
 			//cout<<"RecurrentSite:\t"<<Recurrents[jj].sites<<"\tCount: "<<Recurrents[jj].counts<<endl;
@@ -1369,8 +1366,8 @@ void cPRFCluster::CIr_exact_threaded(struct SiteModels *dr, long N, long i, ostr
 				continue;
 			}
 			////RecurrentCount=1; //Not consider the recurrent site at this point
-			double site_rate=dr[i].sms[k].p; //divergence mutation rate for the site, the specific model
-
+			double site_rate=dr[i].sms[k].p; //Poisson rate of divergence for the site i in the specific model k
+			// JT: I think that .p should be .lambda as it is now a rate not a probability
 
 			/*
 			double recur_site_rate=1- pow ((1-site_rate),RecurrentCount); //For recurrent site, the site_rate is modified to 1-(1-p)^Count
@@ -1379,8 +1376,8 @@ void cPRFCluster::CIr_exact_threaded(struct SiteModels *dr, long N, long i, ostr
 			}
 			*/
 
-			double new_r_c=CIs_rc_PRF(ucr,site_rate,tumor_num); // calculate gamma based on likelihood
-			double weight_tmp_c=dr[i].sms[k].weight;//Same as the MACML AIC weight, don't need to recalculate, just need to re-gather all selected models, and re-calculate the weight of selected models
+			double new_r_c=CIs_rc_PRF(ucr,site_rate,tumor_num); // calculate gamma for this site under this model
+			double weight_tmp_c=dr[i].sms[k].weight;// Assigns the weight for this gamma at site i under model k as the model's weight.
 			if(weight_tmp_c<min_weight_c) min_weight_c=weight_tmp_c;
 			rModels tmp_rm_c(weight_tmp_c,new_r_c);
 			vec_rModels_c_indiv.push_back(tmp_rm_c);
@@ -1768,7 +1765,7 @@ int cPRFCluster::CI_UpLow_rc(long site,double min_weight_c, vector<rModels> vec_
 		}
 	}
 
-	//If the site is recurrent site, Get the weight for the recurrent site
+	//If the site is recurrent site, get the weight for the recurrent site
 	if (SiteRecurrentCount>1){
 		recur_weight=float(SiteRecurrentCount)/(TotalReplacementSite+TotalRecurrentCount-TotalRecurrentSite); // the weight for the recurrent site
 		*myout<<"For Site: "<<site<<"\tRecurrent weight: "<<recur_weight<<"\tSiteRecurrentCount: "<<SiteRecurrentCount<<"\tTotalReplacementSite: "<<TotalReplacementSite<<"\tTotalRecurrentCount: "<<TotalRecurrentCount<<"\tTotalRecurrentSite: "<<TotalRecurrentSite<<endl;

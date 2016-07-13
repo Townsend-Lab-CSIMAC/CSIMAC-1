@@ -476,7 +476,7 @@ class cPRFCluster: public Base {
   //User could choose 1 to show the clustering results of synonymous.
   int Do_Synonymous_Cluster;
   
-  //The scale parameter, for the input sequence, from 0, 1,2,3,..., the sequence length is three times of the scale, and the selected length
+  //Scale of the gene, it should be 1,3,6,9,12,15...3*n, the true sequence length is the times of the scale and the given length.
   int Scale;
 
   //Divergent time; User could input their own species divergence time

@@ -1969,7 +1969,7 @@ bool cPRFCluster::parseParameter(int argc, const char* argv[]) {
     else {			
       //parse parameters
    //default values for parameters
-      int recur_flag=0, output_flag=0, div_num_flag=0, div_cons_flag=0,code_flag=0, criterion_flag=0,ms_flag=0, synonymous_flag=0,scale_flag=0,ci_ma_flag=0,r_flag=0,Do_ci_r_flag=0,ci_method_flag=0, nuc_replace_flag=0;
+      int recur_flag=0, output_flag=0, div_num_flag=0, div_cons_flag=0,code_flag=0, criterion_flag=0,ms_flag=0, synonymous_flag=0,ci_ma_flag=0,r_flag=0,Do_ci_r_flag=0,ci_method_flag=0, nuc_replace_flag=0;
       SilentRate_flag=0;
       for (i=1; i<argc; i++) {				
 	temp = stringtoUpper(argv[i]);
@@ -2063,18 +2063,14 @@ bool cPRFCluster::parseParameter(int argc, const char* argv[]) {
 	    throw 1;
 	  }
 	}
-	//Optional - Show the scale of the gene length, it should be 1,3,6,9,12,15,,..., the sequence length is the times of the scale and the given length
-	else if (temp=="-SC" && (i+1)<argc && scale_flag==0){
+	//Optional - Scale of the gene, it should be 1,3,6,9,12,15...3*n, the true sequence length is the times of the scale and the given length.
+	else if (temp=="-SC" && (i+1)<argc){
 	  int num=CONVERT<int>(argv[++i]);
 	  Scale = num;
-	  if (num==1)
+      if (Scale%3!=0) { cout<< "Warning: Scale of the gene cannot be divided by 3 (codon size)."<<endl;}
+	  if (num<1)
 	  {
-		  scale_flag=0;
-	  }
-	  else if(num>1){
-		  scale_flag=1;
-	  }else{
-	    throw 1;
+	    throw "Error: the input parameter -SC Scale is smaller than 1.";
 	  }
 	}
 	//Confidence Intervals for Model averaging
@@ -2183,7 +2179,7 @@ void cPRFCluster::showHelpInfo() {
   cout<<"  -m\tModel selection and model averaging  [integer, optional], {0: use both model selection and model averaging || 1: use only model selection}, default = 0"<<endl;
   cout<<"  -ci_m\tCalculate 95% confidence intervals for results of model averaging [integer, optional], {0: NOT calculate 95% confidence intervals || 1: calculate 95% confidence intervals}, default = 0"<<endl;
   cout<<"  -s\tShow clustering results of synonymous sites from Divergent sequences [integer, optional], {0: without clustering results of synonymous and replacement sites || 1: with clustering results of synonymous and replacement sites}, default = 0"<<endl;
-  cout<<"  -sc\tShow the scale of the gene length, it should be 1,3,6,9,12,15,,..., the sequence length is the times of the scale and the given length, default=0, scale=1"<<endl;
+  cout<<"  -sc\tScale of the gene, it should be 1,3,6,9,12,15...3*n, the true sequence length is the times of the scale and the given length."<<endl;
 
   cout<<"  -r\tEstimate selection coefficient for each site [integer, optional], {0: NOT estimate selection coefficient || 1: estimate selection coefficient}, default=1"<<endl;
   cout<<"  -ci_r\tCalculate 95% confidence intervals for selection coefficient [integer, optional], {0: NOT calculate 95% confidence intervals || 1: calculate 95% confidence intervals}, default = 1"<<endl;

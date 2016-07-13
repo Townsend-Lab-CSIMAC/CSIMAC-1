@@ -539,8 +539,6 @@ int cPRFCluster::RunML(vector<string> div_cons_seq) {
   ucr=ReplacementRate(ratio_NS, ucs); // Get replacement rate for cancer divergence (ucr)
   cout<<"Cancer replacement divergence mutation rate: "<<ucr<<endl;
 
-  int flag_seq=1; // indicating the use of divergent sequence  JT: eliminate the flag_seq from CSIMAC?
-
 //// Fixed bug due to the new OS X 10.9 system [error: variable length array of non-POD element type 'struct SiteModels']. Solution: use a very large number instead of the parameter N for the gene length, for keeping all models for each gene site, to make sure the number is larger than the gene length.
   // struct SiteModels sm_pol[N];
   struct SiteModels sm_div[10000];
@@ -571,7 +569,7 @@ int cPRFCluster::RunML(vector<string> div_cons_seq) {
     vec_MA_rate_ds.resize(N,0.0);
 
 
-    ClusterSubSeq(0, N-1,'S',flag_seq,sm_div); // Major subroutine for clustering of synonymous variants
+    ClusterSubSeq(0, N-1,'S',sm_div); // Major subroutine for clustering of synonymous variants
     vec_SelectedModels_ds=vec_SelectedModels;
     vec_MS_rate_ds=vec_MS_rate;
     vec_MA_rate_ds=vec_MA_rate;
@@ -605,7 +603,7 @@ int cPRFCluster::RunML(vector<string> div_cons_seq) {
 // ****  Major Step: Find cluster and calculate probability using multiple models for replacement divergence
   cout<<endl<<"Starting the clustering of replacement variants"<<endl;
   time_t time_start1 = time(NULL); // Record the start time
-  ClusterSubSeq(0, N-1,'R',flag_seq,sm_div); //find clusters in the sequence, flag_seq=1 represents divergent sequence.
+  ClusterSubSeq(0, N-1,'R',sm_div); //find clusters in the sequence
   cout<<"Finished clustering of replacement variants."<<endl;
   cout<<"Time elapsed during clustering of replacement variants: ";
   time_t t2 = time(NULL)-time_start1;
@@ -939,11 +937,11 @@ double cPRFCluster::getp0pc_MK(int pos_start, int pos_end, int cs, int ce, float
 
 /***************************************************
 * Function: Find cluster and calculate probability using different models AIC, BIC, AICc
-* Input Parameter: start position, end position, symbol - synonymous or replacement,flag_seq: polymorphism or divergence sequence, ?SiteModels *pointer?
+* Input Parameter: start position, end position, symbol - synonymous or replacement,?SiteModels *pointer?
 * Output: vectors vec_AllModels; vec_SelectedModels
 * Return Value:
 ***************************************************/
-int cPRFCluster::ClusterSubSeq(int pos_start, int pos_end,char symbol,int flag_seq, struct SiteModels *pointer) {
+int cPRFCluster::ClusterSubSeq(int pos_start, int pos_end, char symbol, struct SiteModels *pointer) {
 	time_t time_start1 = time(NULL); // Record the start time
 
 	long N = pos_end - pos_start + 1; // total sequence length
@@ -1077,7 +1075,7 @@ int cPRFCluster::ClusterSubSeq(int pos_start, int pos_end,char symbol,int flag_s
 	// if the cluster is absent, Select models (vec_SelectedModels) keep the model cs=pos_start, ce=pos_end; Model average.
 	if (found==0){
 		//If it could not reject the null model, then keep the null model.
-		if((symbol=='S' && flag_seq==1 && flag_found_ds==0) || (symbol=='R' && flag_seq==1 && flag_found_dr==0)){
+		if((symbol=='S' && flag_found_ds==0) || (symbol=='R' && flag_found_dr==0)){
 			double p_tmp=(double)symbol_n/(double)N_ScaledBack;
 			CandidateModels nullmodel(0, N-1, 0, N-1, p_tmp,p_tmp, InL0, InL, AIC0, AIC, AICc0, AICc, BIC0, BIC);
 			vec_SelectedModels.push_back(nullmodel);
@@ -1087,8 +1085,8 @@ int cPRFCluster::ClusterSubSeq(int pos_start, int pos_end,char symbol,int flag_s
 	}
 	// if the cluster is present
 	else{
-		if(symbol=='S' && flag_seq==1) flag_found_ds++;//divergence synonymous
-		if(symbol=='R' && flag_seq==1) flag_found_dr++;//divergence replacement
+		if(symbol=='S') flag_found_ds++;//divergence synonymous
+		if(symbol=='R') flag_found_dr++;//divergence replacement
 	}
 
 	//in the case that the cluster is present, Select models (vec_SelectedModels) keep the best model cs, ce; Model average.
@@ -1102,9 +1100,9 @@ int cPRFCluster::ClusterSubSeq(int pos_start, int pos_end,char symbol,int flag_s
 
 	/* Divide and Conquer to ClusterSubSeq three sub-sequences (pos_start to cs, ce to pos_end, and cs to ce) for the best models cs, ce*/
 	if (ce_max!=pos_end || cs_max!=pos_start) {
-		if (cs_max>pos_start+1) ClusterSubSeq(pos_start, cs_max-1,symbol,flag_seq,pointer);
-		if (ce_max<pos_end-1) ClusterSubSeq(ce_max+1, pos_end,symbol,flag_seq,pointer);
-		if (cs_max<ce_max-1) ClusterSubSeq(cs_max, ce_max, symbol,flag_seq,pointer);
+		if (cs_max>pos_start+1) ClusterSubSeq(pos_start, cs_max-1,symbol,pointer);
+		if (ce_max<pos_end-1) ClusterSubSeq(ce_max+1, pos_end,symbol,pointer);
+		if (cs_max<ce_max-1) ClusterSubSeq(cs_max, ce_max, symbol,pointer);
 	}
 	cout<<"Finish ClusterSubSeq for the region from the start position "<<pos_start<<" to the end position "<<pos_end<<endl;
 	return 1;

@@ -8,7 +8,7 @@
 #define NAME "CSI-MAC"	//Program name
 #define FULLNAME "Cancer Selection Intensity - Model Averaged Clustering"
 #define VERSION    "1.0"
-#define LASTUPDATE "July 12th, 2016"
+#define LASTUPDATE "July 13th, 2016"
 #define FUNCTION "Estimate selection intensity for each single site in coding sequences by using divergence data in tumors."
 #define REFERENCE "Zi-Ming Zhao, Sachith Gullapalli, Ning Li and Jeffrey P. Townsend. (2016)"
 
@@ -217,7 +217,7 @@ class cPRFCluster: public Base {
   
 
   //AIC/BIC based on sub sequence
-  int ClusterSubSeq(int pos_start, int pos_end, char symbol='S', int flag_seq=0, struct SiteModels *p=NULL);
+  int ClusterSubSeq(int pos_start, int pos_end, char symbol='S', struct SiteModels *p=NULL);
   
   
   int init(long N);

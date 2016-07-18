@@ -468,6 +468,7 @@ class cPRFCluster: public Base {
   //Default is 0 without showing the clustering results of synonymous from polymorphism and divergent sequences
   //User could choose 1 to show the clustering results of synonymous.
   int Do_Synonymous_Cluster;
+  int GeneLength; //the length of the gene before scaling
   
   //Scale of the gene, it should be 1,3,6,9,12,15...3*n, the true sequence length is the times of the scale and the given length.
   int Scale;

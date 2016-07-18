@@ -1,7 +1,19 @@
 /*
 To debug: output scales; 
 
-ModelAveraging and MS_only==0, what models are kept?
+To check: not include one site cluster
+To change: CIr_stochastic_threaded p=0, r=0
+To change: combine all models for all regions - put all models together, lambda_min, lambda_max, etc.
+
+To further think:
+Modified: p=0, gamma=0; and remove conditions of vec_r_c[i*3]==0 or vec_r_c[i]==0, that gives NULL gamma
+Added GeneLength public parameter, when n=0 and N=GeneLength, quit cluster; else keep all cluster models for sub-regions.
+Modified: In LogLikelihoodNonCluster and LogLikelihoodCluster, return 0 when n=0 and lambda=0.
+
+EachSiteModels: all models from the regions with clusters are kept, including models from divide and conquer ClusterSubSeq
+//pointer[i].sms.clear();// silent pointer[i].sms.clear() in EachSiteModels, since cumulative models are used in ClusterSubSeq for each site.
+
+ModelAveraging and MS_only==0:
 Removed the option MS_only==0 as a condition in ClusterSubSeq, since site models are calculated anyway. 
 Changed ModelAveraging to EachSiteModels to be more accurate and intuitive. 
 
@@ -243,7 +255,7 @@ int cPRFCluster::output(long N){
     }else if(vec_SelectedModels_ds.size()==1 && vec_SelectedModels_ds[0].pos_start==vec_SelectedModels_ds[0].cs && vec_SelectedModels_ds[0].pos_end==vec_SelectedModels_ds[0].ce){
       cout<<"Note: CSIMAC identified no clustering of synonymous sites in this gene."<<endl<<endl;
     }else{
-      // JT: to debug vec_SelectedModels_dr and vec_SelectedModels_ds output models.
+      // JT: to debug vec_SelectedModels_dr and vec_SelectedModels_ds output models. - ZMZ fixed.
       for(long i=0; i<vec_SelectedModels_ds.size(); i++){
     	  if (output_format_num==1)
     	{
@@ -275,7 +287,7 @@ int cPRFCluster::output(long N){
   }else if(vec_SelectedModels_dr.size()==1 && vec_SelectedModels_dr[0].pos_start==vec_SelectedModels_dr[0].cs && vec_SelectedModels_dr[0].pos_end==vec_SelectedModels_dr[0].ce){
     cout<<"Note: There is no cluster of replacement sites in this gene."<<endl<<endl;
   }else{  
-    // JT: to debug vec_SelectedModels_dr and vec_SelectedModels_ds output models.
+    // JT: to debug vec_SelectedModels_dr and vec_SelectedModels_ds output models. - ZMZ fixed
     for(long i=0; i<vec_SelectedModels_dr.size(); i++){ 
 
   	  if (output_format_num==1) //0: amino acid output || 1: nucleotide output, default=0
@@ -359,7 +371,7 @@ int cPRFCluster::output(long N){
 			  cout.width(width);cout<<"INF";
 			}else if (vec_r_c[i]==-299){
 			  cout.width(width);cout<<"N-INF";
-			}else if (vec_r_c[i]==0 || vec_r_c[i]==-199){
+			}else if (vec_r_c[i]==-199){
 			  cout.width(width);cout<<"NULL";
 			}else{
 			  cout.width(width);cout<<vec_r_c[i];
@@ -370,7 +382,7 @@ int cPRFCluster::output(long N){
 				cout<<"\t";cout.width(width);cout<<"INF"<<"\t";
 			  }else if(vec_lower_r_c[i]==-299){
 				cout<<"\t";cout.width(width);cout<<"N-INF"<<"\t";
-			  }else if(vec_lower_r_c[i]==0 || vec_lower_r_c[i]==-199){
+			  }else if(vec_lower_r_c[i]==-199){
 				cout<<"\t";cout.width(width);cout<<"NULL"<<"\t";
 			  }else{
 				cout<<"\t";cout.width(width);cout<<vec_lower_r_c[i]<<"\t";
@@ -380,7 +392,7 @@ int cPRFCluster::output(long N){
 				cout.width(width);cout<<"INF";
 			  }else if(vec_upper_r_c[i]==-299){
 				cout.width(width);cout<<"N-INF";
-			  }else if(vec_upper_r_c[i]==0 || vec_upper_r_c[i]==-199){
+			  }else if(vec_upper_r_c[i]==-199){
 				cout.width(width);cout<<"NULL";
 			  }else{
 				cout.width(width);cout<<vec_upper_r_c[i];
@@ -428,7 +440,7 @@ int cPRFCluster::output(long N){
 			  cout.width(width);cout<<"INF";
 			}else if (vec_r_c[i*3]==-299 or vec_r_c[i*3+1]==-299 or vec_r_c[i*3+2]==-299){
 			  cout.width(width);cout<<"N-INF";
-			}else if (vec_r_c[i*3]==0 || vec_r_c[i*3]==-199 or vec_r_c[i*3+1]==0 || vec_r_c[i*3+1]==-199 or vec_r_c[i*3+2]==0 || vec_r_c[i*3+2]==-199){
+			}else if (vec_r_c[i*3]==-199 || vec_r_c[i*3+1]==-199 || vec_r_c[i*3+2]==-199){
 			  cout.width(width);cout<<"NULL";
 			}else{
 			  cout.width(width);cout<<(vec_r_c[i*3]+vec_r_c[i*3+1]+vec_r_c[i*3+2])/3;
@@ -439,7 +451,7 @@ int cPRFCluster::output(long N){
 			    cout<<"\t";cout.width(width);cout<<"INF"<<"\t";
 			  }else if(vec_lower_r_c[i*3]==-299 or vec_lower_r_c[i*3+1]==-299 or vec_lower_r_c[i*3+2]==-299){
 			    cout<<"\t";cout.width(width);cout<<"N-INF"<<"\t";
-			  }else if(vec_lower_r_c[i*3]==0 || vec_lower_r_c[i*3]==-199 or vec_lower_r_c[i*3+1]==0 || vec_lower_r_c[i*3+1]==-199 or vec_lower_r_c[i*3+2]==0 || vec_lower_r_c[i*3+2]==-199){
+			  }else if(vec_lower_r_c[i*3]==-199 || vec_lower_r_c[i*3+1]==-199 || vec_lower_r_c[i*3+2]==-199){
 			    cout<<"\t";cout.width(width);cout<<"NULL"<<"\t";
 			  }else{
 			    cout<<"\t";cout.width(width);cout<<(vec_lower_r_c[i*3]+vec_lower_r_c[i*3+1]+vec_lower_r_c[i*3+2])/3<<"\t";
@@ -449,7 +461,7 @@ int cPRFCluster::output(long N){
 			    cout.width(width);cout<<"INF";
 			  }else if(vec_upper_r_c[i*3]==-299 or vec_upper_r_c[i*3+1]==-299 or vec_upper_r_c[i*3+2]==-299){
 			    cout.width(width);cout<<"N-INF";
-			  }else if(vec_upper_r_c[i*3]==0 || vec_upper_r_c[i*3]==-199 or vec_upper_r_c[i*3+1]==0 || vec_upper_r_c[i*3+1]==-199 or vec_upper_r_c[i*3+2]==0 || vec_upper_r_c[i*3+2]==-199){
+			  }else if(vec_upper_r_c[i*3]==-199 || vec_upper_r_c[i*3+1]==-199 || vec_upper_r_c[i*3+2]==-199){
 			    cout.width(width);cout<<"NULL";
 			  }else{
 			    cout.width(width);cout<<(vec_upper_r_c[i*3]+vec_upper_r_c[i*3+1]+vec_upper_r_c[i*3+2])/3;
@@ -497,6 +509,7 @@ int cPRFCluster::RunML(vector<string> div_cons_seq) {
    div_codon_consensus = div_cons_seq[0]; // Get divergence sequence with synonymous (S) and replacement (R) sites labeled 
    long N=div_codon_consensus.length(); //polymorphism and divergence sequence length, the two are equal.
    init(N); //initialization subfunction: change the size of the vectors based on gene length and empty the vector
+   GeneLength=N;
 
   double ds=0.0;// initializing synonymous divergence at zero
   double dr=0.0;// initializing replacement divergence at zero
@@ -513,7 +526,7 @@ int cPRFCluster::RunML(vector<string> div_cons_seq) {
   cout<<"Replacement divergent count (DR): "<<dr<<endl;
   cout<<"Number of tumor samples: "<<tumor_num<<endl;
   long N_ScaledBack=N*Scale; //Scale the gene length back 
-  cout<<"Gene length: "<<N_ScaledBack<<" bp"<<endl;
+  cout<<"Gene length before scaling: "<<GeneLength<<"\tAfter scaling: "<<N_ScaledBack<<" bp"<<endl;
 
 //Get the synonymous mutation rate (ucs) based on the number of silent mutations in the gene or from user-input (MutSigCV SilentRate). The latter is preferred.
   ucs=CancerSynonymousRate(tumor_num, N);
@@ -793,7 +806,8 @@ double cPRFCluster::LogLikelihoodCluster(long cs, long ce, long start, long end,
 		lambda = (double)1/(N_cluster_ScaledBack+1); //ZMZ 07/18/2016. Fixed bug, added double, or it will be 0. lambda = (double)1/(N_cluster_ScaledBack+1);
 		likelihood=lambda * N_cluster_ScaledBack * log(lambda) - N_cluster_ScaledBack * lambda; 
 		//cout<<"\nTest LogLikelihoodCluster, lambda:\t"<<lambda<<"\tlog(lambda):\t"<<log(lambda)<<"likelihood:"<<likelihood<<"\t- n:"<<-n<<endl;
-		return likelihood; 
+		//return likelihood; 
+		return 0;
 		}		
 	if (symbol=='S') {//for synonymous, recurrent is not considered; or the replacement recurrent M will be calculated, and create a bug.
 		M=0;
@@ -832,7 +846,8 @@ double cPRFCluster::LogLikelihoodNonCluster(long cs, long ce, long start, long e
 	if (n==0) {	//To prevent log(0) case, get the pseudo-lambda
 		lambda = (double)1/(N_noncluster_ScaledBack+1); 
 		likelihood=lambda * N_noncluster_ScaledBack * log(lambda) - N_noncluster_ScaledBack * lambda;
-		return likelihood;
+		//return likelihood;
+		return 0;
 		} 
 	if (symbol=='S') {//for synonymous, recurrent is not considered; or the replacement recurrent M will be calculated, and create a bug.
 		M=0;
@@ -887,16 +902,22 @@ double cPRFCluster::getp0pc_MK(int pos_start, int pos_end, int cs, int ce, float
 ***************************************************/
 int cPRFCluster::ClusterSubSeq(int pos_start, int pos_end, char symbol, struct SiteModels *pointer) {
 	time_t time_start1 = time(NULL); // Record the start time
-	long N = pos_end - pos_start + 1; // total sequence length
+	long N = pos_end - pos_start + 1; // total region length
 	long N_ScaledBack=N*Scale; // Scale the gene length back 
 	long symbol_n = 0; // declare the counts of variant sites
 	symbol_n=getDifference(div_codon_consensus, pos_start, pos_end, symbol); // Get the counts of variant sites
-	if (N==0 || N==1 || symbol_n==0) 
+	if (N==0 || N==1) 
 	{
 		cout<<"No cluster; quit ClusterSubSeq for the region "<<pos_start<<"\tto\t"<<pos_end<<"\tTotalVariant\t"<<symbol_n<<endl;
 		return 1; // return if the sequence length is 0/1 or the count of variant sites is 0	
 	}
 
+	if (symbol_n==0 && flag_found_dr==0) //when n=0 and no cluster found ever, quit cluster; else keep all cluster models for sub-regions.
+	{
+		cout<<"No cluster; quit ClusterSubSeq for the gene "<<pos_start<<"\tto\t"<<pos_end<<"\tTotalVariant\t"<<symbol_n<<endl;
+		return 1; // return if the sequence length is 0/1 or the count of variant sites is 0	
+	}	
+	
 	double InL0 = LogLikelihoodCluster(0, N-1, 0, N-1,symbol); // the background likelihood for the whole gene/region
 	double InL_cluster_max, InL_noncluster_max; // for cases with 0 variant log(0)
 	InL_cluster_max=InL_noncluster_max=InL0;
@@ -914,7 +935,7 @@ int cPRFCluster::ClusterSubSeq(int pos_start, int pos_end, char symbol, struct S
 	lambda_c_max=symbol_n/N_ScaledBack;
 
 	int found=0; // means the absence of the cluster; found =1, found the lowest AIC/BIC, as the best model
-	vec_AllModels.clear(); // empty the vec_AllModels for the new region
+	//vec_AllModels.clear(); // empty the vec_AllModels for the new region
 	//ZMZ debugging 04/27/2016
 	//cout<<"Model Information\npos_start\tpos_end\tcs\tce\tp0\tpc\tsymbol_n\tsymbol_cn\tInL_tmp\tInL_tmp_cluster\tInL_tmp_noncluster\tcri\tcri0\tLnL0"<<endl;
 
@@ -999,15 +1020,20 @@ int cPRFCluster::ClusterSubSeq(int pos_start, int pos_end, char symbol, struct S
 	cout<<"For the region from "<<pos_start<<" to "<<pos_end<<", the total number of models in the subfunction ClusterSubSeq: "<<vec_AllModels.size()<<endl;
 	// if no cluster is found, vec_SelectedModels keeps the null model cs=pos_start, ce=pos_end, and then do EachSiteModels.
 	if (found==0){
-		//If it could not reject the null model, then keep the null model.
+		//If no cluster is found in the whole gene, then keep the null model.
 		if((symbol=='S' && flag_found_ds==0) || (symbol=='R' && flag_found_dr==0)){
 			double p_tmp=(double)symbol_n/(double)N_ScaledBack;
 			CandidateModels nullmodel(0, N-1, 0, N-1, p_tmp,p_tmp, InL0, InL, AIC0, AIC, AICc0, AICc, BIC0, BIC);
 			vec_SelectedModels.push_back(nullmodel);
-			EachSiteModels(0, N-1, 0, N-1, p_tmp,p_tmp, min_cri,pointer); //Keep all models for each site in the vector pointer
+			EachSiteModels(0, N-1, 0, N-1, p_tmp,p_tmp, min_cri,pointer); //Keep the null model for each site in the vector pointer if no cluster found in the whole gene
+			cout<<"No cluster is found; quit ClusterSubSeq."<<endl<<endl;
+			return 1;
 		}
-		cout<<"No cluster is found; quit ClusterSubSeq."<<endl<<endl;
-		return 1;
+		else {
+			EachSiteModels(pos_start, pos_end, cs_max, ce_max, lambda_0_max, lambda_c_max, min_cri,pointer); //keep all models in the sub-region even no cluster is found
+			cout << "No cluster found: Model averaging of models for each site."<<endl;
+			return 1;
+		}
 	}
 	// if the cluster is found, keep the cluster in vec_SelectedModels, and then do EachSiteModels.
 	else{
@@ -1021,7 +1047,7 @@ int cPRFCluster::ClusterSubSeq(int pos_start, int pos_end, char symbol, struct S
 	cout<<"Selected model: "<<pos_start<<"-"<<pos_end<<"\tCluster: "<<cs_max<<"-"<<ce_max<<endl;
 	cout<<"Total number of selected models in ClusterSubSeq: "<<vec_SelectedModels.size()<<endl;
 	EachSiteModels(pos_start, pos_end, cs_max, ce_max, lambda_0_max, lambda_c_max, min_cri,pointer); //Keep all models for each site in the vector pointer
-	cout << "Model averaging of models for each site, to get the probability of the site being variants."<<endl;
+	cout << "Cluster found: Model averaging of models for each site, to get the probability of the site being variants."<<endl;
 
 	/* Divide and Conquer: do ClusterSubSeq for the three sub-sequences (pos_start to cs, ce to pos_end, and cs to ce) for the best models cs, ce*/
 	if (ce_max!=pos_end || cs_max!=pos_start) {
@@ -1036,6 +1062,7 @@ int cPRFCluster::ClusterSubSeq(int pos_start, int pos_end, char symbol, struct S
 			ClusterSubSeq(cs_max, ce_max, symbol,pointer);}
 	}
 	cout<<"Finish ClusterSubSeq for the region from the start position "<<pos_start<<" to the end position "<<pos_end<<endl;
+	vec_AllModels.clear(); // empty the vec_AllModels for the new region
 	return 1;
 }
 /***************************************************
@@ -1046,7 +1073,8 @@ int cPRFCluster::ClusterSubSeq(int pos_start, int pos_end, char symbol, struct S
  ***************************************************/
 int cPRFCluster::EachSiteModels(long pos_start, long pos_end, long cs_max, long ce_max, double lambda_0_max, double lambda_c_max, double min_cri, struct SiteModels *pointer){
 	long i, j;
-	/* Model selection rate based on the best cluster for each site in the region pos_start and pos_end. */
+	
+	/* Under model selection, assign lambda, the poisson rate for each position based on the best cluster model in the region pos_start and pos_end. */
 	for (i=pos_start; i<=pos_end; i++) {
 		vec_MS_rate[i] = lambda_0_max; //For site not in the cluster, the MS rate is the non-cluster rate
 	}
@@ -1056,22 +1084,22 @@ int cPRFCluster::EachSiteModels(long pos_start, long pos_end, long cs_max, long 
 
 	/* Model Averaging rate based on all models for the region pos_start and pos_end*/
 	double all_weight = 0.0;
-	//Get the AIC weight for each model
-	for (i=0; i<vec_AllModels.size(); i++) {
+	//Get the AIC weight for each model i
+	for (i=0; i<vec_AllModels.size(); i++) { //Calculate the summed weight all_weight
 		vec_AllModels[i].AICweight = exp(-0.5*(vec_AllModels[i].AICweight - min_cri));
 		all_weight += vec_AllModels[i].AICweight;
 	}
-	for (i=0; i<vec_AllModels.size(); i++) {
+	for (i=0; i<vec_AllModels.size(); i++) { //Calculate the weight for each model i
 		vec_AllModels[i].AICweight = vec_AllModels[i].AICweight/all_weight;
 	}
 
-	//for each site, get the MA rate, and all models for CI_MA, based on the probability and weight for all possible models
+	//for each site i, get the model-averaged poisson rate and and all models j in pointer
 	for (i=pos_start; i<=pos_end; i++) {
 		double rate = 0.0;
 		vector<CI> CIs;
 		CIs.clear();
 
-		//Model average across all models
+		//Model average across all models, and get site i and model j specific parameters (AICweight, poisson rate, loglikelihood). 
 		for (j=0; j<vec_AllModels.size(); j++) {
 			double site_i_model_j_AICweight=0.0;
 			site_i_model_j_AICweight = vec_AllModels[j].AICweight; // AIC weight
@@ -1084,18 +1112,17 @@ int cPRFCluster::EachSiteModels(long pos_start, long pos_end, long cs_max, long 
 				site_i_model_j_rate = vec_AllModels[j].pc; //site rate for the specific model if the site is in the cluster in that model
 			}
 			//cout<<"Model\t"<<j<<"\tAIC weight:\t"<<site_AICweight<<"\tLoglikelihood\t"<<site_likelihood<<"\tSiteRate\t"<<site_rate<<endl;
-
 			CI tmp_cis(site_i_model_j_AICweight, site_i_model_j_rate,site_i_model_j_Loglikelihood); //for each model, keep the AIC weight, rate, logLikelihood.
 			CIs.push_back(tmp_cis); // keep all models for the site
 			rate += site_i_model_j_rate*site_i_model_j_AICweight; //model averaged rate across all models
-		}
+		}//end of the inside for loop, for each model under one position.
 		vec_MA_rate[i] = rate; // assign the model averaged rate for the site
-		// pointer vector contains the site, all models for the site, each model with AIC weight, Site rate, LogLikelihood
-		pointer[i].sms.clear();
+		// pointer vector contains the site, all models for the site, each model with AIC weight, site rate, LogLikelihood
+		//pointer[i].sms.clear();// silent pointer[i].sms.clear() in EachSiteModels, since cumulative models are used in ClusterSubSeq for each site.
 		pointer[i].sms=CIs;//Keep weight, poisson rate, and likelihood for each model sms for each site i
 		pointer[i].pos=i; //Keep the position of each site.
 		CIs.clear();
-	}
+	}//end of the outside for loop, for each position
 	return 1;
 }
 /***************************************************
@@ -1260,8 +1287,8 @@ void cPRFCluster::CIr_exact_threaded(struct SiteModels *dr, long N, long i, ostr
 	vector<rModels> vec_rModels_c_indiv;
 	for(long k=0;k<dr[i].sms.size();k++){
 		if(dr[i].sms[k].p==0.0){
-			continue;
-			//new_r_c=0; //ZMZ 07/15/2016 debug 
+			//continue;
+			new_r_c=0; //ZMZ 07/15/2016 debug 
 		}
 		else {
 			//dr[i].sms[k].p is the poisson rate of divergence for the site i in the specific model k
@@ -1350,8 +1377,8 @@ void cPRFCluster::CIr_stochastic_threaded(struct SiteModels *dr, long N, long i,
 			//Get all the models
 			for(long k=0;k<dr[i].sms.size();k++){
 				if(dr[i].sms[k].p==0.0){
-					continue;
-					//new_r_c=0;
+					//continue;
+					new_r_c=0;
 				}
 				else {
 					// dr[i].sms[k].p is the poisson rate for the site i, the specific model k
@@ -1656,7 +1683,7 @@ int cPRFCluster::CI_UpLow_rc(long site,double min_weight_c, vector<rModels> vec_
 	double lci=quantile_for_CI;
 	double uci=1-quantile_for_CI;
 	double averaged_gamma=-199; // average only for weights between 95% CI
-  	double medium_gamma=0; // model medium gamma
+  	double medium_gamma=-199; // model medium gamma
   	double medium=0.5;
 
   	////Get the discrete model based gamma only, but not interpolation.
@@ -2145,7 +2172,7 @@ int cPRFCluster::recurrent_SiteGammaCI(int tumor_num, double ucr, double CI, int
 	}
 
 	if(flag_root==false and min_dx>MinDx){
-		tmp_gamma=0;
+		tmp_gamma=-199;
 	}
 
 	if (upORlow==0) {
@@ -2209,7 +2236,7 @@ int cPRFCluster::rc_SitePRF(int tumor_num, double ucr, long N){
 
     if(vec_MA_rate_dr[i]==0){
       //Under infinite negative selection
-      vec_r_c[i]=-299;
+      vec_r_c[i]=0; //ZMZ 07/18/2016 
       continue;
     }else if(ucr==0){
       vec_r_c[i]=299;

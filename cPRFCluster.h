@@ -214,14 +214,10 @@ class cPRFCluster: public Base {
   int GetRecurrentList(string input_f);
   //Clustering using maximum likelihood
   int RunML(vector<string> div_seq);
-  
-
   //AIC/BIC based on sub sequence
-  int ClusterSubSeq(int pos_start, int pos_end, char symbol='S', struct SiteModels *p=NULL);
-  
-  
+  int ClusterSubSeq(int pos_start, int pos_end, char symbol='S', struct SiteModels *p=NULL);  
   int init(long N);
-  int ModelAveraging(long pos_start, long pos_end, long cs, long ce, double p0, double pc, double min_cri,struct SiteModels *p);
+  int EachSiteModels(long pos_start, long pos_end, long cs, long ce, double p0, double pc, double min_cri,struct SiteModels *p);
   int CI_MA(struct SiteModels *p,long N);
 
   int SitePRF(int species_n, long N);
@@ -238,10 +234,7 @@ class cPRFCluster: public Base {
   double CancerSynonymousRate(long species_m, long N);
   double ReplacementRate(double ratio_NS, double syn_rate);
 
-
   //double ClusterPRF(long species_n, double pr, double dr);
-	
-
   int CIr_stochastic(struct SiteModels *dr, long N);
   void CIr_stochastic_threaded(struct SiteModels *dr, long N, long i, time_t time_start1, std::ostringstream* myout);
 

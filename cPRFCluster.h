@@ -8,7 +8,7 @@
 #define NAME "CSI-MAC"	//Program name
 #define FULLNAME "Cancer Selection Intensity - Model Averaged Clustering"
 #define VERSION    "1.0"
-#define LASTUPDATE "July 13th, 2016"
+#define LASTUPDATE "July 18th, 2016"
 #define FUNCTION "Estimate selection intensity for each single site in coding sequences by using divergence data in tumors."
 #define REFERENCE "Zi-Ming Zhao, Sachith Gullapalli, Ning Li and Jeffrey P. Townsend. (2016)"
 
@@ -269,8 +269,8 @@ class cPRFCluster: public Base {
   
   double BinomialProb(long n, long i);
   double factorial(int n); 
-  double LogLikelihoodCluster(long cs, long ce, long start, long end);
-  double LogLikelihoodNonCluster(long cs, long ce, long start, long end);
+  double LogLikelihoodCluster(long cs, long ce, long start, long end, char symbol='S');
+  double LogLikelihoodNonCluster(long cs, long ce, long start, long end, char symbol='S');
 
 
   

@@ -1,3 +1,15 @@
+/*//ZMZ 07/18/2016. 
+//Modified: In LogLikelihoodNonCluster and LogLikelihoodCluster, to prevent log(0) case, get the pseudo-lambda: when n=0, lambda = (double)1/(N_cluster_ScaledBack+1);
+Fixed bug: 
+added symbol in LogLikelihoodNonCluster and LogLikelihoodCluster - bug in Synonymous count in likelihood calculation
+LogLikelihoodNonCluster(long cs, long ce, long start, long end, char symbol)
+LogLikelihoodCluster(long cs, long ce, long start, long end, char symbol)
+Fixed bug in Recurrent count in LogLikelihoodNonCluster, from && to ||, (Recurrents[i].sites < cs || Recurrents[i].sites > ce)
+Fixed bug in LogLikelihoodCluster and LogLikelihoodNonCluster: added double, or it will be 0. lambda = (double)1/(N_cluster_ScaledBack+1);
+Fixed Bug in LogLikelihoodCluster and LogLikelihoodNonCluster: for synonymous, recurrent is not considered; or the replacement recurrent M will be calculated, and create a bug.
+*/
+
+
 #include "cPRFCluster.h"
 #include <string>
 #include <list>
@@ -269,7 +281,7 @@ int cPRFCluster::output(long N){
   // Print out cluster information for Replacement sites in the Divergence sequence by default.
   cout<<endl<<"Clusters of replacement divergence:"<<endl;
   if(vec_SelectedModels_dr.size()==0){
-    cout<<"Note: Replacement divergence (DR) = 1 or 0. There is not enough replacement divergent sites for clustering!"<<endl<<endl;
+    cout<<"Note: Replacement divergence (DR) = 0. There is no replacement divergent sites for clustering!"<<endl<<endl;
   }else if(vec_SelectedModels_dr.size()==1 && vec_SelectedModels_dr[0].pos_start==vec_SelectedModels_dr[0].cs && vec_SelectedModels_dr[0].pos_end==vec_SelectedModels_dr[0].ce){
     cout<<"Note: There is no cluster of replacement sites in this gene."<<endl<<endl;
   }else{  
@@ -568,8 +580,10 @@ int cPRFCluster::RunML(vector<string> div_cons_seq) {
     vec_MS_rate_ds.resize(N,0.0);
     vec_MA_rate_ds.resize(N,0.0);
 
-
+// ****  Major Step: Find cluster and calculate probability using multiple models for synonymous divergence
+    cout<<endl<<"Starting the clustering of synonymous variants"<<endl;
     ClusterSubSeq(0, N-1,'S',sm_div); // Major subroutine for clustering of synonymous variants
+    cout<<"Finished clustering of synonymous variants."<<endl;
     vec_SelectedModels_ds=vec_SelectedModels;
     vec_MS_rate_ds=vec_MS_rate;
     vec_MA_rate_ds=vec_MA_rate;
@@ -694,29 +708,12 @@ int cPRFCluster::RunML(vector<string> div_cons_seq) {
     cout<<"Warning:"<<endl<<"If only model selection to find the probability of the site being a variant is performed, there is no estimate of the selection coefficient (gamma) and its confidence intervals. Please check tutorial for more details!"<<endl;
     cout<<"*************"<<endl;
   }
-
-  // JT: confirm that this is alright
   int rs=0;
   int RecurSize=Recurrents.size();
   for (rs=0;rs<RecurSize;rs++)
   {
 	   int pos=Recurrents[rs].sites;
-	   int count=Recurrents[rs].counts;
 	   div_codon_consensus[pos]='Q'; //Record recurrent sites as Q
-
-
-	   /*  Alternative location for calculation of gamma and 95% CI for gamma for recurrent sites, using the lookup table (which contains the 95% CI Lambda (occurrence) for Lammda=k, based on poisson maximum likelihood distribution, Lambda^k*e^(-Lambda)/k!
-	      //Calculate the gamma and 95% CI gamma for recurrent site, using formula 2r/(1-e^(-2r))=RecurrentNumber/(ReplacementRate*TumorNumber)
-	    recurrent_SiteGamma(tumor_num, ucr, count, pos,sm_div); //calculate recurrent site gamma
-		double lowCI, upCI;
-		LambdaCIs[count-2].count=count;
-		lowCI=LambdaCIs[count-2].lowerCIlambda;
-		upCI=LambdaCIs[count-2].upperCIlambda;
-
-		recurrent_SiteGammaCI(tumor_num, ucr, lowCI, pos,0,sm_div); // 0 - lowerCI
-		recurrent_SiteGammaCI(tumor_num, ucr, upCI, pos,1,sm_div); //1 - upperCI
-		Alternative */
-
   }
 //print CSIMAC main results (gamma, 95% CI gamma) to the output file
   output(N);
@@ -814,7 +811,9 @@ double cPRFCluster::BinomialProb(long n, long i) {
   prob += (n-i==0)?0:(n-i)*log(double(n-i)/n);
   return prob;
 }
-
+/***************************************************
+* Function:
+***************************************************/
 double cPRFCluster::factorial(int n) {
 	//ZMZ added 04/26/2016
 	double ans = 1;
@@ -826,24 +825,29 @@ double cPRFCluster::factorial(int n) {
 		ans += log(i);
 	return ans;
 }
-
-double cPRFCluster::LogLikelihoodCluster(long cs, long ce, long start, long end) {
+/***************************************************
+* Function: Calculate loglikelihood for the cluster using the poisson rate
+***************************************************/
+double cPRFCluster::LogLikelihoodCluster(long cs, long ce, long start, long end, char symbol) {
 	//ZMZ added 04/26/2016
 	double M = 0;
 	long N_cluster_ScaledBack = (ce - cs + 1)*Scale;
-	long n = getDifference(div_codon_consensus,cs,ce,'R');
-	double lambda = (double)n/N_cluster_ScaledBack;
+	long n = getDifference(div_codon_consensus,cs,ce,symbol);
+	double lambda = (double)n/N_cluster_ScaledBack; //poisson rate
+	double likelihood;
 	
-	//ZMZ added 04/27/2016
-	/*
-	if (n==0) {	
-		lambda = ucr * tumor_num;
-		return  lambda * N_cluster_ScaledBack * log(lambda) - N_cluster_ScaledBack * lambda - M; }	
-	*/
-	
-	//ZMZ 04/28/2016
-	if (n==0) {	return 0; }
+	if (n==0) {	//To prevent log(0) case, get the pseudo-lambda
+		lambda = (double)1/(N_cluster_ScaledBack+1); //ZMZ 07/18/2016. Fixed bug, added double, or it will be 0. lambda = (double)1/(N_cluster_ScaledBack+1);
+		likelihood=lambda * N_cluster_ScaledBack * log(lambda) - N_cluster_ScaledBack * lambda; 
+		cout<<"\nTest LogLikelihoodCluster, lambda:\t"<<lambda<<"\tlog(lambda):\t"<<log(lambda)<<"likelihood:"<<likelihood<<"\t- n:"<<-n<<endl;
+		return likelihood; 
+		}
 		
+	if (symbol=='S') {//for synonymous, recurrent is not considered; or the replacement recurrent M will be calculated, and create a bug.
+		M=0;
+	    likelihood=n * log(lambda) - n - M;
+		return likelihood; 
+ 	}
 	for (long i = 0; i < Recurrents.size(); i++)
 	{
 		if (Recurrents[i].sites >= cs and Recurrents[i].sites <= ce)
@@ -858,35 +862,34 @@ double cPRFCluster::LogLikelihoodCluster(long cs, long ce, long start, long end)
 			throw "LogLikelihoodCluster: Error in Recurrent Factorial: not integer Recurrent Count!\n";
 			}	
 		}
-		
 	}
-	
-	double LogLikelihoodCluster_num=n * log(lambda) - N_cluster_ScaledBack * lambda - M;
-	//ZMZ found problem of M 04/25/2016
-	//cout<<"\nLogLikelihoodCluster information: "<<"lambda:\t"<<lambda<<"\tn:\t"<<n<<"\tM:\t"<<M<<"\tlog(lambda):\t"<<log(lambda)<<"\tLogLikelihoodCluster_num:\t"<<LogLikelihoodCluster_num<<endl;
-	//ZMZ fixed bug 04/27/2016
-	return  n * log(lambda) - N_cluster_ScaledBack * lambda - M;
+	likelihood=n * log(lambda) - n - M;
+	cout<<"\nTest LogLikelihoodCluster, lambda:\t"<<lambda<<"likelihood:"<<likelihood<<"\tlog(lambda):\t"<<log(lambda)<<"\t- n:"<<-n<<"\t-M:"<<-M<<endl;
+	return  likelihood;
 }
-
-double cPRFCluster::LogLikelihoodNonCluster(long cs, long ce, long start, long end) {
+/***************************************************
+* Function: Calculate loglikelihood for the non-clusters using the poisson rate
+***************************************************/
+double cPRFCluster::LogLikelihoodNonCluster(long cs, long ce, long start, long end, char symbol) {
 	//ZMZ added 04/26/2016
 	double M = 0;
 	long N_noncluster_ScaledBack = ((end-start + 1)-(ce - cs + 1))*Scale;
-	long n = getDifference(div_codon_consensus,start,cs-1,'R') + getDifference(div_codon_consensus,ce+1,end,'R');
+	long n = getDifference(div_codon_consensus,start,cs-1,symbol) + getDifference(div_codon_consensus,ce+1,end,symbol);
 	double lambda = (double)n/N_noncluster_ScaledBack;
-	
-	//ZMZ added 04/27/2016
-	/*
-	if (n==0) {	
-		lambda = ucr * tumor_num;
-		return  lambda * N_noncluster_ScaledBack * log(lambda) - N_noncluster_ScaledBack * lambda - M; }	
-	*/
-	//ZMZ 04/28/2016
-	if (n==0) {	return 0; }
-		
+	double likelihood;
+	if (n==0) {	//To prevent log(0) case, get the pseudo-lambda
+		lambda = (double)1/(N_noncluster_ScaledBack+1); 
+		likelihood=lambda * N_noncluster_ScaledBack * log(lambda) - N_noncluster_ScaledBack * lambda;
+		return likelihood;
+		} 
+	if (symbol=='S') {//for synonymous, recurrent is not considered; or the replacement recurrent M will be calculated, and create a bug.
+		M=0;
+	    likelihood=n * log(lambda) - n - M;
+		return likelihood; 
+ 	}		
 	for (long i = 0; i < Recurrents.size(); i++)
 	{
-		if (Recurrents[i].sites < cs and Recurrents[i].sites > ce)
+		if (Recurrents[i].sites < cs || Recurrents[i].sites > ce)
 		{
 			//ZMZ added 04/26/2016
 			int RecCount=CONVERT<int>(Recurrents[i].counts);
@@ -899,10 +902,9 @@ double cPRFCluster::LogLikelihoodNonCluster(long cs, long ce, long start, long e
 			}	
 		}
 	}	
-	
-	//return  n * (log(lambda) - 1) - M;
-	//ZMZ fixed bug 04/27/2016
-	return  n * log(lambda) - N_noncluster_ScaledBack * lambda - M;
+	likelihood=n * log(lambda) - n - M;
+	cout<<"\nTest LogLikelihoodNonCluster, lambda:\t"<<lambda<<"likelihood:"<<likelihood<<"\tlog(lambda):\t"<<log(lambda)<<"\t- n:"<<-n<<"\t-M:"<<-M<<endl;
+	return likelihood; 
 }
 
 /***************************************************
@@ -911,113 +913,84 @@ double cPRFCluster::LogLikelihoodNonCluster(long cs, long ce, long start, long e
 * Output: percentage of symbols in the cluster and non-cluster regions
 * Return Value:
 ***************************************************/
-
 double cPRFCluster::getp0pc_MK(int pos_start, int pos_end, int cs, int ce, float &p0, float &pc, int nw, int nc) {
-
-  //p0 means the whole sequence except the cluster part.
   int non_cent_len=pos_end-pos_start-ce+cs; //the length for non-cluster sequence.
-  int non_cent_len_ScaledBack=non_cent_len*Scale;  //Scale the length for non-cluster sequence back 
-  //if the cluster part is the whole sequence, then the non-cluster sequence will be none.
+  int non_cent_len_ScaledBack=non_cent_len*Scale;  //Scale the length for non-cluster sequence back   
   if(cs==pos_start && ce==pos_end){
-    p0=0.0;
+    p0=0.0; //rate of variants in the non-cluster region is 0 if the cluster part is the whole sequence and the non-cluster sequence is empty.
   }else{
-    //nw means the number of symbols in the whole sequence;nc means the number of symbols in the cluster region.
-	  p0=(float)(nw-nc)/non_cent_len_ScaledBack; //percentage of symbols (Synonymous or Replacement) in the non-cluster region
+    //nw means the total number of variants in the whole sequence; nc means the number of variants in the cluster region.
+	  p0=(float)(nw-nc)/non_cent_len_ScaledBack; // rate of variants in the non-cluster region
   }
   //pc means the cluster part; nc means number of symbols (Synonymous or Replacement) in the cluster region
   int cent_len=ce-cs+1; // the length for the cluster
   int cent_len_ScaledBack=cent_len*Scale;  //Scale the length for the cluster back 
-  pc=(float)nc/cent_len_ScaledBack; // percentage of symbols (Synonymous or Replacement) in the cluster region
+  pc=(float)nc/cent_len_ScaledBack; // rate of variants in the cluster region
   return 1;
 }
 
-
 /***************************************************
-* Function: Find cluster and calculate probability using different models AIC, BIC, AICc
+* Function: Find cluster and calculate likelihood of sites being variant under different models AIC, BIC, AICc
 * Input Parameter: start position, end position, symbol - synonymous or replacement,?SiteModels *pointer?
 * Output: vectors vec_AllModels; vec_SelectedModels
 * Return Value:
 ***************************************************/
 int cPRFCluster::ClusterSubSeq(int pos_start, int pos_end, char symbol, struct SiteModels *pointer) {
 	time_t time_start1 = time(NULL); // Record the start time
-
 	long N = pos_end - pos_start + 1; // total sequence length
-	long N_ScaledBack=N*Scale; //Scale the gene length back 
+	long N_ScaledBack=N*Scale; // Scale the gene length back 
+	long symbol_n = 0; // declare the counts of variant sites
+	symbol_n=getDifference(div_codon_consensus, pos_start, pos_end, symbol); // Get the counts of variant sites
+	if (N==0 || N==1 || symbol_n==0) return 1; // return if the sequence length is 0/1 or the count of variant sites is 0
 
-	long symbol_n = 0;//declare the counts for the symbol of Synonymous or Replacement
-	symbol_n=getDifference(div_codon_consensus, pos_start, pos_end, symbol); // Get the counts for Synonymous or Replacement in the Divergence sequence
-	if (N==0 || N==1 || symbol_n==0 || symbol_n==1) return 1; // return if the sequence length is 0/1 or the counts of symbols (Synonymous or Replacement) is 0/1
+	double InL0 = LogLikelihoodCluster(0, N-1, 0, N-1,symbol); // the background likelihood for the whole gene/region
+	double InL_cluster_max, InL_noncluster_max; // for cases with 0 variant log(0)
+	InL_cluster_max=InL_noncluster_max=InL0;
+	double AIC0,AICc0,BIC0,cri0;
+	cri0=AIC0=AICc0=BIC0=-2*InL0; // the overall weight for the whole region
+	double InL,AIC,AICc,BIC;
+	InL = InL0;
+	AIC = AICc = BIC = AIC0; // Initialization based on the whole region, parameter is 0 for the whole region with the cluster in the whole region.
 
-	double InL0 = LogLikelihoodCluster(0, N-1, 0, N-1);
-	//double InL0 = BinomialProb(N_ScaledBack, symbol_n); // For the whole gene, the overall probability of having certain number of Synonymous or Replacement symbols (symbol_n) in the whole sequence with the length N
-	double AIC0,AICc0,BIC0;
-	AIC0=AICc0=BIC0=-2*InL0; // For the whole region (pos_start, pos_end), the overall weight (AIC, BIC, or AICc) cri0, cri0=AIC0=AICc0=BIC0=-2*InL0;
-	double InL = InL0;
-	double AIC = AIC0;
-	double AICc = AICc0;
-	double BIC = BIC0;
-
-	double min_cri = 10000000; // a big value for an initial of the minimal criteria to keep the best model, the smaller AIC, the better the model.
-
-	double para=2.0; // the number of parameters, cs and ce
-
+	double min_cri = 10000000; // a big value for an initial of the minimal criteria to keep the best model, the smaller cri, the better the model.
+	int para=2; // the number of parameters, cs and ce
 	long cs, ce, cs_max, ce_max; //cluster start and end positions
-	double p0_max,pc_max;
+	double lambda_0_max,lambda_c_max;
+	lambda_0_max=0;
+	lambda_c_max=symbol_n/N_ScaledBack;
 
 	int found=0; // means the absence of the cluster; found =1, found the lowest AIC/BIC, as the best model
-	double para_min;
 	vec_AllModels.clear(); // empty the vec_AllModels for the new region
 	//ZMZ debugging 04/27/2016
 	//cout<<"Model Information\npos_start\tpos_end\tcs\tce\tp0\tpc\tsymbol_n\tsymbol_cn\tInL_tmp\tInL_tmp_cluster\tInL_tmp_noncluster\tcri\tcri0\tLnL0"<<endl;
 
-
+	cout<<"Within the clustering subfunction ClusterSubSeq, start of the region: "<<pos_start<<"\tEnd: "<<pos_end<<endl;
 	//Slide window across the whole sequence for the cluster start and end position to find the cluster with the window size as 1.
 	for (cs=pos_start; cs<=pos_end; cs+=1) {
 		for(ce=cs; ce<=pos_end; ce+=1) {
-			para=2.0;
-			if (cs==pos_start && ce==pos_end) para = 0.0;//the number of parameters is zero, since both cs and ce are known
-			else if(ce==pos_end || cs==pos_start) para=1.0; //the number of parameters is one, since one of cs and ce is known
+			para=2;
+			if (cs==pos_start && ce==pos_end) para = 0;//the number of parameters is zero, since both cs and ce are known
+			else if(ce==pos_end || cs==pos_start) para=1; //the number of parameters is one, since one of cs and ce is known
 
-			double symbol_cn = 0.0; //declare the counts for Synonymous or Replacement sites in the cluster region only.
-			symbol_cn = getDifference(div_codon_consensus, cs, ce, symbol);//Get the counts for Synonymous or Replacements sites in the cluster region only in the Divergence sequence.
-			double symbol_ncn = 0.0; //declare the counts for Synonymous or Replacement sites in the non-cluster region only.
-			symbol_ncn = getDifference(div_codon_consensus, pos_start, cs, symbol)+ getDifference(div_codon_consensus, ce, pos_end, symbol);//Get the counts for Synonymous or Replacements sites in the non-cluster region only in the Divergence sequence.
-
-			////// Considering the effects of Scale in calculating the probability. The real number of
-			///symbol_cn=symbol_cn/Scale; // Is B(1000,20)=?B(100,2)
-			///symbol_n=symbol_n/Scale; // Is B(1000,20)=?B(100,2)
-
-			long CN_ScaledBack=(ce-cs+1)*Scale;  //Scale the length of the cluster back 
+			double symbol_cn = 0.0; //declare the counts of variant sites in the cluster region only.
+			symbol_cn = getDifference(div_codon_consensus, cs, ce, symbol);//Get the counts of variant sites in the cluster region only.
+			double symbol_ncn = 0.0; //declare the counts of variant sites in the non-cluster region only.
+			symbol_ncn = getDifference(div_codon_consensus, pos_start, cs, symbol)+ getDifference(div_codon_consensus, ce, pos_end, symbol);//Get the counts of variant sites in the non-cluster region only.
 			
-			//ZMZ 04/27/2016
-			/*
-			double InL_tmp_cluster = InL0;
-			double InL_tmp_noncluster= InL0;
-			*/
-
-			//ZMZ 04/28/2016
-			double InL_tmp_cluster = 0;
-			double InL_tmp_noncluster= 0;
-			
-			//Center & Non-center region
-			//ZMZ 04/28/2016
-			if (symbol_cn>0) { InL_tmp_cluster = LogLikelihoodCluster(cs, ce, pos_start, pos_end); }
-			if (symbol_ncn>0) { InL_tmp_noncluster = LogLikelihoodNonCluster(cs, ce, pos_start, pos_end); }
-			
-			//InL_tmp_cluster = LogLikelihoodCluster(cs, ce, pos_start, pos_end); 
-			//InL_tmp_noncluster = LogLikelihoodNonCluster(cs, ce, pos_start, pos_end); 
-						
+			//Calculate log likelihood of the sites being variant in the cluster & Non-cluster			
+			double InL_tmp_cluster = LogLikelihoodCluster(cs, ce, pos_start, pos_end,symbol); 
+			double InL_tmp_noncluster = LogLikelihoodNonCluster(cs, ce, pos_start, pos_end,symbol);
+			//if (symbol_ncn==0) {InL_tmp_noncluster=InL0;}	
+			//if (symbol_cn==0) {InL_tmp_cluster=InL0;}
+				
 			double InL_tmp = InL_tmp_cluster + InL_tmp_noncluster;
-			//double InL_tmp = BinomialProb(CN_ScaledBack, symbol_cn) + BinomialProb(N_ScaledBack-CN_ScaledBack, symbol_n-symbol_cn); //log likelihood, the cluster vs non-cluster regions
-			double AIC_tmp  = -2*InL_tmp + 2*para;//calculate AIC=-2ln(L)+2k
+			double AIC_tmp  = -2*InL_tmp + 2*para; // AIC=-2ln(L)+2k
 			double AIC_weight=AIC_tmp; // AIC weight
-			double LogLikelihood=InL_tmp;
 			double AICc_tmp = AIC_tmp;
 			if (N_ScaledBack-para-1>0.0) AICc_tmp += 2*para*(para+1)/(N_ScaledBack-para-1); //calculate AICc=AIC+2k(k+1)/(l-k-1)
 			else AICc_tmp = 2*AIC_tmp;
 			double BIC_tmp = -2*InL_tmp + para*log(double(N_ScaledBack)); //calculate BIC=-2ln(L)+kln(l)
-
-			float cri, cri0;
+			double cri; //criteria for the model selection
 
 			//AIC, default
 			if (criterion_type==0){
@@ -1026,26 +999,29 @@ int cPRFCluster::ClusterSubSeq(int pos_start, int pos_end, char symbol, struct S
 			}
 			//BIC
 			else if (criterion_type==1){
-
 				cri = BIC_tmp;
-				cri0=BIC;//update with the best model
+				cri0=BIC; //update with the best model
 			}
 			//AICc
 			else if (criterion_type==2){
 				cri = AICc_tmp;
-				cri0=AICc;//update with the best model
+				cri0=AICc; //update with the best model
 			}
 
-			if(min_cri > cri) min_cri=cri;//Get the minimal value of the selected model or criteria
+			if(cri < min_cri) min_cri=cri;//Get the minimal value of the selected model or criteria, which corresponds to the best model.
 			float p0, pc; // p0 and pc are the percentage of symbols in the non-cluster and cluster regions; they are used to determined if the cluster is under a hot (p0<pc) or cold (p0>pc) spot.
 			getp0pc_MK(pos_start, pos_end, cs, ce, p0, pc, symbol_n, symbol_cn);
-			CandidateModels tmp_CM(AIC_weight, cri, pos_start, pos_end, cs, ce, p0, pc,InL_tmp);// class, for all possible models
-			vec_AllModels.push_back(tmp_CM);
-			//ZMZ debugging 04/27/2016
-			//cout<<pos_start<<"\t"<<pos_end<<"\t"<<cs<<"\t"<<ce<<"\t"<<p0<<"\t"<<pc<<"\t"<<symbol_n<<"\t"<<symbol_cn<<"\t"<<InL_tmp<<"\t"<<InL_tmp_cluster<<"\t"<<InL_tmp_noncluster<<"\t"<<cri<<"\t"<<cri0<<"\t"<<InL0<<endl;
+			CandidateModels tmp_CM(AIC_weight, cri, pos_start, pos_end, cs, ce, p0, pc,InL_tmp);// each model contains all parameters
+			vec_AllModels.push_back(tmp_CM); // all models
+			if (cs==170 and ce==289){
+				cout<<"Cluster region 170 to 289."<<endl;
+				cout<<"Position Start: "<<pos_start<<"\tEnd: "<<pos_end<<"\tCluster start: "<<cs<<"\tend: "<<ce<<"\tp0: "<<p0<<"\tpc: "<<pc<<"\tvariant#Total\t"<<symbol_n<<"\tVariant#InCluster:\t"<<symbol_cn<<"\tInL0:\t"<<InL0<<"\tInL_tmp:\t"<<InL_tmp<<"\tInL_tmp_cluster:\t"<<InL_tmp_cluster<<"\tInL_tmp_noncluster:\t"<<InL_tmp_noncluster<<endl;		
+			}
 
 			//Evaluate the cluster by the criterion, found the best cluster model, the first cri0 is Null model cs=pos_start, ce=pos_end.
 			if (cri <= cri0) {
+			//ZMZ test - cri and InL
+			//if (pc>p0){
 			//ZMZ debugging 04/27/2016 [include ce-cs=1]
 				if ( (cs-pos_start>1 && pos_end-ce>1) ||
 						(cs==pos_start && pos_end-ce>1) ||
@@ -1053,22 +1029,25 @@ int cPRFCluster::ClusterSubSeq(int pos_start, int pos_end, char symbol, struct S
 				)
 				{
 					found = 1; // found=1 means the presence of the cluster
+					cout<<"\n***Found a cluster (cri <= cri0), cri: "<<cri<<"\tcri0: "<<cri0<<endl;
+					//ZMZ debugging 07/14/2016
+					cout<<"Position Start: "<<pos_start<<"\tEnd: "<<pos_end<<"\tCluster start: "<<cs<<"\tend: "<<ce<<"\tp0: "<<p0<<"\tpc: "<<pc<<"\tvariant#Total\t"<<symbol_n<<"\tVariant#InCluster:\t"<<symbol_cn<<"\tInL0:\t"<<InL0<<"\tInL_tmp:\t"<<InL_tmp<<"\tInL_tmp_cluster:\t"<<InL_tmp_cluster<<"\tInL_tmp_noncluster:\t"<<InL_tmp_noncluster<<endl;
+
 					cs_max = cs;
 					ce_max = ce;
-					p0_max=p0;
-					pc_max=pc;
+					lambda_0_max=p0; 
+					lambda_c_max=pc;
 
 					//Updates the cri0 with the current cluster model; overall find the best model in the region pos_start to pos_end
 					InL = InL_tmp;
 					AIC = AIC_tmp;
 					AICc = AICc_tmp;
 					BIC = BIC_tmp;
-					para_min = para;
 				}
 			}
-		}
-	}
-	cout<<"The total number of models in ClusterSubSeq: "<<vec_AllModels.size()<<" for the region "<<pos_start<<" to "<<pos_end<<endl;
+		} // end of the first for lop
+	}//end of clustering - the two for loops
+	cout<<" For the region from "<<pos_start<<" to "<<pos_end<<", the total number of models in the subfunction ClusterSubSeq: "<<vec_AllModels.size()<<endl;
 	// if the cluster is absent, Select models (vec_SelectedModels) keep the model cs=pos_start, ce=pos_end; Model average.
 	if (found==0){
 		//If it could not reject the null model, then keep the null model.
@@ -1087,40 +1066,46 @@ int cPRFCluster::ClusterSubSeq(int pos_start, int pos_end, char symbol, struct S
 	}
 
 	//in the case that the cluster is present, Select models (vec_SelectedModels) keep the best model cs, ce; Model average.
-	CandidateModels selectedmodel(pos_start, pos_end, cs_max, ce_max, p0_max, pc_max, InL0, InL, AIC0, AIC, AICc0, AICc, BIC0, BIC);
+	CandidateModels selectedmodel(pos_start, pos_end, cs_max, ce_max, lambda_0_max, lambda_c_max, InL0, InL, AIC0, AIC, AICc0, AICc, BIC0, BIC);
 	vec_SelectedModels.push_back(selectedmodel); //Accumulate the best clustering model or null model for each region, only one selected for each region in each ClusterSubSeq.
-	cout<<"The size of selected models in ClusterSubSeq: "<<vec_SelectedModels.size()<<endl;
-	cout<<"Made it here"<<endl;
+	cout<<"Selected model: "<<pos_start<<"-"<<pos_end<<"\tCluster: "<<cs_max<<"-"<<ce_max<<endl;
+	cout<<"Total number of selected models in ClusterSubSeq: "<<vec_SelectedModels.size()<<endl;
 
-	if(MS_only==0) ModelAveraging(pos_start, pos_end, cs_max, ce_max, p0_max, pc_max, min_cri,pointer); //model average if cluster found
-	cout << "But not here."<<endl;
+	if(MS_only==0){
+		ModelAveraging(pos_start, pos_end, cs_max, ce_max, lambda_0_max, lambda_c_max, min_cri,pointer); //model average if cluster found
+		cout << "Do model averaging of the cluster of variants if cluster found."<<endl;
+	}
 
 	/* Divide and Conquer to ClusterSubSeq three sub-sequences (pos_start to cs, ce to pos_end, and cs to ce) for the best models cs, ce*/
 	if (ce_max!=pos_end || cs_max!=pos_start) {
-		if (cs_max>pos_start+1) ClusterSubSeq(pos_start, cs_max-1,symbol,pointer);
-		if (ce_max<pos_end-1) ClusterSubSeq(ce_max+1, pos_end,symbol,pointer);
-		if (cs_max<ce_max-1) ClusterSubSeq(cs_max, ce_max, symbol,pointer);
+		if (cs_max>pos_start+1) {
+			cout<<"Divide and Conquer to ClusterSubSeq for regions under cs_max>pos_start+1: "<<pos_start<<" — "<<(cs_max-1)<<endl;
+			ClusterSubSeq(pos_start, cs_max-1,symbol,pointer);}
+		if (ce_max<pos_end-1) {
+			cout<<"Divide and Conquer to ClusterSubSeq for regions under ce_max<pos_end-1: "<<ce_max+1<<" — "<<pos_end<<endl;
+			ClusterSubSeq(ce_max+1, pos_end,symbol,pointer);}
+		if (cs_max<ce_max-1) {
+			cout<<"Divide and Conquer to ClusterSubSeq for regions under cs_max<ce_max-1: "<<cs_max<<" — "<<ce_max<<endl;
+			ClusterSubSeq(cs_max, ce_max, symbol,pointer);}
 	}
 	cout<<"Finish ClusterSubSeq for the region from the start position "<<pos_start<<" to the end position "<<pos_end<<endl;
 	return 1;
 }
 
-
-
 /***************************************************
  * Function: Model Average for each site in the region pos_start and pos_end
- * Input Parameter: region pos_start and pos_end, the best model (cs_max, ce_max), the likelihood for the best model (p0_max, pc_max), best model AIC (min_cri)
+ * Input Parameter: region pos_start and pos_end, the best model (cs_max, ce_max), the likelihood for the best model (lambda_0_max, lambda_c_max), best model AIC (min_cri)
  * Output: model averaged rate for each site in the region; SiteModels *pointer vector (to calculate CI_MA) contains the site, all models for the site, each model with AIC weight, Site rate, LogLikelihood
  * Return Value: 1
  ***************************************************/
-int cPRFCluster::ModelAveraging(long pos_start, long pos_end, long cs_max, long ce_max, double p0_max, double pc_max, double min_cri, struct SiteModels *pointer){
+int cPRFCluster::ModelAveraging(long pos_start, long pos_end, long cs_max, long ce_max, double lambda_0_max, double lambda_c_max, double min_cri, struct SiteModels *pointer){
 	long i, j;
 	/* Model selection rate based on the best cluster for each site in the region pos_start and pos_end. */
 	for (i=pos_start; i<=pos_end; i++) {
-		vec_MS_rate[i] = p0_max; //For site not in the cluster, the MS rate is the non-cluster rate
+		vec_MS_rate[i] = lambda_0_max; //For site not in the cluster, the MS rate is the non-cluster rate
 	}
 	for (i=cs_max; i<=ce_max; i++) {
-		vec_MS_rate[i] = pc_max; //For sites in the cluster (between cs and ce), the MS rate is the cluster rate.
+		vec_MS_rate[i] = lambda_c_max; //For sites in the cluster (between cs and ce), the MS rate is the cluster rate.
 	}
 
 	/* Model Averaging rate based on all models for the region pos_start and pos_end*/
@@ -1168,15 +1153,12 @@ int cPRFCluster::ModelAveraging(long pos_start, long pos_end, long cs_max, long 
 	return 1;
 }
 
-
-
 /***************************************************
 * Function: Get Confidence Interval for Model Average
 * Input Parameter:
 * Output: vectors vec_lower_rate, vec_upper_rate
 * Return Value: none
 ***************************************************/
-
 int cPRFCluster::CI_MA(struct SiteModels *pointer,long N){
   for(long i=0;i<N;i++){
     //probability and weight for all possible models
@@ -1185,8 +1167,6 @@ int cPRFCluster::CI_MA(struct SiteModels *pointer,long N){
     CIs=pointer[i].sms;
     double lower=0.0;
     double upper=0.0;
-
-
     while (lower<quantile_for_CI || upper<quantile_for_CI) {
       long min_pos=0, max_pos=0;
       long j = 0;
@@ -1230,8 +1210,6 @@ int cPRFCluster::CI_MA(struct SiteModels *pointer,long N){
         }
         break;
       }
-
-
       if(CIs.size()==1){
         if(lower<quantile_for_CI && upper<quantile_for_CI){
           vec_lower_rate[i]=CIs[0].p;
@@ -1246,24 +1224,18 @@ int cPRFCluster::CI_MA(struct SiteModels *pointer,long N){
   return 1;
 }
 
-
-
 /***************************************************
 * Function: Calculate replacement mutation rate based on synonymous rate and the estimated ratio of Replacement and Synonymous (N/S) based on human reference sequence for a gene
 * Input Parameter: N/S ratio; synonymous mutation rate
 * Output: replacement mutation rate
 * Return Value: replacement mutation rate
 ***************************************************/
-
 double cPRFCluster::ReplacementRate(double ratio_NS, double syn_rate){
-
   //double ur=ratio_NS*syn_rate;//calculate replacement rate. This is wrong
   double ur=syn_rate/ratio_NS;//calculate replacement rate
   //cout<<"In ReplacementRate, Nonsysnonymous and Synonymous ratio ratio_NS: "<<ratio_NS<<endl<<"Synonymous rate syn_rate: "<<syn_rate<<endl<<"Replacement mutation rate ratio_NS*syn_rate: "<<ur<<endl;
   return(ur);
 }
-
-
 
 /***************************************************
 * CancerSynonymousRate: Use the silent rate from MutSigCV, corrected silent mutation rate with gene expression,replicating time,and chromosomal position.
@@ -1272,7 +1244,6 @@ double cPRFCluster::ReplacementRate(double ratio_NS, double syn_rate){
 * Output: cancer divergence silent mutation rate
 * Return Value: cancer divergence silent mutation rate
 ***************************************************/
-
 double cPRFCluster::CancerSynonymousRate(long tumor_num, long N){
   double ds=0.0; //count of synonymous sites in the cancer divergence sequence
   ds=getDifference(div_codon_consensus,0,N-1,'S'); // Count cancer divergence sysnonymous sites
@@ -1302,7 +1273,6 @@ double cPRFCluster::CancerSynonymousRate(long tumor_num, long N){
   cout<<"Cancer Divergence synonymous mutation rate: "<<us_c<<endl;
   return(us_c);
 }
-
 
 /***************************************************
 * Function: Exact algorithm estimating gamma and confidence intervals for parameter r at each site
@@ -1338,62 +1308,36 @@ int cPRFCluster::CIr_exact(struct SiteModels *dr, long N){
 }
 
 void cPRFCluster::CIr_exact_threaded(struct SiteModels *dr, long N, long i, ostringstream* myout){
-
 	long jj;
-	int SiteRecurrentCount=1;
 	double min_weight_c=1000000;
-	int parameters=2;
-
-		// JT: through "break", code can be deleted if we do not use the code commented out below
-		long position=i+1;
-		SiteRecurrentCount=1;
-		//Need to reassign RecurrentCount to 1 for each site, since it will be a recurrent count after a recurrent site.
-		//Find the position in the recurrent list, if find the recurrent site, keep the RecurrentCount
-		for (jj=0;jj<Recurrents.size();jj++){
-			//cout<<"RecurrentSite:\t"<<Recurrents[jj].sites<<"\tCount: "<<Recurrents[jj].counts<<endl;
-			if (Recurrents[jj].sites==position){
-				SiteRecurrentCount=Recurrents[jj].counts;
-				//cout<<"Site "<<i<<" is in the Recurrent list with RecurrentCount "<<RecurrentCount<<endl;
-				//cout<<"SiteRate\t"<<"RecurrentSiteRate\n";
-				break;
-			}
+	double new_r_c=0;
+	//Get all the models
+	vector<rModels> vec_rModels_c_indiv;
+	for(long k=0;k<dr[i].sms.size();k++){
+		if(dr[i].sms[k].p==0.0){
+			continue;
+			//new_r_c=0; //ZMZ 07/15/2016 debug 
 		}
-
-		//Get all the models
-		vector<rModels> vec_rModels_c_indiv;
-		for(long k=0;k<dr[i].sms.size();k++){
-			if(dr[i].sms[k].p==0.0){
-				continue;
-			}
-			////RecurrentCount=1; //Not consider the recurrent site at this point
-			double site_rate=dr[i].sms[k].p; //Poisson rate of divergence for the site i in the specific model k
+		else {
+			//dr[i].sms[k].p is the poisson rate of divergence for the site i in the specific model k
 			// JT: I think that .p should be .lambda as it is now a rate not a probability
-
-			/*
-			double recur_site_rate=1- pow ((1-site_rate),RecurrentCount); //For recurrent site, the site_rate is modified to 1-(1-p)^Count
-			if (RecurrentCount>1 and (recur_site_rate-site_rate)>0) {
-				////cout<<"Site\t"<<i<<"Model "<<j<<"\tSiteRate:\t"<<site_rate<<"\tRecurrentRate:\t"<<recur_site_rate<<endl;
-			}
-			*/
-
-			double new_r_c=CIs_rc_PRF(ucr,site_rate,tumor_num); // calculate gamma for this site under this model
-			double weight_tmp_c=dr[i].sms[k].weight;// Assigns the weight for this gamma at site i under model k as the model's weight.
-			if(weight_tmp_c<min_weight_c) min_weight_c=weight_tmp_c;
-			rModels tmp_rm_c(weight_tmp_c,new_r_c);
-			vec_rModels_c_indiv.push_back(tmp_rm_c);
+			new_r_c=CIs_rc_PRF(ucr,dr[i].sms[k].p,tumor_num); // calculate gamma for this site under this model		
 		}
-
-		//Calculate the CIs for r using exact algorithm
-		if(vec_rModels_c_indiv.size()==0){
-			vec_lower_r_c[i]=0;
-			vec_upper_r_c[i]=0;
-			vec_r_c[i]=0;
-		}
-		else{
-			//CI_UpLow_rc_exact(i,min_weight_c); // Get the upper and lower boundaries of gamma for site i by exact algorithm
-			CI_UpLow_rc(i,min_weight_c,vec_rModels_c_indiv,myout); // Get the upper and lower boundaries of gamma for site i by exact algorithm; and model averaged gamma
-		}
-		vec_rModels_c_indiv.clear();	
+		double weight_tmp_c=dr[i].sms[k].weight;// Assigns the weight for this gamma at site i under model k as the model's weight.
+		if(weight_tmp_c<min_weight_c) min_weight_c=weight_tmp_c;
+		rModels tmp_rm_c(weight_tmp_c,new_r_c);
+		vec_rModels_c_indiv.push_back(tmp_rm_c);
+	}
+	//Calculate the CIs for r using exact algorithm
+	if(vec_rModels_c_indiv.size()==0){
+		vec_lower_r_c[i]=0;
+		vec_upper_r_c[i]=0;
+		vec_r_c[i]=0;
+	}
+	else{
+		CI_UpLow_rc(i,min_weight_c,vec_rModels_c_indiv,myout); // Get the upper and lower boundaries of gamma for site i by exact algorithm; and model averaged gamma
+	}
+	vec_rModels_c_indiv.clear();	
 }
 
 /***************************************************
@@ -1402,7 +1346,6 @@ void cPRFCluster::CIr_exact_threaded(struct SiteModels *dr, long N, long i, ostr
 * Output: 10000 models with gamma and gamma weight; model averaged gamma and 95% CI gamma
 * Return Value: vec_r_c, vec_upper_r_c,vec_lower_r_c
 ***************************************************/
-
 int cPRFCluster::CIr_stochastic( struct SiteModels *dr, long N){
   time_t time_start1 = time(NULL); // Record the start time
   cout<<"******CIr_stochastic******"<<endl;
@@ -1429,7 +1372,6 @@ int cPRFCluster::CIr_stochastic( struct SiteModels *dr, long N){
     stochastic_threads.clear();
   }
   return 1;
-
 }
 
 void cPRFCluster::CIr_stochastic_threaded(struct SiteModels *dr, long N, long i, time_t time_start1, ostringstream* myout){
@@ -1441,22 +1383,10 @@ void cPRFCluster::CIr_stochastic_threaded(struct SiteModels *dr, long N, long i,
 	//Go over each site of the gene, to calculate gamma and 95% CI gamma
 		
     vector<rModels> vec_rModels_c_indiv; // clear the gamma model for the previous site
-		long position=i+1;
-		//cout<<"Site:\t"<<position<<"\t";
-		RecurrentCount=1; //Need to assign back RecurrentCount to 1 for each site, since it will be a recurrent count after a recurrent site.
-		//Find the position in the recurrent list, if find the recurrent site, keep the RecurrentCount
-		for (jj=0;jj<Recurrents.size();jj++){
-			//cout<<"RecurrentSite:\t"<<Recurrents[jj].sites<<"\tCount: "<<Recurrents[jj].counts<<endl;
-			if (Recurrents[jj].sites==position){
-				RecurrentCount=Recurrents[jj].counts;
-				//cout<<"Site "<<i<<" is in the Recurrent list with RecurrentCount "<<RecurrentCount<<endl;
-				//cout<<"SiteRate\t"<<"RecurrentSiteRate\n";
-				break;
-			}
-		}
 		//Each time get one dr, estimate r
 		long end_num=N_Random; //N_Random=100000
 		double min_weight_c=1000000;
+		double new_r_c=0; 
 		//screen output for every 1000 sites, to monitor the speed of the running
 		if (i%1000==0) {
 			*myout<<"Start CIr_stochastic at Position "<<i+1;
@@ -1476,16 +1406,12 @@ void cPRFCluster::CIr_stochastic_threaded(struct SiteModels *dr, long N, long i,
 			for(long k=0;k<dr[i].sms.size();k++){
 				if(dr[i].sms[k].p==0.0){
 					continue;
+					//new_r_c=0;
 				}
-				////RecurrentCount=1; //Not consider the recurrent site at this point
-				double site_rate=dr[i].sms[k].p; //divergence mutation rate for the site, the specific model
-				/*
-				double recur_site_rate=1- pow ((1-site_rate),RecurrentCount); //For recurrent site, the site_rate is modified to 1-(1-p)^Count
-				if (RecurrentCount<1 or (recur_site_rate-site_rate)<0) {
-					cout<<"Error in RecurrentCount in CIr_stochastic. Site\t"<<i<<"Model "<<k<<"\tRecurrentCount:\t"<<RecurrentCount<<"\tSiteRate:\t"<<site_rate<<"\tRecurrentRate:\t"<<recur_site_rate<<endl;
+				else {
+					// dr[i].sms[k].p is the poisson rate for the site i, the specific model k
+					new_r_c=CIs_rc_PRF(ucr,dr[i].sms[k].p,tumor_num); // calculate gamma based on likelihood				
 				}
-				*/
-				double new_r_c=CIs_rc_PRF(ucr,site_rate,tumor_num); // calculate gamma based on likelihood
 				double weight_tmp_c=dr[i].sms[k].weight;//Same as the MACML AIC weight, don't need to recalculate, just need to re-gather all selected models, and re-calculate the weight of selected models
 				if(weight_tmp_c<min_weight_c) min_weight_c=weight_tmp_c;
 				rModels tmp_rm_c(weight_tmp_c,new_r_c);
@@ -1499,7 +1425,6 @@ void cPRFCluster::CIr_stochastic_threaded(struct SiteModels *dr, long N, long i,
 				vec_r_c[i]=0;
 			}
 			else{
-				//CI_UpLow_rc_exact(i,min_weight_c); // Get the upper and lower boundaries of gamma for site i by exact algorithm
 				CI_UpLow_rc(i,min_weight_c,vec_rModels_c_indiv,myout); // Get the upper and lower boundaries of gamma for site i by exact algorithm; and model averaged gamma
 			}
 			vec_rModels_c_indiv.clear();
@@ -1538,7 +1463,6 @@ void cPRFCluster::CIr_stochastic_threaded(struct SiteModels *dr, long N, long i,
 						repeat_num++;
 					}
 					*/
-
 					if (jj == TotalSampleNum) //when N_Random samples all have dr.p=0, continue to find random samples till TotalSampleNum
 					{
 						if (repeat_num == TotalSampleNum) {
@@ -1563,12 +1487,6 @@ void cPRFCluster::CIr_stochastic_threaded(struct SiteModels *dr, long N, long i,
 				else{
 					////RecurrentCount=1; //Not consider the recurrent site at this point
 					double site_rate=dr[i].sms[model_dr].p;
-					/*
-					double recur_site_rate=1- pow ((1-site_rate),RecurrentCount); //For recurrent site, the site_rate is modified to 1-(1-p)^Count
-					if (RecurrentCount>1 and (recur_site_rate-site_rate)>0) {
-						////cout<<"Site\t"<<i<<"Model "<<j<<"\tSiteRate:\t"<<site_rate<<"\tRecurrentRate:\t"<<recur_site_rate<<endl;
-					}
-					*/
 					double new_r_c=CIs_rc_PRF(ucr,site_rate,tumor_num); // calculate gamma based on likelihood
 					double weight_tmp_c=dr[i].sms[model_dr].weight;//Same as the MACML AIC weight, don't need to recalculate, just need to re-gather all selected models, and re-calculate the weight of selected models
 					if(weight_tmp_c<min_weight_c) min_weight_c=weight_tmp_c;
@@ -1577,7 +1495,6 @@ void cPRFCluster::CIr_stochastic_threaded(struct SiteModels *dr, long N, long i,
 					//cout<<"Model ID:\t"<<j<<"\tSiteRate:\t"<<recur_site_rate<<"\tGamma:\t"<<new_r_c<<"\tAICweight:\t"<<weight_tmp_c<<endl;
 					////cout<<"Model ID:\t"<<j<<"\tGamma:\t"<<new_r_c<<"\tAICweight:\t"<<weight_tmp_c<<"\tdr Loglikelihood\t"<<dr[i].sms[model_dr].LogLikelihood<<endl;
 					//Debug:check if the models selected are random
-
 					/*
 					 if (i==0)
 						{cout<<"Model ID:\t"<<j<<"\tGamma:\t"<<new_r_c<<"\tAICweight:\t"<<weight_tmp_c<<"\tdr Loglikelihood\t"<<dr[i].sms[model_dr].LogLikelihood<<"\tRate:\t"<<dr[i].sms[model_dr].p<<endl;
@@ -1585,7 +1502,6 @@ void cPRFCluster::CIr_stochastic_threaded(struct SiteModels *dr, long N, long i,
 						*/
 				}
 			}
-
 			//Find CI for r using stochastic algorithm
 			if(flag_mutation==1){
 				// Get gamma, and Upper and Lower CI for gamma using stochastic algorithm
@@ -1597,7 +1513,6 @@ void cPRFCluster::CIr_stochastic_threaded(struct SiteModels *dr, long N, long i,
 				vec_r_c[i]=-299;
 			}
 			vec_rModels_c.clear();
-
 		}	
 }
 
@@ -1752,8 +1667,7 @@ int cPRFCluster::CI_UpLow_rc(long site,double min_weight_c, vector<rModels> vec_
 	double recur_upper_r=0.0;
 	double recur_lower_r=0.0;
 
-	//ZMZ 04/27/2016 use only poisson rate regional gamma, not recurrent gamma
-	
+	//ZMZ 04/27/2016 use only poisson rate regional gamma, not recurrent gamma	
 	//Find the position in the recurrent list, if find the recurrent site, keep the RecurrentCount
 	for (jj=0;jj<Recurrents.size();jj++){
 		//cout<<"RecurrentSite:\t"<<Recurrents[jj].sites<<"\tCount: "<<Recurrents[jj].counts<<endl;
@@ -1785,12 +1699,8 @@ int cPRFCluster::CI_UpLow_rc(long site,double min_weight_c, vector<rModels> vec_
 		*myout<<"Recurrent gamma before correction by weight: "<<recur_r<<"\tlower_r: "<<recur_lower_r<<"\tupper_r: "<<recur_upper_r<<endl;
 	}
 
-
-
-
-
 	sort(vec_rModels_c_indiv.begin(), vec_rModels_c_indiv.end()); // sort by gamma values incrementally
-//debug
+    //debug
 	/*
 	cout<<"Sorted gamma models:\n"<<"ModelID\tWeight\tGamma\n";
 	for (long ii=0; ii<10000;ii++){
@@ -1811,7 +1721,7 @@ int cPRFCluster::CI_UpLow_rc(long site,double min_weight_c, vector<rModels> vec_
 	long last_item=vec_rModels_c_indiv.size()-1;
 	double lci=quantile_for_CI;
 	double uci=1-quantile_for_CI;
-	double averaged_gamma=0; // average only for weights between 95% CI
+	double averaged_gamma=-199; // average only for weights between 95% CI
   	double medium_gamma=0; // model medium gamma
   	double medium=0.5;
 
@@ -1821,17 +1731,7 @@ int cPRFCluster::CI_UpLow_rc(long site,double min_weight_c, vector<rModels> vec_
 		lower_model=0;
 		flag_lower=1;
 		double yinterp=0;
-/* To be deleted, linear interpolation
-		double r1=vec_rModels_c_indiv[0].r;
-		double w1=vec_rModels_c_indiv[0].weight;
-		double r2=vec_rModels_c_indiv[1].r;
-		double w2=vec_rModels_c_indiv[1].weight;
-		//Get the y axis intercept when weight=0, the gamma
-		double g0=((w2+w1)*r1-w1*r2)/w2; //get the y intercept for gamma while weight equals 0; the assumption is a linear relationship between weight and gamma value
-		vec_lower_r_c[site]= (g0+r1)*lci/w1;//the Lower 95% CI gamma, use interpolation
-		averaged_gamma=vec_lower_r_c[site]*(w1-lci); //gamma, use interpolation, lci gamma*weight plus the first model gamma*weight
-		////cout<<"***Lower CI model: "<< lower_model<<"\t SummedWeight: "<<rWeightSums[lower_model]<<"y intercept:\t"<<g0<<"lowerCI gamma:\t"<<vec_lower_r_c[site]<<"ModelAveragedGamma:\t"<<averaged_gamma<<endl<<endl;
-	*/
+
 		//To Be Deleted [original way: get that position only]
 		vec_lower_r_c[site]= vec_rModels_c_indiv[lower_model].r; //the Lower 95% CI gamma, not use interpolation, since another point required for that, simply use the first model as the lower 95% CI model
 		averaged_gamma=(vec_rModels_c_indiv[lower_model].weight-lci)*vec_rModels_c_indiv[lower_model].r; //Get the gamma if more than the lower 95% CI
@@ -1853,20 +1753,12 @@ int cPRFCluster::CI_UpLow_rc(long site,double min_weight_c, vector<rModels> vec_
 
 		//Get the lower CI gamma; record the model number for the rWeightSums at the two borders of the lower 95% CI lci 0.025, lower_model
 		if (rWeightSums_indiv[i-1]<=lci && rWeightSums_indiv[i]>=lci) {
-			/* To be deleted, linear interpolation
-			double lci_interpolation_rl=vec_rModels_c_indiv[i-1].r+(vec_rModels_c_indiv[i].r-vec_rModels_c_indiv[i-1].r)/( rWeightSums[i]- rWeightSums[i-1])*(lci-rWeightSums[i-1]); //linear interpolation of lower CI gamma lci 0.025 being between (i-1) and i
-			vec_lower_r_c[site] = lci_interpolation_rl;
-			//the first averaged gamma is the part between lci --- right trapezoid; the r[i-1]*weight plus the lci.r*weight
-			////averaged_gamma+=vec_rModels_c_indiv[i].weight*vec_rModels_c_indiv[i].r;
-			averaged_gamma=(rWeightSums[i]-lci)*vec_lower_r_c[site]; // model averaged gamma start from the lci
-			*/
 			lower_model=i;
 			flag_lower=1;
 			vec_lower_r_c[site]= vec_rModels_c_indiv[lower_model].r;
 			averaged_gamma=(rWeightSums_indiv[i]-lci)*vec_rModels_c_indiv[i].r;
 			////cout<<"***Lower CI model id:\t"<< lower_model<<"\tLowerCI gamma:\t"<<lci_interpolation_rl<<"\tSummedWeight:\t"<<rWeightSums[lower_model]<<"\tGammaBefore:\t"<<vec_rModels_c_indiv[i-1].r<<"\tGammaAfter:\t"<<vec_rModels_c_indiv[i].r<<"\tAveragedGamma:\t"<<averaged_gamma<<endl<<endl;
 		}
-
 
 		//getting model averaged gamma between 95% CI
 		if (flag_lower==1 && i>lower_model && rWeightSums_indiv[i]<=uci){
@@ -1877,16 +1769,6 @@ int cPRFCluster::CI_UpLow_rc(long site,double min_weight_c, vector<rModels> vec_
 		if (flag_lower==1 && i>lower_model && rWeightSums_indiv[i-1]<=uci && rWeightSums_indiv[i]>uci) {
 			upper_model=i;
 			vec_upper_r_c[site]=vec_rModels_c_indiv[upper_model].r;
-			/* To be deleted, linear interpolation
-			double uci_interpolation_ru=vec_rModels_c_indiv[i-1].r+(vec_rModels_c_indiv[i].r-vec_rModels_c_indiv[i-1].r)/( rWeightSums[i]- rWeightSums[i-1])*( uci-rWeightSums[i-1]); //linear interpolation of upper CI gamma
-			vec_upper_r_c[site] = uci_interpolation_ru;
-			////averaged_gamma+=vec_rModels_c_indiv[i].weight*vec_rModels_c_indiv[i].r;
-  			//bug: already add the previous one
-			//the final part of averaged gamma, the border of upper 95% CI. the r[i-1]*weight plus the uci.r*weight
-			//averaged_gamma+=vec_rModels_c_indiv[i-1].weight*vec_rModels_c_indiv[i-1].r+vec_upper_r_c[site] *(uci-rWeightSums[i-1]);
-
-			////cout<<"***Upper CI model id:\t"<< upper_model<<"\tUpperCI gamma:\t"<<uci_interpolation_ru<<"\tSummedWeight:\t"<<rWeightSums[upper_model]<<"\tGammaBefore:\t"<<vec_rModels_c_indiv[i-1].r<<"\tGammaAfter:\t"<<vec_rModels_c_indiv[i].r<<"\tAveragedGamma:\t"<<averaged_gamma<<endl<<endl;
-			*/
 			averaged_gamma+=vec_rModels_c_indiv[i].r *(uci-rWeightSums_indiv[i-1]);
 		}
 
@@ -1894,21 +1776,17 @@ int cPRFCluster::CI_UpLow_rc(long site,double min_weight_c, vector<rModels> vec_
   		if (rWeightSums_indiv[i-1]<medium && rWeightSums_indiv[i]>=medium){
   			medium_gamma=vec_rModels_c_indiv[i].r;
   		}
-
-
 		//***Debug the model averaged gamma and lower CI gamma values
 		//cout<<i<<"\t"<< averaged_gamma<<"\t"<< vec_lower_r_c[site]<<"\t"<< vec_upper_r_c[site]<<"\t"<< vec_rModels_c_indiv[i].r<<"\t"<<tmp_weight<<"\t"<<vec_rModels_c_indiv[i-1].r<<"\t"<<rWeightSums[i]<<endl;
 	}
 	//To be deleted, model averaged gamma
-	if (averaged_gamma!=0) {
+	if (averaged_gamma!=-199) {
 		vec_r_c[site]=averaged_gamma/(uci-lci); // model averaged gamma only takes from lci to uci, so it should divide (uci-lci).
 	}
 	else {
 		*myout<<"Model averaged gamma: NULL"<<endl;
 				vec_r_c[site]=-199;
-
 	}
-
 
 	//ZMZ 04/28/2016 use only poisson rate regional gamma as an option, by default, weighted regional gamma and recurrent gamma
 	if (regional_gamma_only==0)
@@ -1919,13 +1797,6 @@ int cPRFCluster::CI_UpLow_rc(long site,double min_weight_c, vector<rModels> vec_
 		vec_upper_r_c[site]=(1-recur_weight)*vec_upper_r_c[site]+recur_weight*recur_upper_r;
 	}
 
-/*
-  	if (medium_gamma!=0) {vec_r_c[site]=medium_gamma;}
-  	else {
-  		cout<<"Warning: model medium gamma equals 0, and converted to -66"<<endl;
-  		vec_r_c[site]=-66;}
-
-*/
 	//Make sure the LowerCI and UpperCI is two sides of value of model average; quit the program if model averaged gamma is not between 95% CI gamma
 	if (CONVERT<int>(vec_lower_r_c[site])>CONVERT<int>(vec_r_c[site]) || CONVERT<int>(vec_upper_r_c[site]) < CONVERT<int>(vec_r_c[site]) || flag_lower!=1 ||  upper_model<lower_model){
 		*myout<<endl<<endl<<"Warning: Problem in getting proper values of model averaged gamma, lower and upper 95% CI gamma from all models!!!!"<<endl;
@@ -2167,7 +2038,7 @@ void cPRFCluster::showHelpInfo() {
   cout<<"OPTIONS:"<<endl;	
   cout<<"  -dc\tInput file name for divergent consensus sequences [string, required]"<<endl;
   cout<<"  -dn\tInput number for divergent consensus sequences (sample number) [string, required]"<<endl;
-  cout<<"  -rf\tInput recurrent file [string, optional]"<<endl;
+  cout<<"  -rf\tInput replacement recurrent file [string, optional]"<<endl;
   cout<<"  -o\tChoice of output format [integer, optional], {0: amino acid level output || 1: nucleotide level output, default=0}"<<endl;
   cout<<"  -sr\tSilent Rate [preferred from MutSigCV, corrected with gene expression,replicating time,and chromosomal position.] [double, required when the number of synonymous mutation equals 0]"<<endl;
   cout<<"  -c\tCriterion used for clustering [integer, optional], {0:AIC || 1: BIC || 2:AICc || 3:LRT}, default = 0"<<endl;
@@ -2257,7 +2128,6 @@ int cPRFCluster::LambdaCILookupTable(string input_f_name){
  return 1;
 }
 
-
 /***************************************************
 * Function: Estimate parameter selection intensity r for recurrent site for cancer, and CI for lowerCILambda and upperCILambda
 * Input Parameter: the number of species, the mutation rate, the recurrent num, and site
@@ -2309,7 +2179,6 @@ int cPRFCluster::recurrent_SiteGamma(int tumor_num, double ucr, int RecurrentNum
 	return 1;
 }
 
-
 /***************************************************
 * Function: Estimate parameter selection intensity r for recurrent site for cancer, and CI for lowerCILambda and upperCILambda
 * Input Parameter: the number of species, the mutation rate, the recurrent num, and site
@@ -2325,8 +2194,6 @@ int cPRFCluster::recurrent_SiteGammaCI(int tumor_num, double ucr, double CI, int
 	double tmp_gamma;
 	double min_dx=IR_H;
 	double optimal_r=IR_H;
-
-
 	bool flag_root=false;
 	for(rtn=IR_L;rtn<=IR_H;rtn+=0.5){
 		if(flag_root==true){
@@ -2372,7 +2239,6 @@ int cPRFCluster::recurrent_SiteGammaCI(int tumor_num, double ucr, double CI, int
 	return 1;
 }
 
-
 /***************************************************
 * Function: Get a random model by choosing a value from 0 to 1, and select the clustering model for p with the weight above the random value
 * Input Parameter: SiteModels; site
@@ -2402,11 +2268,8 @@ long cPRFCluster::RandomModel_Num(struct SiteModels *p,long site){
       sum=pwt+sum;
     }
   }
-
   return(model_num);
 }
-
-
 
 //BUG: The model averaged gamma should not be the gamma corresponding to the model averaged probability; it should be gamma averaged for all gamma calculated from all probabilities.
 /***************************************************
@@ -2416,10 +2279,7 @@ long cPRFCluster::RandomModel_Num(struct SiteModels *p,long site){
 * Return Value: gamma for each site
 ***************************************************/
 int cPRFCluster::rc_SitePRF(int tumor_num, double ucr, long N){
-
   double j=1.0;
-
-
   //Estimate r for each site one by one
   for(long i=0; i<N; i++){
 	  double min_dx=IR_H;

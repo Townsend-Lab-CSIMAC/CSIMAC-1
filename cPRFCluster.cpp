@@ -1,4 +1,6 @@
-/*//ZMZ 07/18/2016. 
+/*
+To debug: output scales 
+//ZMZ 07/18/2016. 
 //Modified: In LogLikelihoodNonCluster and LogLikelihoodCluster, to prevent log(0) case, get the pseudo-lambda: when n=0, lambda = (double)1/(N_cluster_ScaledBack+1);
 Fixed bug: 
 added symbol in LogLikelihoodNonCluster and LogLikelihoodCluster - bug in Synonymous count in likelihood calculation
@@ -8,7 +10,6 @@ Fixed bug in Recurrent count in LogLikelihoodNonCluster, from && to ||, (Recurre
 Fixed bug in LogLikelihoodCluster and LogLikelihoodNonCluster: added double, or it will be 0. lambda = (double)1/(N_cluster_ScaledBack+1);
 Fixed Bug in LogLikelihoodCluster and LogLikelihoodNonCluster: for synonymous, recurrent is not considered; or the replacement recurrent M will be calculated, and create a bug.
 */
-
 
 #include "cPRFCluster.h"
 #include <string>
@@ -55,8 +56,6 @@ cPRFCluster::cPRFCluster() {
   polymorphism_num =-299;
   tumor_num =-299;
   output_format_num=0;
-
-
   genetic_code = 1;
   criterion_type = 0;
   Do_Synonymous_Cluster=0; // By default, option for clustering Synonymous sites in the polymorphism and divergence sequence is off. Users need to use '-s 1' to turn it on.
@@ -154,13 +153,10 @@ int cPRFCluster::init(long N){
 
   return 1;
 }
-
-
 /***************************************************
 * Function: Read the input files and execute the main function RunML, and screen output;
 * Input Parameter: required divergence file names, and the number of sequences in divergence
 ***************************************************/
-
 int cPRFCluster::Run(int argc, const char*argv[]) {	
   int i, flag=1;
   srand(1234); // to fix random number generator, to make sure the program is repeatable; need to remove for the final version of the program
@@ -168,9 +164,7 @@ int cPRFCluster::Run(int argc, const char*argv[]) {
 	    //Write in the output file with program name, Version, LastUpdate, and Reference.
 	    cout<<endl<<NAME<<", Version: "<<VERSION<<" [Last Update: "<<LASTUPDATE<<"]"<<endl;
 	    cout<<"Reference: "<<REFERENCE<<endl<<endl;
-
 	    static time_t time_start = time(NULL); // Record the start time
-
 	  //Parse input parameters
     if (parseParameter(argc, argv)!=1) throw "Error in parsing parameters!";
     
@@ -178,10 +172,8 @@ int cPRFCluster::Run(int argc, const char*argv[]) {
     if(div_cons_seqfile=="" || tumor_num_s=="") throw "Failed to specify the input file and/or the number of tumors! Use -H to find out.";
     //convert the format for the sequence number from string to int
     tumor_num=CONVERT<int>(tumor_num_s);
-
     cout<<"Read cancer divergence consensus input file: "<<div_cons_seqfile<<endl<<endl;
     if (readFasta(div_cons_seqfile, div_cons_seqname, div_cons_seq)!=1) throw "Error in reading divergent sequence.";
-
     //Print the divergence consensus sequence and the gene name
     cout<<endl<<"Divergence Consensus Sequence:"<<endl<<">"<<div_cons_seqname[0].c_str()<<endl;
     cout<<div_cons_seq[0].c_str()<<endl<<endl<<endl;
@@ -232,10 +224,6 @@ int cPRFCluster::Run(int argc, const char*argv[]) {
 
   return flag;
 }
-
-
-
-
 /***************************************************
 * Function: Print out the cluster information and gamma values for replacement divergence by default; and information for synonymous divergence can be printed out if the user assign '-s 1'.
 ***************************************************/
@@ -349,8 +337,6 @@ int cPRFCluster::output(long N){
       }
     }
     cout<<endl;
-
-
     //Output the data in the format of nucleotide or amino acid sequence
     if (output_format_num==1 or (output_format_num==0 and Scale!=1)) // 0: amino acid output || 1: nucleotide output, default=0
     {
@@ -421,8 +407,6 @@ int cPRFCluster::output(long N){
       }
       cout<<endl;
     }
-
-
   //Default: output the data in the format of amino acids
   if (output_format_num==0 and Scale==1) // 0: amino acid output || 1: nucleotide output, default=0
   {
@@ -514,10 +498,7 @@ int cPRFCluster::output(long N){
 * Output:
 * Return Value:
 ***************************************************/
-
-
 int cPRFCluster::RunML(vector<string> div_cons_seq) {
-
    //use only one format of input for the final version
    div_codon_consensus = div_cons_seq[0]; // Get divergence sequence with synonymous (S) and replacement (R) sites labeled 
    long N=div_codon_consensus.length(); //polymorphism and divergence sequence length, the two are equal.
@@ -536,8 +517,6 @@ int cPRFCluster::RunML(vector<string> div_cons_seq) {
 //Print the # of divergent synonymous and replacement sites labeled with 'S' and 'R'
   cout<<"Synonymous divergent count (DS): "<<ds<<endl;
   cout<<"Replacement divergent count (DR): "<<dr<<endl;
-
-
   cout<<"Number of tumor samples: "<<tumor_num<<endl;
   long N_ScaledBack=N*Scale; //Scale the gene length back 
   cout<<"Gene length: "<<N_ScaledBack<<" bp"<<endl;
@@ -594,7 +573,6 @@ int cPRFCluster::RunML(vector<string> div_cons_seq) {
     vec_upper_rate_ds=vec_upper_rate;
   }
 
-
   //Empty vectors and re-size for replacement divergence (DR)
   vec_SelectedModels.clear();
   vec_SelectedModels_dr.clear();
@@ -612,7 +590,6 @@ int cPRFCluster::RunML(vector<string> div_cons_seq) {
   vec_MA_rate_dr.clear();
   vec_MS_rate_dr.resize(N,0.0);
   vec_MA_rate_dr.resize(N,0.0);
-
 
 // ****  Major Step: Find cluster and calculate probability using multiple models for replacement divergence
   cout<<endl<<"Starting the clustering of replacement variants"<<endl;
@@ -644,14 +621,13 @@ int cPRFCluster::RunML(vector<string> div_cons_seq) {
   vec_lower_rate_dr=vec_lower_rate; // lower 95% CI rate for the clustering probability
   vec_upper_rate_dr=vec_upper_rate; // upper 95% CI rate for the clustering probability
 
-
   //Testing
   /*
   for(long i=0; i<N; i++) {
 		cout<<"Site:"<<i<<"\tModel selection rate: "<<vec_MS_rate_dr[i]<<"\tGamma:"<<vec_r_c[i]<<endl;
   }
 */
- //Do model averaging and estimate gamma for Replacement sites
+ //Estimate gamma for Replacement sites
   if (MS_only==0 && Do_r_estimate==1) {
     //If dr == 0, r can't be estimated.
     if(dr>0){
@@ -720,13 +696,11 @@ int cPRFCluster::RunML(vector<string> div_cons_seq) {
   return 1;
 }
 
-
 /***************************************************
 Subfunction - open and read the recurrent file
 Input: the file name, use the same format of the Recurrent.txt
 Output: recurrent list
 ***************************************************/
-
 int cPRFCluster::GetRecurrentList(string input_f){
 	ifstream myfileFn2(input_f.c_str());
 	if (!myfileFn2) throw "Error in opening Recurrent File for GetRecurrentList...\n";
@@ -757,7 +731,6 @@ int cPRFCluster::GetRecurrentList(string input_f){
 			Recurrents.push_back(tmp_rc);
 			  //Compact into one site for each codon
 		}
-
 	}
 	myfileFn2.close();
 	/*
@@ -774,7 +747,6 @@ int cPRFCluster::GetRecurrentList(string input_f){
 * Output: the number of symbols (Synonymous or Replacement)
 * Return Value: the number of symbols (Synonymous or Replacement)
 ***************************************************/
-
 long cPRFCluster::getDifference(string seq, int pos_start, int pos_end, char symbol) {
 		long i, n = 0;
 		for (i=pos_start; i<=pos_end; i++) {
@@ -797,14 +769,12 @@ long cPRFCluster::getDifference(string seq, int pos_start, int pos_end, char sym
 	else return -1;
 }
 
-
 /***************************************************
-* Function: calculate the likelihood of Binomial Probability i*log(p)+(n-i)*log(1-p); p=i/n
+* Function: calculate the likelihood of Binomial Probability i*log(p)+(n-i)*log(1-p); p=i/n; Log likelihood of Bernoulli distribution. BernoulliProb= (i/n)^i*[(n-i)/n]^(n-i); prob=Log(BernoulliProb)=i*log(i/n)+(n-i)*log[(n-i)/n]
 * Input Parameter: total number n and occurence i
 * Output: probability
 * Return Value: probability
 ***************************************************/
-// Log likelihood of Bernoulli distribution. BernoulliProb= (i/n)^i*[(n-i)/n]^(n-i); prob=Log(BernoulliProb)=i*log(i/n)+(n-i)*log[(n-i)/n]
 double cPRFCluster::BinomialProb(long n, long i) {
   double prob = 0.0;
   prob += (i==0)?0:i*log(double(i)/n);
@@ -812,7 +782,7 @@ double cPRFCluster::BinomialProb(long n, long i) {
   return prob;
 }
 /***************************************************
-* Function:
+* Function: Calculate the log of factorial, to prevent the large number.
 ***************************************************/
 double cPRFCluster::factorial(int n) {
 	//ZMZ added 04/26/2016
@@ -839,7 +809,7 @@ double cPRFCluster::LogLikelihoodCluster(long cs, long ce, long start, long end,
 	if (n==0) {	//To prevent log(0) case, get the pseudo-lambda
 		lambda = (double)1/(N_cluster_ScaledBack+1); //ZMZ 07/18/2016. Fixed bug, added double, or it will be 0. lambda = (double)1/(N_cluster_ScaledBack+1);
 		likelihood=lambda * N_cluster_ScaledBack * log(lambda) - N_cluster_ScaledBack * lambda; 
-		cout<<"\nTest LogLikelihoodCluster, lambda:\t"<<lambda<<"\tlog(lambda):\t"<<log(lambda)<<"likelihood:"<<likelihood<<"\t- n:"<<-n<<endl;
+		//cout<<"\nTest LogLikelihoodCluster, lambda:\t"<<lambda<<"\tlog(lambda):\t"<<log(lambda)<<"likelihood:"<<likelihood<<"\t- n:"<<-n<<endl;
 		return likelihood; 
 		}
 		
@@ -864,7 +834,7 @@ double cPRFCluster::LogLikelihoodCluster(long cs, long ce, long start, long end,
 		}
 	}
 	likelihood=n * log(lambda) - n - M;
-	cout<<"\nTest LogLikelihoodCluster, lambda:\t"<<lambda<<"likelihood:"<<likelihood<<"\tlog(lambda):\t"<<log(lambda)<<"\t- n:"<<-n<<"\t-M:"<<-M<<endl;
+	//cout<<"\nTest LogLikelihoodCluster, lambda:\t"<<lambda<<"likelihood:"<<likelihood<<"\tlog(lambda):\t"<<log(lambda)<<"\t- n:"<<-n<<"\t-M:"<<-M<<endl;
 	return  likelihood;
 }
 /***************************************************
@@ -903,7 +873,7 @@ double cPRFCluster::LogLikelihoodNonCluster(long cs, long ce, long start, long e
 		}
 	}	
 	likelihood=n * log(lambda) - n - M;
-	cout<<"\nTest LogLikelihoodNonCluster, lambda:\t"<<lambda<<"likelihood:"<<likelihood<<"\tlog(lambda):\t"<<log(lambda)<<"\t- n:"<<-n<<"\t-M:"<<-M<<endl;
+	//cout<<"\nTest LogLikelihoodNonCluster, lambda:\t"<<lambda<<"likelihood:"<<likelihood<<"\tlog(lambda):\t"<<log(lambda)<<"\t- n:"<<-n<<"\t-M:"<<-M<<endl;
 	return likelihood; 
 }
 
@@ -941,7 +911,11 @@ int cPRFCluster::ClusterSubSeq(int pos_start, int pos_end, char symbol, struct S
 	long N_ScaledBack=N*Scale; // Scale the gene length back 
 	long symbol_n = 0; // declare the counts of variant sites
 	symbol_n=getDifference(div_codon_consensus, pos_start, pos_end, symbol); // Get the counts of variant sites
-	if (N==0 || N==1 || symbol_n==0) return 1; // return if the sequence length is 0/1 or the count of variant sites is 0
+	if (N==0 || N==1 || symbol_n==0) 
+	{
+		cout<<"No cluster; quit ClusterSubSeq for the region "<<pos_start<<"\tto\t"<<pos_end<<"\tTotalVariant\t"<<symbol_n<<endl;
+		return 1; // return if the sequence length is 0/1 or the count of variant sites is 0	
+	}
 
 	double InL0 = LogLikelihoodCluster(0, N-1, 0, N-1,symbol); // the background likelihood for the whole gene/region
 	double InL_cluster_max, InL_noncluster_max; // for cases with 0 variant log(0)
@@ -964,7 +938,7 @@ int cPRFCluster::ClusterSubSeq(int pos_start, int pos_end, char symbol, struct S
 	//ZMZ debugging 04/27/2016
 	//cout<<"Model Information\npos_start\tpos_end\tcs\tce\tp0\tpc\tsymbol_n\tsymbol_cn\tInL_tmp\tInL_tmp_cluster\tInL_tmp_noncluster\tcri\tcri0\tLnL0"<<endl;
 
-	cout<<"Within the clustering subfunction ClusterSubSeq, start of the region: "<<pos_start<<"\tEnd: "<<pos_end<<endl;
+	cout<<"Within the clustering subfunction ClusterSubSeq, start of the region: "<<pos_start<<"\tEnd: "<<pos_end<<"\tTotalVariant\t"<<symbol_n<<endl;
 	//Slide window across the whole sequence for the cluster start and end position to find the cluster with the window size as 1.
 	for (cs=pos_start; cs<=pos_end; cs+=1) {
 		for(ce=cs; ce<=pos_end; ce+=1) {
@@ -1013,10 +987,11 @@ int cPRFCluster::ClusterSubSeq(int pos_start, int pos_end, char symbol, struct S
 			getp0pc_MK(pos_start, pos_end, cs, ce, p0, pc, symbol_n, symbol_cn);
 			CandidateModels tmp_CM(AIC_weight, cri, pos_start, pos_end, cs, ce, p0, pc,InL_tmp);// each model contains all parameters
 			vec_AllModels.push_back(tmp_CM); // all models
+			/*
 			if (cs==170 and ce==289){
 				cout<<"Cluster region 170 to 289."<<endl;
 				cout<<"Position Start: "<<pos_start<<"\tEnd: "<<pos_end<<"\tCluster start: "<<cs<<"\tend: "<<ce<<"\tp0: "<<p0<<"\tpc: "<<pc<<"\tvariant#Total\t"<<symbol_n<<"\tVariant#InCluster:\t"<<symbol_cn<<"\tInL0:\t"<<InL0<<"\tInL_tmp:\t"<<InL_tmp<<"\tInL_tmp_cluster:\t"<<InL_tmp_cluster<<"\tInL_tmp_noncluster:\t"<<InL_tmp_noncluster<<endl;		
-			}
+			}*/
 
 			//Evaluate the cluster by the criterion, found the best cluster model, the first cri0 is Null model cs=pos_start, ce=pos_end.
 			if (cri <= cri0) {
@@ -1029,9 +1004,9 @@ int cPRFCluster::ClusterSubSeq(int pos_start, int pos_end, char symbol, struct S
 				)
 				{
 					found = 1; // found=1 means the presence of the cluster
-					cout<<"\n***Found a cluster (cri <= cri0), cri: "<<cri<<"\tcri0: "<<cri0<<endl;
+					//cout<<"\n***Found a cluster (cri <= cri0), cri: "<<cri<<"\tcri0: "<<cri0<<endl;
 					//ZMZ debugging 07/14/2016
-					cout<<"Position Start: "<<pos_start<<"\tEnd: "<<pos_end<<"\tCluster start: "<<cs<<"\tend: "<<ce<<"\tp0: "<<p0<<"\tpc: "<<pc<<"\tvariant#Total\t"<<symbol_n<<"\tVariant#InCluster:\t"<<symbol_cn<<"\tInL0:\t"<<InL0<<"\tInL_tmp:\t"<<InL_tmp<<"\tInL_tmp_cluster:\t"<<InL_tmp_cluster<<"\tInL_tmp_noncluster:\t"<<InL_tmp_noncluster<<endl;
+					//cout<<"Position Start: "<<pos_start<<"\tEnd: "<<pos_end<<"\tCluster start: "<<cs<<"\tend: "<<ce<<"\tp0: "<<p0<<"\tpc: "<<pc<<"\tvariant#Total\t"<<symbol_n<<"\tVariant#InCluster:\t"<<symbol_cn<<"\tInL0:\t"<<InL0<<"\tInL_tmp:\t"<<InL_tmp<<"\tInL_tmp_cluster:\t"<<InL_tmp_cluster<<"\tInL_tmp_noncluster:\t"<<InL_tmp_noncluster<<endl;
 
 					cs_max = cs;
 					ce_max = ce;
@@ -1047,7 +1022,7 @@ int cPRFCluster::ClusterSubSeq(int pos_start, int pos_end, char symbol, struct S
 			}
 		} // end of the first for lop
 	}//end of clustering - the two for loops
-	cout<<" For the region from "<<pos_start<<" to "<<pos_end<<", the total number of models in the subfunction ClusterSubSeq: "<<vec_AllModels.size()<<endl;
+	cout<<"For the region from "<<pos_start<<" to "<<pos_end<<", the total number of models in the subfunction ClusterSubSeq: "<<vec_AllModels.size()<<endl;
 	// if the cluster is absent, Select models (vec_SelectedModels) keep the model cs=pos_start, ce=pos_end; Model average.
 	if (found==0){
 		//If it could not reject the null model, then keep the null model.
@@ -1057,6 +1032,7 @@ int cPRFCluster::ClusterSubSeq(int pos_start, int pos_end, char symbol, struct S
 			vec_SelectedModels.push_back(nullmodel);
 			if(MS_only==0) ModelAveraging(0, N-1, 0, N-1, p_tmp,p_tmp, min_cri,pointer); // Model average if no cluster found
 		}
+		cout<<"No cluster is found; quit ClusterSubSeq."<<endl<<endl;
 		return 1;
 	}
 	// if the cluster is present
@@ -1072,20 +1048,20 @@ int cPRFCluster::ClusterSubSeq(int pos_start, int pos_end, char symbol, struct S
 	cout<<"Total number of selected models in ClusterSubSeq: "<<vec_SelectedModels.size()<<endl;
 
 	if(MS_only==0){
-		ModelAveraging(pos_start, pos_end, cs_max, ce_max, lambda_0_max, lambda_c_max, min_cri,pointer); //model average if cluster found
-		cout << "Do model averaging of the cluster of variants if cluster found."<<endl;
+		ModelAveraging(pos_start, pos_end, cs_max, ce_max, lambda_0_max, lambda_c_max, min_cri,pointer); //Keep all models for each site
+		cout << "<Model averaging of models for each site, to get the probability of the site being variants."<<endl;
 	}
 
 	/* Divide and Conquer to ClusterSubSeq three sub-sequences (pos_start to cs, ce to pos_end, and cs to ce) for the best models cs, ce*/
 	if (ce_max!=pos_end || cs_max!=pos_start) {
 		if (cs_max>pos_start+1) {
-			cout<<"Divide and Conquer to ClusterSubSeq for regions under cs_max>pos_start+1: "<<pos_start<<" — "<<(cs_max-1)<<endl;
+			cout<<"Divide and Conquer of ClusterSubSeq for regions under cs_max>pos_start+1: "<<pos_start<<" — "<<(cs_max-1)<<endl;
 			ClusterSubSeq(pos_start, cs_max-1,symbol,pointer);}
 		if (ce_max<pos_end-1) {
-			cout<<"Divide and Conquer to ClusterSubSeq for regions under ce_max<pos_end-1: "<<ce_max+1<<" — "<<pos_end<<endl;
+			cout<<"Divide and Conquer of ClusterSubSeq for regions under ce_max<pos_end-1: "<<ce_max+1<<" — "<<pos_end<<endl;
 			ClusterSubSeq(ce_max+1, pos_end,symbol,pointer);}
 		if (cs_max<ce_max-1) {
-			cout<<"Divide and Conquer to ClusterSubSeq for regions under cs_max<ce_max-1: "<<cs_max<<" — "<<ce_max<<endl;
+			cout<<"Divide and Conquer of ClusterSubSeq for regions under cs_max<ce_max-1: "<<cs_max<<" — "<<ce_max<<endl;
 			ClusterSubSeq(cs_max, ce_max, symbol,pointer);}
 	}
 	cout<<"Finish ClusterSubSeq for the region from the start position "<<pos_start<<" to the end position "<<pos_end<<endl;
@@ -1523,7 +1499,6 @@ void cPRFCluster::CIr_stochastic_threaded(struct SiteModels *dr, long N, long i,
 * Output:model_num
 * Return Value: model_num
 ***************************************************/
-
 vector<double> cPRFCluster::RandomModel_NumFastInit(struct SiteModels *p,long site) {
   int pss = p[site].sms.size();
   CI *cip = &(p[site].sms[0]);
@@ -1537,7 +1512,6 @@ vector<double> cPRFCluster::RandomModel_NumFastInit(struct SiteModels *p,long si
   return pWeightSums;
 }
 
-
 long cPRFCluster::RandomModel_NumFast(const vector<double> &pWeightSums){
   double rand_tmp=rand();
   //RAND_MAX is from system (2147483647)
@@ -1546,7 +1520,6 @@ long cPRFCluster::RandomModel_NumFast(const vector<double> &pWeightSums){
 	  ////cout<<"Warning: the random number is no more than the weight of the first model!"<<endl;
 	  ////cout << "RandomNum:\t" << rand_num <<"\tFirstModelWeight:\t"<< pWeightSums[0]<<endl;
       return 0;
-
   }
   long lo = 0, hi = pWeightSums.size();
   long mid = (lo + hi)/2, nmid;
@@ -1560,17 +1533,13 @@ long cPRFCluster::RandomModel_NumFast(const vector<double> &pWeightSums){
     mid = nmid;
   }
   //cerr << "Random number: " << rand_num <<" Low: "<< lo << " High:" << hi<< " lowWeightSum: " << pWeightSums[lo] << " highWeightSum: " << pWeightSums[hi] << endl;
-
   // not exactly the same condition as the original (which i believe is a little broken).
   if(!(hi == 0 || pWeightSums[hi-1] <= rand_num && rand_num <= pWeightSums[hi])) {
     cerr << "blew fast model num " << lo << "  " << hi <<  " " << rand_num << ": " << pWeightSums[lo] << " " << pWeightSums[hi-1] << " " << pWeightSums[hi] << endl;
     exit(1);
   }
-
   ////cout << "RandomNum:\t" << rand_num <<"\tLow:\t"<< lo << "\tHigh:\t" << hi<< "\tlowWeightSum:\t" << pWeightSums[lo] << "\thighWeightSum:\t" << pWeightSums[hi] << endl;
-
   return(hi);
-
 }
 
 /***************************************************
@@ -1631,12 +1600,9 @@ double cPRFCluster::CIs_rc_PRF (double ucr, double dr, long tumor_num){
 	  if(flag_root==false and min_dx<=MinDx){
 		  new_r=optimal_r;
 	  }
-
 	  //cout<<"End CIs_rc_PRF: gamma "<<new_r<<endl;
 	  return (new_r);
 }
-
-
 /***************************************************
 * Function: rank by gamma, create a partial summed weight models first, then find the model with the weight according to the CI
 * Function: Use the same one for both Stochastic and Exact to find the gamma CI
@@ -1651,12 +1617,11 @@ inline bool operator<(const rModels& a, const rModels& b)
 }
 
 int cPRFCluster::CI_UpLow_rc(long site,double min_weight_c, vector<rModels> vec_rModels_c_indiv, ostringstream* myout) {
-
 	double all_weight=0.0;
 	long lower_model=-1;
 	long upper_model=-1;
 	vector<double> rWeightSums_indiv;
-  int flag_lower=0;
+    int flag_lower=0;
 	double lower=0.0, upper=0.0;
 
 	//Recurrent Site related: Get recurrent weight, recurrentSite gamma, 95% Do_ci_r based on recurrentCount.
@@ -1805,11 +1770,8 @@ int cPRFCluster::CI_UpLow_rc(long site,double min_weight_c, vector<rModels> vec_
 		*myout<<"Converted to integers: Lower: "<<CONVERT<int>(vec_lower_r_c[site])<<"\tGamma:\t"<<CONVERT<int>(vec_r_c[site])<<"\tUpper:\t"<<CONVERT<int>(vec_upper_r_c[site])<<endl;
 		*myout<< "Warning in getting the right 95% confidence interval gamma in CI_UpLow_rc!";
 	}
-
 	vec_rModels_c_indiv.clear();
-
 	return 1;
-
 }
 
 /***************************************************
@@ -1878,16 +1840,12 @@ bool cPRFCluster::parseParameter(int argc, const char* argv[]) {
 		    throw 1;
 		  }
 	}
-
-
     //Choice of the output format, amino acid or nucleotide level output
 	else if (temp=="-SR" && (i+1)<argc && SilentRate_flag==0) {
 
 		SilentRate =CONVERT<double>(argv[++i]);;
 		SilentRate_flag=1;
 	}
-
-
 	//Criteria - AIC/BIC/AICc/LRT
 	else if (temp=="-C" && (i+1)<argc && criterion_flag==0) {
 	  int num = CONVERT<int>(argv[++i]);
@@ -2027,7 +1985,6 @@ bool cPRFCluster::parseParameter(int argc, const char* argv[]) {
 * Output:Screen output of cMAC-PRF information and options of parameters.
 * Return Value: none
 ***************************************************/
-
 void cPRFCluster::showHelpInfo() {
   cout<<"***********************************************************************"<<endl;
   cout<<NAME<<", Version: "<<VERSION<<" ["<<LASTUPDATE<<"]"<<endl;	
@@ -2076,16 +2033,12 @@ void cPRFCluster::showHelpInfo() {
   cout<<"CONTACT:"<<endl;
   cout<<"Please send suggestions or bugs to Ziming Zhao (ziming.gt@gmail.com) and Jeffrey Townsend (Jeffrey.Townsend@Yale.edu)."<<endl;
   cout<<endl;
-
 }
-
-
 /***************************************************
 Subfunction - open and read the lookup table, to extract the values for k - the count of recurrent mutations for a particular site.
 Input: the lookup table file name, the struct LambdaCI;
 Output: vector<CI_recurrent> RecurrentLookup LambdaCI
 ***************************************************/
-
 int cPRFCluster::LambdaCILookupTable(string input_f_name){
 	int k=0;
 	double tmp_l=0.0, tmp_u=0.0;
@@ -2124,7 +2077,6 @@ int cPRFCluster::LambdaCILookupTable(string input_f_name){
     //cout<<"***Test Lambda lookup table:"<<endl;
     //cout<<LambdaCIs[0].lowerCIlambda<<endl;
     //cout<<LambdaCIs[0].count<<endl;
-
  return 1;
 }
 
@@ -2322,7 +2274,6 @@ int cPRFCluster::rc_SitePRF(int tumor_num, double ucr, long N){
     		}
     	}
     }
-
     if(flag_root==false and min_dx>MinDx){
     	cout<<"rs_SitePRF: Site:\t"<<i<<"\tGamma NULL. min_dx:\t"<<min_dx<<"\tOptimalGamma:\t"<<optimal_r<<"\tRate:\t"<<vec_MA_rate_dr[i]<<"\tucr:\t"<<ucr<<"\tTumorNumber:\t"<<tumor_num<<endl;
     	vec_r_c[i]=-199;
@@ -2330,10 +2281,7 @@ int cPRFCluster::rc_SitePRF(int tumor_num, double ucr, long N){
     if(flag_root==false and min_dx<=MinDx){
     	vec_r_c[i]=optimal_r;
     }
-
     //cout<<"Gamma: "<<vec_r_c[i]<<"\toptimal_r: "<<optimal_r<<"\tmin_dx: "<<min_dx<<endl;
   }
-
   return 1;
 }
-

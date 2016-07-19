@@ -1,6 +1,7 @@
 /*
 To debug: output scales; 
 To change: CIr_stochastic_threaded p=0, r=0
+To change: multiple hits considered poisson rate
 
 Excluded one site cluster: 
 In ClusterSubSeq, added ce-cs>1 in 'if (cri <= cri0 && ce-cs>1) {//add the condition to exclude the cluster of one site'

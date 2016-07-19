@@ -1,15 +1,14 @@
 /*
 To debug: output scales; 
-
-To check: not include one site cluster
 To change: CIr_stochastic_threaded p=0, r=0
-To change: combine all models for all regions - put all models together, lambda_min, lambda_max, etc.
 
-To further think:
+Excluded one site cluster: 
+In ClusterSubSeq, added ce-cs>1 in 'if (cri <= cri0 && ce-cs>1) {//add the condition to exclude the cluster of one site'
+Modified: Used only subregional models to calculate gamma.
 Modified: p=0, gamma=0; and remove conditions of vec_r_c[i*3]==0 or vec_r_c[i]==0, that gives NULL gamma
+
 Added GeneLength public parameter, when n=0 and N=GeneLength, quit cluster; else keep all cluster models for sub-regions.
 Modified: In LogLikelihoodNonCluster and LogLikelihoodCluster, return 0 when n=0 and lambda=0.
-
 EachSiteModels: all models from the regions with clusters are kept, including models from divide and conquer ClusterSubSeq
 //pointer[i].sms.clear();// silent pointer[i].sms.clear() in EachSiteModels, since cumulative models are used in ClusterSubSeq for each site.
 
@@ -935,7 +934,7 @@ int cPRFCluster::ClusterSubSeq(int pos_start, int pos_end, char symbol, struct S
 	lambda_c_max=symbol_n/N_ScaledBack;
 
 	int found=0; // means the absence of the cluster; found =1, found the lowest AIC/BIC, as the best model
-	//vec_AllModels.clear(); // empty the vec_AllModels for the new region
+	vec_AllModels.clear(); // empty the vec_AllModels for the new region
 	//ZMZ debugging 04/27/2016
 	//cout<<"Model Information\npos_start\tpos_end\tcs\tce\tp0\tpc\tsymbol_n\tsymbol_cn\tInL_tmp\tInL_tmp_cluster\tInL_tmp_noncluster\tcri\tcri0\tLnL0"<<endl;
 
@@ -995,7 +994,7 @@ int cPRFCluster::ClusterSubSeq(int pos_start, int pos_end, char symbol, struct S
 			}*/
 
 			//Evaluate the cluster by the criterion, found the best cluster model, the first cri0 is Null model cs=pos_start, ce=pos_end.
-			if (cri <= cri0) {
+			if (cri <= cri0 && ce-cs>1) {//add the condition to exclude the cluster of one site
 				if ((cs-pos_start>1 && pos_end-ce>1) ||
 						(cs==pos_start && pos_end-ce>1) ||
 						(cs-pos_start>1 && pos_end==ce))
@@ -1062,7 +1061,6 @@ int cPRFCluster::ClusterSubSeq(int pos_start, int pos_end, char symbol, struct S
 			ClusterSubSeq(cs_max, ce_max, symbol,pointer);}
 	}
 	cout<<"Finish ClusterSubSeq for the region from the start position "<<pos_start<<" to the end position "<<pos_end<<endl;
-	vec_AllModels.clear(); // empty the vec_AllModels for the new region
 	return 1;
 }
 /***************************************************

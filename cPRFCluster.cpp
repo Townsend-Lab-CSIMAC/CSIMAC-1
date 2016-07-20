@@ -1,10 +1,17 @@
 /*
 To debug: output scales; 
+To debug: Error in -O; 
+
 
 To change: multiple hits considered poisson rate
 
-Changed p=0, r=0 in CIr_stochastic_threaded and CIs_rc_PRF: CIr_stochastic_threaded p=0, r=0; CIs_rc_PRF, dr=0, r=0.
+Fixed Seven compiling warnings:
+changed from unassigned to int for int position1 = str.find("	");
+|| and && parenthesis
+deleted (k,tmp_l,tmp_u)=(0,0.0,0.0); use k=0; tmp_l=tmp_u=0.0;
+Added output error messages and updated codes in parseParameters 
 
+Changed p=0, r=0 in CIr_stochastic_threaded and CIs_rc_PRF: CIr_stochastic_threaded p=0, r=0; CIs_rc_PRF, dr=0, r=0.
 Excluded one site cluster: 
 In ClusterSubSeq, added ce-cs>1 in 'if (cri <= cri0 && ce-cs>1) {//add the condition to exclude the cluster of one site'
 Modified: Used only subregional models to calculate gamma.
@@ -712,13 +719,13 @@ int cPRFCluster::GetRecurrentList(string input_f){
 	while ( myfileFn2.good()) {
 		getline(myfileFn2,str);
 		// cout<<"Each line: "<<str<<endl;
-		unsigned position1 = str.find(" => ");
+		int position1 = str.find(" => ");
 		if (position1!=std::string::npos)
 		{
 			//cout<<"The position1: "<<position1<<endl;
 		}
 		else {cout<<"Error! Failed to find the marker => in the recurrent file for GetRecurrentList!\n";}
-		unsigned position2=str.find("	", position1+2);
+		int position2=str.find("	", position1+2);
 		//Get the recurrent position and recurrent count
 		if (position1<20 and position1>0)
 		{
@@ -1531,7 +1538,7 @@ long cPRFCluster::RandomModel_NumFast(const vector<double> &pWeightSums){
   }
   //cerr << "Random number: " << rand_num <<" Low: "<< lo << " High:" << hi<< " lowWeightSum: " << pWeightSums[lo] << " highWeightSum: " << pWeightSums[hi] << endl;
   // not exactly the same condition as the original (which i believe is a little broken).
-  if(!(hi == 0 || pWeightSums[hi-1] <= rand_num && rand_num <= pWeightSums[hi])) {
+  if(!(hi == 0 || (pWeightSums[hi-1] <= rand_num && rand_num <= pWeightSums[hi]))) {
     cerr << "blew fast model num " << lo << "  " << hi <<  " " << rand_num << ": " << pWeightSums[lo] << " " << pWeightSums[hi-1] << " " << pWeightSums[hi] << endl;
     exit(1);
   }
@@ -1722,7 +1729,6 @@ int cPRFCluster::CI_UpLow_rc(long site,double min_weight_c, vector<rModels> vec_
 			averaged_gamma=(rWeightSums_indiv[i]-lci)*vec_rModels_c_indiv[i].r;
 			////cout<<"***Lower CI model id:\t"<< lower_model<<"\tLowerCI gamma:\t"<<lci_interpolation_rl<<"\tSummedWeight:\t"<<rWeightSums[lower_model]<<"\tGammaBefore:\t"<<vec_rModels_c_indiv[i-1].r<<"\tGammaAfter:\t"<<vec_rModels_c_indiv[i].r<<"\tAveragedGamma:\t"<<averaged_gamma<<endl<<endl;
 		}
-
 		//getting model averaged gamma between 95% CI
 		if (flag_lower==1 && i>lower_model && rWeightSums_indiv[i]<=uci){
 			averaged_gamma+=vec_rModels_c_indiv[i].weight*vec_rModels_c_indiv[i].r;
@@ -1750,7 +1756,6 @@ int cPRFCluster::CI_UpLow_rc(long site,double min_weight_c, vector<rModels> vec_
 		*myout<<"Model averaged gamma: NULL"<<endl;
 				vec_r_c[site]=-199;
 	}
-
 	//ZMZ 04/28/2016 use only poisson rate regional gamma as an option, by default, weighted regional gamma and recurrent gamma
 	if (regional_gamma_only==0)
 	{
@@ -1789,192 +1794,186 @@ bool cPRFCluster::parseParameter(int argc, const char* argv[]) {
       if (temp=="-H") showHelpInfo();
       else {cout<<"argc number problems, 2, 4!\n"; throw 1;}
     }
-    //
     else if (argc!=5 && argc!=7 && argc!=9 && argc!=11 && argc!=13 && argc!=15 && argc!=17 && argc!=19 && argc!=21 && argc!=23 && argc!=25 && argc!=27 && argc!=29 && argc!=31 && argc!=33) {
       cout<<"argc number problems, not 5 to 33!\n";
       throw 1;			
     }		
     else {			
-      //parse parameters
-   //default values for parameters
+      //default values for parameters
       int recur_flag=0, output_flag=0, div_num_flag=0, div_cons_flag=0,code_flag=0, criterion_flag=0,ms_flag=0, synonymous_flag=0,ci_ma_flag=0,r_flag=0,Do_ci_r_flag=0,ci_method_flag=0, nuc_replace_flag=0;
       SilentRate_flag=0;
       for (i=1; i<argc; i++) {				
-	temp = stringtoUpper(argv[i]);
-
-	//Divergent input consensus file, required.
-    if (temp=="-DC" && (i+1)<argc && div_cons_flag==0) {
-	  div_cons_seqfile = argv[++i];
-	  div_cons_flag++;
-	}
-
-	//Divergent sequence number - the number of tumor samples, required.
-	else if (temp=="-DN" && (i+1)<argc && div_num_flag==0) {
-		tumor_num_s = argv[++i];
-		div_num_flag++;
-	}
-
-	//Recurrent input file.
-	else if (temp=="-RF" && (i+1)<argc && recur_flag==0) {
-		recurrent_file = argv[++i];
-	  recur_flag++;
-	}
-
-    //Choice of the output format, amino acid or nucleotide output 
-    //0: amino acid output || 1: nucleotide output, default=0
-	else if (temp=="-O" && (i+1)<argc && output_flag==0) {
-
-		  int format = CONVERT<int>(argv[++i]);
-		  if (format==0) {
-			  output_flag=0;
-			  output_format_num=0;
-		  }
-		  else if (format==1)
-		  {
-			  output_flag=1;
-			  output_format_num=1;
-		  }
-		  else {
-		    throw 1;
-		  }
-	}
-    //Choice of the output format, amino acid or nucleotide level output
-	else if (temp=="-SR" && (i+1)<argc && SilentRate_flag==0) {
-
-		SilentRate =CONVERT<double>(argv[++i]);;
-		SilentRate_flag=1;
-	}
-	//Criteria - AIC/BIC/AICc/LRT
-	else if (temp=="-C" && (i+1)<argc && criterion_flag==0) {
-	  int num = CONVERT<int>(argv[++i]);
-	  if (num>=0 && num<=3) {
-	    criterion_type = num;
-	    criterion_flag=1;
-	  }
-	  else {
-	    throw 1;
-	  }
-	}
-	//Genetic code
-	else if (temp=="-G" && (i+1)<argc && code_flag==0) {
-	  int num = CONVERT<int>(argv[++i]);
-	  if (num>0 &&  num<24) {
-	    genetic_code = num;
-	    code_flag=1;
-	  }
-	  else {
-	    throw 1;
-	  }
-	}
-	//Model selection and model averaging
-	else if (temp=="-M" && (i+1)<argc &&  ms_flag==0) {
-	  int num=CONVERT<int>(argv[++i]);
-	  if(num==0 || num==1){
-	    MS_only = num;
-	    ms_flag=1;
-	  }
-	  else {
-	    cout<<"Error for the input parameter -m, the input should be 0 or 1. {0: use both model selection and model averaging || 1: use only model selection}, default = 0}"<<endl;
-	    throw 1;
-	  }
-	}
-	//Optional - Show the clustering results from synonymous sites
-	else if (temp=="-S" && (i+1)<argc && synonymous_flag==0){
-	  int num=CONVERT<int>(argv[++i]);
-	  if(num==0 || num==1){
-	    Do_Synonymous_Cluster = num;
-	    synonymous_flag=1;
-	  }else{
-	    throw 1;
-	  }
-	}
-	//Optional - Scale of the gene, it should be 1,3,6,9,12,15...3*n, the true sequence length is the times of the scale and the given length.
-	else if (temp=="-SC" && (i+1)<argc){
-	  int num=CONVERT<int>(argv[++i]);
-	  Scale = num;
-      if (Scale%3!=0) { cout<< "Warning: Scale of the gene cannot be divided by 3 (codon size)."<<endl;}
-	  if (num<1)
-	  {
-	    throw "Error: the input parameter -SC Scale is smaller than 1.";
-	  }
-	}
-	//Confidence Intervals for Model averaging
-	else if(temp=="-CI_M" && (i+1)<argc && ci_ma_flag==0){
-	  int num=CONVERT<int>(argv[++i]);
-	  if(num==0 || num==1){
-            ci_ma=num;
-	    ci_ma_flag=1;
-          }else{
-            throw 1;
-          }
-	}
-	//Estimate gamma
-	else if(temp=="-R" && (i+1)<argc && r_flag==0){
-          int num=CONVERT<int>(argv[++i]);
-	  if(num==0 || num==1){
-            Do_r_estimate=num;
-	    r_flag=1;
-          }else{
-            throw 1;
-          }
-        }
-	//Confidence Intervals of gamma
-	else if(temp=="-CI_R" && (i+1)<argc && Do_ci_r_flag==0){
-          int num=CONVERT<int>(argv[++i]);	  
-	  if(num==0 || num==1){
-            Do_ci_r=num;
-	    Do_ci_r_flag=1;
-          }else{
-            throw 1;
-          }
-        }
-	//Exact algorithm for estimating CIs for gamma
-	else if(temp=="-EXACT" && (i+1)<argc && ci_method_flag==0){
-          int num=CONVERT<int>(argv[++i]);
-	  if(num==0 || num==1){
-            Do_ci_r_exact=num;
-	    ci_method_flag=1;
-          }else{
-            throw 1;
-          }
-        }
-    //ZMZ 04/28/2016  added option - regional gamma only; need to capitalize
-	//regional only gamma or weighted gamma of regional and recurrent; default is weighted gamma
-	else if(temp=="-REGIONALGAMMA" && (i+1)<argc){
-      int num=CONVERT<int>(argv[++i]);
-	  if(num==0 || num==1){
-        regional_gamma_only=num;
-          }
-      else{
-		  cout<<"Error in RegionalGamma"<<endl;
-            throw 1;
-          }
-    }
-    
-    //Replace or see as gap in the ambiguous nucleotide site 
-	else if(temp=="-N" && (i+1)<argc && nuc_replace_flag==0){
-	  int num=CONVERT<int>(argv[++i]);
-	  if(num==0 || num==1){
-	    Nuc_replace=num;
-	    nuc_replace_flag=1;
-	  }else{
-	    throw 1;
-	  }
-	}
-
-    else{
-          throw 1;
-        }
-      }			
-    }
-  }
+			temp = stringtoUpper(argv[i]);
+			//option - the divergent consensus input file, required.
+			if (temp=="-DC" && (i+1)<argc && div_cons_flag==0) {
+			  div_cons_seqfile = argv[++i];
+			  div_cons_flag++;
+			}
+			//option - the number of tumor samples, required.
+			else if (temp=="-DN" && (i+1)<argc && div_num_flag==0) {
+				tumor_num_s = argv[++i];
+				div_num_flag++;
+			}
+			//option - the recurrent input file.
+			else if (temp=="-RF" && (i+1)<argc && recur_flag==0) {
+				recurrent_file = argv[++i];
+			  recur_flag++;
+			}
+			//option - the output format, amino acid or nucleotide output; 0: amino acid output || 1: nucleotide output, default=0
+			else if (temp=="-O" && (i+1)<argc && output_flag==0) {
+				  int num = CONVERT<int>(argv[++i]);
+				  if (num==0 || num==1) {//0: amino acid output || 1: nucleotide output, default=0			  
+					  output_format_num=num;
+					  output_flag++;
+				  }
+				  else {
+					cout<<"Error in parseParameter for -O, output format should be 0 or 1, 0: amino acid output || 1: nucleotide output, default=0."<<endl;
+					throw 1;
+				  }
+			}
+			//option - user defined silent rate
+			else if (temp=="-SR" && (i+1)<argc && SilentRate_flag==0) {
+				SilentRate =CONVERT<double>(argv[++i]);;
+				SilentRate_flag++;
+			}
+			//option - criteria to calculate weights, AIC/BIC/AICc/LRT
+			else if (temp=="-C" && (i+1)<argc && criterion_flag==0) {
+			  int num = CONVERT<int>(argv[++i]);
+			  if (num>=0 && num<=3) {
+				criterion_type = num;
+				criterion_flag++;
+			  }
+			  else {
+				cout<<"Error in parseParameter for -C, criteria AIC/BIC/AICc"<<endl;
+				throw 1;
+			  }
+			}
+			//Genetic code
+			else if (temp=="-G" && (i+1)<argc && code_flag==0) {
+			  int num = CONVERT<int>(argv[++i]);
+			  if (num>0 &&  num<24) {
+				genetic_code = num;
+				code_flag++;
+			  }
+			  else {
+				cout<<"Error in parseParameter for -G"<<endl;
+				throw 1;
+			  }
+			}
+			//Model selection and model averaging
+			else if (temp=="-M" && (i+1)<argc &&  ms_flag==0) {
+			  int num=CONVERT<int>(argv[++i]);
+			  if(num==0 || num==1){
+				MS_only = num;
+				ms_flag++;
+			  }
+			  else {
+				cout<<"Error for the input parameter -m, the input should be 0 or 1. {0: use both model selection and model averaging || 1: use only model selection}, default = 0}"<<endl;
+				throw 1;
+			  }
+			}
+			//Optional - Show the clustering results from synonymous sites
+			else if (temp=="-S" && (i+1)<argc && synonymous_flag==0){
+			  int num=CONVERT<int>(argv[++i]);
+			  if(num==0 || num==1){
+				Do_Synonymous_Cluster = num;
+				synonymous_flag++;
+			  }else{
+				cout<<"Error in parseParameter for -S"<<endl;
+				throw 1;
+			  }
+			}
+			//Optional - Scale of the gene, it should be 1,3,6,9,12,15...3*n, the true sequence length is the times of the scale and the given length.
+			else if (temp=="-SC" && (i+1)<argc){
+			  int num=CONVERT<int>(argv[++i]);
+			  Scale = num;
+			  if (Scale%3!=0) { cout<< "Warning: Scale of the gene cannot be divided by 3 (codon size)."<<endl;}
+			  if (num<1)
+			  {
+				cout<<"Error in parseParameter for -SC Scale is smaller than 1."<<endl;
+				throw 1;
+			  }
+			}
+			//option - calculation of confidence intervals for model averaging of poisson rates
+			else if(temp=="-CI_M" && (i+1)<argc && ci_ma_flag==0){
+			  int num=CONVERT<int>(argv[++i]);
+			  if(num==0 || num==1){
+					ci_ma=num;
+				ci_ma_flag++;
+				  }else{
+					cout<<"Error in parseParameter for -CI_M."<<endl;
+					throw 1;
+				  }
+			}
+			//option - gamma estimation
+			else if(temp=="-R" && (i+1)<argc && r_flag==0){
+				  int num=CONVERT<int>(argv[++i]);
+			  if(num==0 || num==1){
+					Do_r_estimate=num;
+				r_flag++;
+				  }else{
+					cout<<"Error in parseParameter for -R."<<endl;
+					throw 1;
+				  }
+				}
+			//option - calculation of confidence intervals of gamma
+			else if(temp=="-CI_R" && (i+1)<argc && Do_ci_r_flag==0){
+				  int num=CONVERT<int>(argv[++i]);	  
+			  if(num==0 || num==1){
+					Do_ci_r=num;
+				Do_ci_r_flag++;
+				  }else{
+					cout<<"Error in parseParameter for -CI_R."<<endl;
+					throw 1;
+				  }
+				}
+			//option - usage of exact algorithm for estimating CIs for gamma
+			else if(temp=="-EXACT" && (i+1)<argc && ci_method_flag==0){
+				  int num=CONVERT<int>(argv[++i]);
+			  if(num==0 || num==1){
+					Do_ci_r_exact=num;
+				ci_method_flag++;
+				  }else{
+					cout<<"Error in parseParameter for -EXACT."<<endl;
+					throw 1;
+				  }
+				}
+			//Option - regional gamma only for gamma estimation, default is weighted gamma of regional and recurrent
+			//REGIONALGAMMA needs to be capitalized
+			else if(temp=="-REGIONALGAMMA" && (i+1)<argc){
+			  int num=CONVERT<int>(argv[++i]);
+			  if(num==0 || num==1){
+				regional_gamma_only=num;
+				  }
+			  else{
+				  cout<<"Error in parseParameter for -RegionalGamma."<<endl;
+				  throw 1;
+				  }
+			}   
+			//Replace or see as gap in the ambiguous nucleotide site 
+			else if(temp=="-N" && (i+1)<argc && nuc_replace_flag==0){
+			  int num=CONVERT<int>(argv[++i]);
+			  if(num==0 || num==1){
+				Nuc_replace=num;
+				nuc_replace_flag++;
+			  }else{
+				cout<<"Error in parseParameter for -N."<<endl;
+				throw 1;
+			  }
+			}
+			else{
+				  cout<<"Error in parseParameter, not recognized parameter."<<endl;
+				  throw 1;
+				}
+      }	//end of for argc	
+    }//end of else argc
+  }//end of try
   catch (...) {
     cout<<"Error in parsing input parameter(s)."<<endl;
     cout<<"Type -h for help information."<<endl;
     cout<<NAME<<", Version: "<<VERSION<<" [Last Update: "<<LASTUPDATE<<"]"<<endl;
     flag = false;		
-  }
-  
+  } 
   return flag;
 }
 
@@ -1990,7 +1989,6 @@ void cPRFCluster::showHelpInfo() {
   cout<<"Function: "<<FUNCTION<<endl;
   cout<<"Usage: "<<NAME<<" [OPTIONS]"<<endl;	
   cout<<"***********************************************************************"<<endl<<endl;
-
   cout<<"OPTIONS:"<<endl;	
   cout<<"  -dc\tInput file name for divergent consensus sequences [string, required]"<<endl;
   cout<<"  -dn\tInput number for divergent consensus sequences (sample number) [string, required]"<<endl;
@@ -2043,33 +2041,30 @@ int cPRFCluster::LambdaCILookupTable(string input_f_name){
 	double tmp_l=0.0, tmp_u=0.0;
    ifstream myfileFn2(input_f_name.c_str());
    if (!myfileFn2) throw "Error in opening LambdaCILookupTable...\n";
-
    //Read the file; remove the empty lines at the end of the file
    string str;
    getline(myfileFn2,str);
    	while ( myfileFn2.good()) {
    	   getline(myfileFn2,str);
    	  // cout<<"Each line: "<<str<<endl;
-   	  unsigned position1 = str.find("	");
+   	  int position1 = str.find("	");
    	     if (position1!=std::string::npos)
    	     {
    	    	 //cout<<"The position1: "<<position1<<endl;
    	     }
    	     else {cout<<"Error! Failed to find the position1 in the lookup table!"<<endl;}
-   	     unsigned position2=str.find("	", position1+2);
-   	  string e1 = str.substr (0,position1);
-   	string e2 = str.substr (position1+1,position2-position1-1);
-   	string e3 = str.substr (position2+1,str.length()-position2-1);
-   	//cout<<e1<<"\t**"<<e2<<"$$\t***"<<e3<<endl;
-    k=CONVERT<int>(e1);
-    tmp_l= CONVERT<double>(e2);
-    tmp_u=CONVERT<double>(e3);
-
-   CIRecurrentLookup tmp_ci(k,tmp_l,tmp_u);
-   LambdaCIs.push_back(tmp_ci);
-   //cout<<k<<"**\t"<<tmp_l<<"$$\t***"<<tmp_u<<endl;
-   (k,tmp_l,tmp_u)=(0,0.0,0.0);
-
+   	     int position2=str.find("	", position1+2);
+		  string e1 = str.substr (0,position1);
+		string e2 = str.substr (position1+1,position2-position1-1);
+		string e3 = str.substr (position2+1,str.length()-position2-1);
+		//cout<<e1<<"\t**"<<e2<<"$$\t***"<<e3<<endl;
+		k=CONVERT<int>(e1);
+		tmp_l= CONVERT<double>(e2);
+		tmp_u=CONVERT<double>(e3);
+	   CIRecurrentLookup tmp_ci(k,tmp_l,tmp_u);
+	   LambdaCIs.push_back(tmp_ci);
+	   cout<<k<<"**\t"<<tmp_l<<"$$\t***"<<tmp_u<<endl;
+	   k=0; tmp_l=tmp_u=0.0;
    	}
    	myfileFn2.close();
    	//cout<<"***The size of the lookup LambdaCI: "<<LambdaCIs.size()<<endl;
@@ -2168,15 +2163,12 @@ int cPRFCluster::recurrent_SiteGammaCI(int tumor_num, double ucr, double CI, int
 			}
 		}
 	}
-
 	if(flag_root==false and min_dx<=MinDx){
 		tmp_gamma=optimal_r;
 	}
-
 	if(flag_root==false and min_dx>MinDx){
 		tmp_gamma=-199;
 	}
-
 	if (upORlow==0) {
 		//vec_lower_r_c[Site]=tmp_gamma;
 		vec_lower_r_c_r[Site]=tmp_gamma;
@@ -2189,7 +2181,6 @@ int cPRFCluster::recurrent_SiteGammaCI(int tumor_num, double ucr, double CI, int
 	}
 	return 1;
 }
-
 /***************************************************
 * Function: Get a random model by choosing a value from 0 to 1, and select the clustering model for p with the weight above the random value
 * Input Parameter: SiteModels; site

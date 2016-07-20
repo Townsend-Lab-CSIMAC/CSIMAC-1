@@ -1,9 +1,13 @@
 /*
-To debug: output scales; 
-To debug: Error in -O; 
-
-
 To change: multiple hits considered poisson rate
+
+Fixed bug: output Scale; 
+if (output_format_num==1 || (output_format_num==0 && Scale>1)) //(output_format_num==0 and Scale==3) and (output_format_num==1 and Scale==1) are exactly the same output position
+    {
+		if (output_format_num==0 and Scale>1) {Scale=Scale/3;}//for amino acid, scale it down 3 times to make it comparable to nucleotide Scale
+		for(long i=0; i<N; i++) {//each position after scaled
+			for (long j=0;j<Scale;j++){ // JT: fix this Scale/3 = 1/3 - ZMZ fixed adjusting amino acid scales down 3 times to be comparable to nucleotide and expanding each position i to i*Scale+j (0<j<Scale).
+				cout.width(width);cout<<Scale*i+j+1<<"\t"; //convert to the real amino acid or nucleotide position of the gene, if Scale==1, i; if Scale=6, i=10, new position would be 60-65. 
 
 Fixed Seven compiling warnings:
 changed from unassigned to int for int position1 = str.find("	");
@@ -255,7 +259,6 @@ int cPRFCluster::output(long N){
    cout<<endl<<"//Results based on model selection: "<<endl;
    cout<<"Cancer divergence synonymous mutation rate (ucs): "<<ucs<<endl;
    cout<<"Cancer divergence replacement mutation rate (ucr): "<<ucr<<endl;
-
   // Print out cluster information for synonymous sites in the Divergence sequence if the user assigns '-s 1'.
   if(Do_Synonymous_Cluster==1){
     cout<<endl<<"Clusters of synonymous divergence:"<<endl;
@@ -281,8 +284,7 @@ int cPRFCluster::output(long N){
 	cout<<"\tAIC_0= "<<vec_SelectedModels_ds[i].AIC0<<"\tAIC= "<<vec_SelectedModels_ds[i].AIC;
 	cout<<"\tAICc_0= "<<vec_SelectedModels_ds[i].AICc0<<"\tAICc= "<<vec_SelectedModels_ds[i].AICc;
 	cout<<"\tBIC_0= "<<vec_SelectedModels_ds[i].BIC0<<"\tBIC= "<<vec_SelectedModels_ds[i].BIC;
-	cout<<endl;
-	
+	cout<<endl;	
 	cout<<"P0_DivergenceSynonymous= "<<vec_SelectedModels_ds[i].p0<<"\tPc_DivergenceSynonymous= "<<vec_SelectedModels_ds[i].pc;
 	cout<<endl<<endl;
       }
@@ -353,146 +355,140 @@ int cPRFCluster::output(long N){
       }
     }
     cout<<endl;//End of the title line of the output values.
-    //Output the data in the format of nucleotide or amino acid sequence
-    if (output_format_num==1 or (output_format_num==0 and Scale!=1)) // 0: amino acid output || 1: nucleotide output, default=0
+    //Output the data in the format of nucleotide or amino acid sequence, 0: amino acid output || 1: nucleotide output, default=0
+    if (output_format_num==1 || (output_format_num==0 && Scale>1)) //(output_format_num==0 and Scale==3) and (output_format_num==1 and Scale==1) are exactly the same output position
     {
-	for(long i=0; i<N; i++) {
-		for (long j=0;j<Scale/3;j++){ // JT: fix this Scale/3 = 1/3 ???
-			cout.width(width);cout<<Scale/3*i+j+1<<"\t"; 
-			if(Do_Synonymous_Cluster==1){
-				cout.width(width);cout<<vec_MS_rate_dr[i]<<"\t";
-				cout.width(width);cout<<vec_MA_rate_dr[i]<<"\t";
-				cout.width(width);cout<<vec_MS_rate_ds[i]<<"\t";
-				cout.width(width);cout<<vec_MA_rate_ds[i]<<"\t";
-				if(ci_ma==1){
-					cout.width(width);cout<<vec_lower_rate_dr[i]<<"\t";
-					cout.width(width);cout<<vec_upper_rate_dr[i]<<"\t";
-					cout.width(width);cout<<vec_lower_rate_ds[i]<<"\t";
-					cout.width(width);cout<<vec_upper_rate_ds[i]<<"\t";
-				}
-			  }
-
-			//Do_r_estimate: cancer divergence gamma
-			if(Do_r_estimate==1){
-			cout.width(width); //cancer gamma
-
-			if(vec_r_c[i]==299){
-			  cout.width(width);cout<<"INF";
-			}else if (vec_r_c[i]==-299){
-			  cout.width(width);cout<<"N-INF";
-			}else if (vec_r_c[i]==-199){
-			  cout.width(width);cout<<"NULL";
-			}else{
-			  cout.width(width);cout<<vec_r_c[i];
-			}
-
-			  //Do_ci_r: cancer divergent gamma Lower and Upper confidence intervals
-			  if(vec_lower_r_c[i]==299){
-				cout<<"\t";cout.width(width);cout<<"INF"<<"\t";
-			  }else if(vec_lower_r_c[i]==-299){
-				cout<<"\t";cout.width(width);cout<<"N-INF"<<"\t";
-			  }else if(vec_lower_r_c[i]==-199){
-				cout<<"\t";cout.width(width);cout<<"NULL"<<"\t";
-			  }else{
-				cout<<"\t";cout.width(width);cout<<vec_lower_r_c[i]<<"\t";
-			  }
-
-			  if(vec_upper_r_c[i]==299){
-				cout.width(width);cout<<"INF";
-			  }else if(vec_upper_r_c[i]==-299){
-				cout.width(width);cout<<"N-INF";
-			  }else if(vec_upper_r_c[i]==-199){
-				cout.width(width);cout<<"NULL";
-			  }else{
-				cout.width(width);cout<<vec_upper_r_c[i];
-				}
-			  }
-
-			  if (div_codon_consensus[i]=='*') { cout.width(width);cout<<"\t"<<0; }
-
-			  else if (div_codon_consensus[i]=='S') { cout.width(width);cout<<"\t"<<-1; } //Re-ordered
-			  else if (div_codon_consensus[i]=='R') { cout.width(width);cout<<"\t"<<1; }
-			  else if (div_codon_consensus[i]=='Q') { cout.width(width);cout<<"\t"<<2; } //recurrent sites
-			  else if (div_codon_consensus[i]=='D') { cout.width(width);cout<<"\t"<<-2; } //Added Damaging mutation records
-			  cout<<"\t"<<div_codon_consensus[i];
-			  cout<<endl;
-		}//end of the inside for loop
-	  }//end of the outside for loop
+		if (output_format_num==0 and Scale>1) {Scale=Scale/3;}//for amino acid, scale it down 3 times to make it comparable to nucleotide Scale
+		for(long i=0; i<N; i++) {//each position after scaled
+			for (long j=0;j<Scale;j++){ // JT: fix this Scale/3 = 1/3 - ZMZ fixed adjusting amino acid scales down 3 times to be comparable to nucleotide and expanding each position i to i*Scale+j (0<j<Scale).
+				cout.width(width);cout<<Scale*i+j+1<<"\t"; //convert to the real amino acid or nucleotide position of the gene, if Scale==1, i; if Scale=6, i=10, new position would be 60-65. 
+				if(Do_Synonymous_Cluster==1){
+					cout.width(width);cout<<vec_MS_rate_dr[i]<<"\t";
+					cout.width(width);cout<<vec_MA_rate_dr[i]<<"\t";
+					cout.width(width);cout<<vec_MS_rate_ds[i]<<"\t";
+					cout.width(width);cout<<vec_MA_rate_ds[i]<<"\t";
+					if(ci_ma==1){
+						cout.width(width);cout<<vec_lower_rate_dr[i]<<"\t";
+						cout.width(width);cout<<vec_upper_rate_dr[i]<<"\t";
+						cout.width(width);cout<<vec_lower_rate_ds[i]<<"\t";
+						cout.width(width);cout<<vec_upper_rate_ds[i]<<"\t";
+					}
+				  }
+				//Do_r_estimate: choose the option of outputting gamma, and 95% confidence intervals of gamma
+				if(Do_r_estimate==1){
+					cout.width(width); //cancer gamma
+					//gamma for site i
+					if(vec_r_c[i]==299){
+					  cout.width(width);cout<<"INF";
+					}else if (vec_r_c[i]==-299){
+					  cout.width(width);cout<<"N-INF";
+					}else if (vec_r_c[i]==-199){
+					  cout.width(width);cout<<"NULL";
+					}else{
+					  cout.width(width);cout<<vec_r_c[i];
+					}
+					  //Lower confidence interval of gamma for site i
+					  if(vec_lower_r_c[i]==299){
+						cout<<"\t";cout.width(width);cout<<"INF"<<"\t";
+					  }else if(vec_lower_r_c[i]==-299){
+						cout<<"\t";cout.width(width);cout<<"N-INF"<<"\t";
+					  }else if(vec_lower_r_c[i]==-199){
+						cout<<"\t";cout.width(width);cout<<"NULL"<<"\t";
+					  }else{
+						cout<<"\t";cout.width(width);cout<<vec_lower_r_c[i]<<"\t";
+					  }
+					  //Upper confidence interval of gamma for site i
+					  if(vec_upper_r_c[i]==299){
+						cout.width(width);cout<<"INF";
+					  }else if(vec_upper_r_c[i]==-299){
+						cout.width(width);cout<<"N-INF";
+					  }else if(vec_upper_r_c[i]==-199){
+						cout.width(width);cout<<"NULL";
+					  }else{
+						cout.width(width);cout<<vec_upper_r_c[i];
+						}
+				  }//end of if(Do_r_estimate==1)		  
+				//Site labels using number 0, -1, 1, 2, 3
+				  if (div_codon_consensus[i]=='*') { cout.width(width);cout<<"\t"<<0; }
+				  else if (div_codon_consensus[i]=='S') { cout.width(width);cout<<"\t"<<-1; } //Re-ordered
+				  else if (div_codon_consensus[i]=='R') { cout.width(width);cout<<"\t"<<1; }
+				  else if (div_codon_consensus[i]=='Q') { cout.width(width);cout<<"\t"<<2; } //recurrent sites
+				  else if (div_codon_consensus[i]=='D') { cout.width(width);cout<<"\t"<<-2; } //Added Damaging mutation records
+				  else { throw 1;}
+				  cout<<"\t"<<div_codon_consensus[i];
+				  cout<<endl;
+			}//end of the inside for loop
+		  }//end of the outside for loop
 	  cout<<endl;
     }//end of if (output_format_num==1 or (output_format_num==0 and Scale!=1)) 
   
-  //Default: output the data in the format of amino acids
+  //Output the data in the format of amino acids without scaling
   if (output_format_num==0 and Scale==1) // 0: amino acid output || 1: nucleotide output, default=0
   {
-  for(long i=0; i<N/3; i++) { 
-	  for (long j=0;j<Scale;j++) // JT: is this loop just extra? No need for loop?
-	  {
-		   cout.width(width);cout<<i*Scale+j+1<<"\t";
-		      if(Do_Synonymous_Cluster==1){
-		          cout.width(width);cout<<(vec_MS_rate_dr[i*3]+vec_MS_rate_dr[i*3+1]+vec_MS_rate_dr[i*3+2])/3<<"\t";
-		          cout.width(width);cout<<(vec_MA_rate_dr[i*3]+vec_MA_rate_dr[i*3+1]+vec_MA_rate_dr[i*3+2])/3<<"\t";
-		      	cout.width(width);cout<<(vec_MS_rate_ds[i*3]+vec_MS_rate_ds[i*3+1]+vec_MS_rate_ds[i*3+2])/3<<"\t";
-			        cout.width(width);cout<<(vec_MA_rate_ds[i*3]+vec_MA_rate_ds[i*3+1]+vec_MA_rate_ds[i*3+2])/3<<"\t";
-			if(ci_ma==1){
-				cout.width(width);cout<<(vec_lower_rate_dr[i*3]+vec_lower_rate_dr[i*3+1]+vec_lower_rate_dr[i*3+2])/3<<"\t";
-				cout.width(width);cout<<(vec_upper_rate_dr[i*3]+vec_upper_rate_dr[i*3+1]+vec_upper_rate_dr[i*3+2])/3<<"\t";
-				cout.width(width);cout<<(vec_lower_rate_ds[i*3]+vec_lower_rate_ds[i*3+1]+vec_lower_rate_ds[i*3+2])/3<<"\t";
-			    cout.width(width);cout<<(vec_upper_rate_ds[i*3]+vec_upper_rate_ds[i*3+1]+vec_upper_rate_ds[i*3+2])/3<<"\t";
-			}
-		    }
-
-		    //Do_r_estimate: cancer selection intensity gamma estimation
-		    if(Do_r_estimate==1){
-			cout.width(width);
-
-			if(vec_r_c[i*3]==299 or vec_r_c[i*3+1]==299 or vec_r_c[i*3+2]==299){
-			  cout.width(width);cout<<"INF";
-			}else if (vec_r_c[i*3]==-299 or vec_r_c[i*3+1]==-299 or vec_r_c[i*3+2]==-299){
-			  cout.width(width);cout<<"N-INF";
-			}else if (vec_r_c[i*3]==-199 || vec_r_c[i*3+1]==-199 || vec_r_c[i*3+2]==-199){
-			  cout.width(width);cout<<"NULL";
-			}else{
-			  cout.width(width);cout<<(vec_r_c[i*3]+vec_r_c[i*3+1]+vec_r_c[i*3+2])/3;
-			}
-
-		     //Do_ci_r: cancer divergent gamma Lower and Upper confidence intervals
-			  if(vec_lower_r_c[i*3]==299 or vec_lower_r_c[i*3+1]==299 or vec_lower_r_c[i*3+2]==299){
-			    cout<<"\t";cout.width(width);cout<<"INF"<<"\t";
-			  }else if(vec_lower_r_c[i*3]==-299 or vec_lower_r_c[i*3+1]==-299 or vec_lower_r_c[i*3+2]==-299){
-			    cout<<"\t";cout.width(width);cout<<"N-INF"<<"\t";
-			  }else if(vec_lower_r_c[i*3]==-199 || vec_lower_r_c[i*3+1]==-199 || vec_lower_r_c[i*3+2]==-199){
-			    cout<<"\t";cout.width(width);cout<<"NULL"<<"\t";
-			  }else{
-			    cout<<"\t";cout.width(width);cout<<(vec_lower_r_c[i*3]+vec_lower_r_c[i*3+1]+vec_lower_r_c[i*3+2])/3<<"\t";
-			  }
-
-			  if(vec_upper_r_c[i*3]==299 or vec_upper_r_c[i*3+1]==299 or vec_upper_r_c[i*3+2]==299){
-			    cout.width(width);cout<<"INF";
-			  }else if(vec_upper_r_c[i*3]==-299 or vec_upper_r_c[i*3+1]==-299 or vec_upper_r_c[i*3+2]==-299){
-			    cout.width(width);cout<<"N-INF";
-			  }else if(vec_upper_r_c[i*3]==-199 || vec_upper_r_c[i*3+1]==-199 || vec_upper_r_c[i*3+2]==-199){
-			    cout.width(width);cout<<"NULL";
-			  }else{
-			    cout.width(width);cout<<(vec_upper_r_c[i*3]+vec_upper_r_c[i*3+1]+vec_upper_r_c[i*3+2])/3;
-			    }
-			  }
-		    if (div_codon_consensus[i*3]=='*' and div_codon_consensus[i*3+1]=='*' and div_codon_consensus[i*3+2]=='*') { cout.width(width);cout<<"\t"<<0; }
-		    else if (div_codon_consensus[i*3]=='S' or div_codon_consensus[i*3+1]=='S' or div_codon_consensus[i*3+2]=='S') { cout.width(width);cout<<"\t"<<-1; } // Reordered; S first, can be overwritten by laters
-		    else if (div_codon_consensus[i*3]=='R' or div_codon_consensus[i*3+1]=='R' or div_codon_consensus[i*3+2]=='R') { cout.width(width);cout<<"\t"<<1; }
-		    else if (div_codon_consensus[i*3]=='Q' or div_codon_consensus[i*3+1]=='Q' or div_codon_consensus[i*3+2]=='Q') { cout.width(width);cout<<"\t"<<2; }
-		    else if (div_codon_consensus[i*3]=='D' or div_codon_consensus[i*3+1]=='D' or div_codon_consensus[i*3+2]=='D') { cout.width(width);cout<<"\t"<<-2; } // Added Damaging mutation records
-		    else { throw 1;}
-
-		    if (div_codon_consensus[i*3]=='*' and div_codon_consensus[i*3+1]=='*' and div_codon_consensus[i*3+2]=='*') { cout<<"\t*"; }
-		    else if (div_codon_consensus[i*3]=='S' or div_codon_consensus[i*3+1]=='S' or div_codon_consensus[i*3+2]=='S') {	cout<<"\tS";  }
-		    else if (div_codon_consensus[i*3]=='R' or div_codon_consensus[i*3+1]=='R' or div_codon_consensus[i*3+2]=='R') { cout<<"\tR";  }		    
-		    else if (div_codon_consensus[i*3]=='Q' or div_codon_consensus[i*3+1]=='Q' or div_codon_consensus[i*3+2]=='Q') { cout<<"\tQ";  }
-		    else if (div_codon_consensus[i*3]=='D' or div_codon_consensus[i*3+1]=='D' or div_codon_consensus[i*3+2]=='D') {	cout<<"\tD";  }
-		    else { throw 1;}
-		    cout<<endl;
-	  }//end of the inside for loop
-    }//end of the outside for loop
-    cout<<endl;
+	  for(long i=0; i<N/3; i++) { 
+		   cout.width(width);cout<<i+1<<"\t";
+		  if(Do_Synonymous_Cluster==1){
+			    cout.width(width);cout<<(vec_MS_rate_dr[i*3]+vec_MS_rate_dr[i*3+1]+vec_MS_rate_dr[i*3+2])/3<<"\t";
+			    cout.width(width);cout<<(vec_MA_rate_dr[i*3]+vec_MA_rate_dr[i*3+1]+vec_MA_rate_dr[i*3+2])/3<<"\t";
+			    cout.width(width);cout<<(vec_MS_rate_ds[i*3]+vec_MS_rate_ds[i*3+1]+vec_MS_rate_ds[i*3+2])/3<<"\t";
+				cout.width(width);cout<<(vec_MA_rate_ds[i*3]+vec_MA_rate_ds[i*3+1]+vec_MA_rate_ds[i*3+2])/3<<"\t";
+				if(ci_ma==1){
+					cout.width(width);cout<<(vec_lower_rate_dr[i*3]+vec_lower_rate_dr[i*3+1]+vec_lower_rate_dr[i*3+2])/3<<"\t";
+					cout.width(width);cout<<(vec_upper_rate_dr[i*3]+vec_upper_rate_dr[i*3+1]+vec_upper_rate_dr[i*3+2])/3<<"\t";
+					cout.width(width);cout<<(vec_lower_rate_ds[i*3]+vec_lower_rate_ds[i*3+1]+vec_lower_rate_ds[i*3+2])/3<<"\t";
+					cout.width(width);cout<<(vec_upper_rate_ds[i*3]+vec_upper_rate_ds[i*3+1]+vec_upper_rate_ds[i*3+2])/3<<"\t";
+				}
+			}//end of if(Do_Synonymous_Cluster==1)
+			//Do_r_estimate: choose the option of outputting gamma, and 95% confidence intervals of gamma
+			if(Do_r_estimate==1){
+				cout.width(width);
+				//gamma for site i
+				if(vec_r_c[i*3]==299 or vec_r_c[i*3+1]==299 or vec_r_c[i*3+2]==299){
+				  cout.width(width);cout<<"INF";
+				}else if (vec_r_c[i*3]==-299 or vec_r_c[i*3+1]==-299 or vec_r_c[i*3+2]==-299){
+				  cout.width(width);cout<<"N-INF";
+				}else if (vec_r_c[i*3]==-199 || vec_r_c[i*3+1]==-199 || vec_r_c[i*3+2]==-199){
+				  cout.width(width);cout<<"NULL";
+				}else{
+				  cout.width(width);cout<<(vec_r_c[i*3]+vec_r_c[i*3+1]+vec_r_c[i*3+2])/3;
+				}
+				 //Lower confidence interval of gamma for site i
+				  if(vec_lower_r_c[i*3]==299 or vec_lower_r_c[i*3+1]==299 or vec_lower_r_c[i*3+2]==299){
+					cout<<"\t";cout.width(width);cout<<"INF"<<"\t";
+				  }else if(vec_lower_r_c[i*3]==-299 or vec_lower_r_c[i*3+1]==-299 or vec_lower_r_c[i*3+2]==-299){
+					cout<<"\t";cout.width(width);cout<<"N-INF"<<"\t";
+				  }else if(vec_lower_r_c[i*3]==-199 || vec_lower_r_c[i*3+1]==-199 || vec_lower_r_c[i*3+2]==-199){
+					cout<<"\t";cout.width(width);cout<<"NULL"<<"\t";
+				  }else{
+					cout<<"\t";cout.width(width);cout<<(vec_lower_r_c[i*3]+vec_lower_r_c[i*3+1]+vec_lower_r_c[i*3+2])/3<<"\t";
+				  }
+				  //Upper confidence interval of gamma for site i
+				  if(vec_upper_r_c[i*3]==299 or vec_upper_r_c[i*3+1]==299 or vec_upper_r_c[i*3+2]==299){
+					cout.width(width);cout<<"INF";
+				  }else if(vec_upper_r_c[i*3]==-299 or vec_upper_r_c[i*3+1]==-299 or vec_upper_r_c[i*3+2]==-299){
+					cout.width(width);cout<<"N-INF";
+				  }else if(vec_upper_r_c[i*3]==-199 || vec_upper_r_c[i*3+1]==-199 || vec_upper_r_c[i*3+2]==-199){
+					cout.width(width);cout<<"NULL";
+				  }else{
+					cout.width(width);cout<<(vec_upper_r_c[i*3]+vec_upper_r_c[i*3+1]+vec_upper_r_c[i*3+2])/3;
+					}
+			  }	//end of if(Do_r_estimate==1)		  
+			//Site labels using number 0, -1, 1, 2, 3
+			if (div_codon_consensus[i*3]=='*' and div_codon_consensus[i*3+1]=='*' and div_codon_consensus[i*3+2]=='*') { cout.width(width);cout<<"\t"<<0; }
+			else if (div_codon_consensus[i*3]=='S' or div_codon_consensus[i*3+1]=='S' or div_codon_consensus[i*3+2]=='S') { cout.width(width);cout<<"\t"<<-1; } // Reordered; S first, can be overwritten by laters
+			else if (div_codon_consensus[i*3]=='R' or div_codon_consensus[i*3+1]=='R' or div_codon_consensus[i*3+2]=='R') { cout.width(width);cout<<"\t"<<1; }
+			else if (div_codon_consensus[i*3]=='Q' or div_codon_consensus[i*3+1]=='Q' or div_codon_consensus[i*3+2]=='Q') { cout.width(width);cout<<"\t"<<2; }
+			else if (div_codon_consensus[i*3]=='D' or div_codon_consensus[i*3+1]=='D' or div_codon_consensus[i*3+2]=='D') { cout.width(width);cout<<"\t"<<-2; } // Added Damaging mutation records
+			else { throw 1;}
+			//Site labels using characters *, S, R, Q, D
+			if (div_codon_consensus[i*3]=='*' and div_codon_consensus[i*3+1]=='*' and div_codon_consensus[i*3+2]=='*') { cout<<"\t*"; }
+			else if (div_codon_consensus[i*3]=='S' or div_codon_consensus[i*3+1]=='S' or div_codon_consensus[i*3+2]=='S') {	cout<<"\tS";  }
+			else if (div_codon_consensus[i*3]=='R' or div_codon_consensus[i*3+1]=='R' or div_codon_consensus[i*3+2]=='R') { cout<<"\tR";  }		    
+			else if (div_codon_consensus[i*3]=='Q' or div_codon_consensus[i*3+1]=='Q' or div_codon_consensus[i*3+2]=='Q') { cout<<"\tQ";  }
+			else if (div_codon_consensus[i*3]=='D' or div_codon_consensus[i*3+1]=='D' or div_codon_consensus[i*3+2]=='D') {	cout<<"\tD";  }
+			else { throw 1;}
+			cout<<endl;//end of site i, go to next site in the for loop
+		  }//end of the for loop, for(long i=0; i<N/3; i++)
   }//end of if (output_format_num==0 and Scale==1) 
 }// end of if (MS_only==0)
 else if (MS_only==1){
@@ -2063,7 +2059,7 @@ int cPRFCluster::LambdaCILookupTable(string input_f_name){
 		tmp_u=CONVERT<double>(e3);
 	   CIRecurrentLookup tmp_ci(k,tmp_l,tmp_u);
 	   LambdaCIs.push_back(tmp_ci);
-	   cout<<k<<"**\t"<<tmp_l<<"$$\t***"<<tmp_u<<endl;
+	   //cout<<k<<"**\t"<<tmp_l<<"$$\t***"<<tmp_u<<endl;
 	   k=0; tmp_l=tmp_u=0.0;
    	}
    	myfileFn2.close();

@@ -1,7 +1,9 @@
 /*
 To debug: output scales; 
-To change: CIr_stochastic_threaded p=0, r=0
+
 To change: multiple hits considered poisson rate
+
+Changed p=0, r=0 in CIr_stochastic_threaded and CIs_rc_PRF: CIr_stochastic_threaded p=0, r=0; CIs_rc_PRF, dr=0, r=0.
 
 Excluded one site cluster: 
 In ClusterSubSeq, added ce-cs>1 in 'if (cri <= cri0 && ce-cs>1) {//add the condition to exclude the cluster of one site'
@@ -1371,7 +1373,7 @@ void cPRFCluster::CIr_stochastic_threaded(struct SiteModels *dr, long N, long i,
 		//If the number of models for the site is no more than the cutoff N_Random, Use exact CI for gamma.
 		if(dr[i].sms.size()<=N_Random){
 			*myout<<"Site: "<<i<<"\tModel size: "<<dr[i].sms.size();
-			*myout<<"******Use exact algorithm to estimate gamma CI since model size smaller than defined.******"<<endl;
+			*myout<<"\tExact algorithm is used since the model size is smaller than defined."<<endl;
 			////CIr_exact(dr, N);
 			//Get all the models
 			for(long k=0;k<dr[i].sms.size();k++){
@@ -1390,18 +1392,16 @@ void cPRFCluster::CIr_stochastic_threaded(struct SiteModels *dr, long N, long i,
 			}
 
 			//Calculate the CIs for r using exact algorithm
-			if(vec_rModels_c_indiv.size()==0){
-				vec_lower_r_c[i]=0;
-				vec_upper_r_c[i]=0;
-				vec_r_c[i]=0;
+			if(vec_rModels_c_indiv.size()==0){//empty, no gamma values, output -199, NULL
+				vec_lower_r_c[i]=-199;
+				vec_upper_r_c[i]=-199;
+				vec_r_c[i]=-199;
 			}
 			else{
 				CI_UpLow_rc(i,min_weight_c,vec_rModels_c_indiv,myout); // Get the upper and lower boundaries of gamma for site i by exact algorithm; and model averaged gamma
 			}
 			vec_rModels_c_indiv.clear();
-
 		}
-
 		// if the number of models at one site is larger than the cutoff N_Random, then sort assigned number of random models by AICweight, and compute gamma and stochastic CI for gamma
 		else{
 			//Sort all different models by weight and probability for a particular site (dr - models for divergence replacement at site i)
@@ -1409,9 +1409,7 @@ void cPRFCluster::CIr_stochastic_threaded(struct SiteModels *dr, long N, long i,
 			sort(dr[i].sms.begin(), dr[i].sms.end(), more_than_CI());
 			////cout<<"Weight for the first model:\t"<<dr[i].sms[0].weight<<endl;
 			end_num=N_Random; //N_Random=100000
-
-			//Get N_Random - 10000 models from pr & dr,respectively
-			//If all the selected models from pr & dr are zero, flag_mutation=0, won't calculate CIs for r.
+			//If all the selected models from dr are zero, flag_mutation=0, won't calculate CIs for r.
 			int flag_mutation=1;
 			int repeat_num=0;
 			const vector<double> &pws = RandomModel_NumFastInit(dr,i);
@@ -1419,6 +1417,8 @@ void cPRFCluster::CIr_stochastic_threaded(struct SiteModels *dr, long N, long i,
 			int TotalModel = dr[i].sms.size();
 			if (TotalSampleNum>TotalModel) {TotalSampleNum=TotalModel;}//choose the smaller one of N_Random*1000 and Total Model to go through all models, as the cutoff model number when dr.p=0.
 			int jj=0; //count all the models sampled, including both p=0 and p!=0
+			double new_r_c=-199;
+			double weight_tmp_c;
 			for(long j=1;j<=end_num;j++){
 				//Get a random model by choosing a value from 0 to 1, and select the clustering model for p with the weight above the random value
 				//long model_dr=RandomModel_Num(dr,i);
@@ -1426,7 +1426,7 @@ void cPRFCluster::CIr_stochastic_threaded(struct SiteModels *dr, long N, long i,
 				//discard the model with 0 prob, and don't calculate gamma for it
 				jj++; //count all the models sampled, including both p=0 and p!=0
 				if(dr[i].sms[model_dr].p==0.0){
-					j--; //repeat getting an alternative model_dr if p=0
+					//j--; //repeat getting an alternative model_dr if p=0
 					/*
 					if(repeat_num==N_Random){
 						cout<<"For Site "<<i<<", all assigned selected models indicate no chance to mutate!"; // Every randomly extracted model (all N_Random) gives p=0
@@ -1451,27 +1451,29 @@ void cPRFCluster::CIr_stochastic_threaded(struct SiteModels *dr, long N, long i,
 					} else {
 						repeat_num++; //record the number of getting Random model with p=0
 					}
-					continue;
+					//continue;
+					new_r_c=0;
 				}
 				//keep all non-zero probability models by model specific site rate p and AIC weight, with the assigned number of models as N_Random;
 				//calculate gamma and gamma weight based on the p and its weight for all N_Random number of models
 				else{
 					////RecurrentCount=1; //Not consider the recurrent site at this point
 					double site_rate=dr[i].sms[model_dr].p;
-					double new_r_c=CIs_rc_PRF(ucr,site_rate,tumor_num); // calculate gamma based on likelihood
-					double weight_tmp_c=dr[i].sms[model_dr].weight;//Same as the MACML AIC weight, don't need to recalculate, just need to re-gather all selected models, and re-calculate the weight of selected models
-					if(weight_tmp_c<min_weight_c) min_weight_c=weight_tmp_c;
-					rModels tmp_rm_c(weight_tmp_c,new_r_c);
-					vec_rModels_c_indiv.push_back(tmp_rm_c); //keep all calculated gamma and gamma weight for all N_Random number of models
-					//cout<<"Model ID:\t"<<j<<"\tSiteRate:\t"<<recur_site_rate<<"\tGamma:\t"<<new_r_c<<"\tAICweight:\t"<<weight_tmp_c<<endl;
-					////cout<<"Model ID:\t"<<j<<"\tGamma:\t"<<new_r_c<<"\tAICweight:\t"<<weight_tmp_c<<"\tdr Loglikelihood\t"<<dr[i].sms[model_dr].LogLikelihood<<endl;
-					//Debug:check if the models selected are random
-					/*
-					 if (i==0)
-						{cout<<"Model ID:\t"<<j<<"\tGamma:\t"<<new_r_c<<"\tAICweight:\t"<<weight_tmp_c<<"\tdr Loglikelihood\t"<<dr[i].sms[model_dr].LogLikelihood<<"\tRate:\t"<<dr[i].sms[model_dr].p<<endl;
-						}
-						*/
-				}
+					new_r_c=CIs_rc_PRF(ucr,site_rate,tumor_num); // calculate gamma based on likelihood
+					}					
+				weight_tmp_c=dr[i].sms[model_dr].weight;//Same as the MACML AIC weight, don't need to recalculate, just need to re-gather all selected models, and re-calculate the weight of selected models
+				if(weight_tmp_c<min_weight_c) min_weight_c=weight_tmp_c;
+				rModels tmp_rm_c(weight_tmp_c,new_r_c);
+				vec_rModels_c_indiv.push_back(tmp_rm_c); //keep all calculated gamma and gamma weight for all N_Random number of models
+				//cout<<"Model ID:\t"<<j<<"\tSiteRate:\t"<<recur_site_rate<<"\tGamma:\t"<<new_r_c<<"\tAICweight:\t"<<weight_tmp_c<<endl;
+				////cout<<"Model ID:\t"<<j<<"\tGamma:\t"<<new_r_c<<"\tAICweight:\t"<<weight_tmp_c<<"\tdr Loglikelihood\t"<<dr[i].sms[model_dr].LogLikelihood<<endl;
+				//Debug:check if the models selected are random
+				/*
+				 if (i==0)
+					{cout<<"Model ID:\t"<<j<<"\tGamma:\t"<<new_r_c<<"\tAICweight:\t"<<weight_tmp_c<<"\tdr Loglikelihood\t"<<dr[i].sms[model_dr].LogLikelihood<<"\tRate:\t"<<dr[i].sms[model_dr].p<<endl;
+					}
+					*/
+				
 			}
 			//Find CI for r using stochastic algorithm
 			if(flag_mutation==1){
@@ -1553,7 +1555,8 @@ double cPRFCluster::CIs_rc_PRF (double ucr, double dr, long tumor_num){
 	  //Estimate r for each site one by one
 	  if(dr==0){
 		  //Under infinite negative selection
-		  new_r=-299;
+		  //new_r=-299;
+		  new_r=0;
 		  return (new_r);
 	  }else if(ucr==0){
 		  new_r=299;

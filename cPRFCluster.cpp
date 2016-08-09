@@ -1,6 +1,7 @@
 /*
 To change: multiple hits considered poisson rate
 
+ZMZ 07/20/2016
 Fixed bug: output Scale; 
 if (output_format_num==1 || (output_format_num==0 && Scale>1)) //(output_format_num==0 and Scale==3) and (output_format_num==1 and Scale==1) are exactly the same output position
     {
@@ -8,7 +9,6 @@ if (output_format_num==1 || (output_format_num==0 && Scale>1)) //(output_format_
 		for(long i=0; i<N; i++) {//each position after scaled
 			for (long j=0;j<Scale;j++){ // JT: fix this Scale/3 = 1/3 - ZMZ fixed adjusting amino acid scales down 3 times to be comparable to nucleotide and expanding each position i to i*Scale+j (0<j<Scale).
 				cout.width(width);cout<<Scale*i+j+1<<"\t"; //convert to the real amino acid or nucleotide position of the gene, if Scale==1, i; if Scale=6, i=10, new position would be 60-65. 
-
 Fixed Seven compiling warnings:
 changed from unassigned to int for int position1 = str.find("	");
 || and && parenthesis
@@ -952,11 +952,12 @@ int cPRFCluster::ClusterSubSeq(int pos_start, int pos_end, char symbol, struct S
 			if (cs==pos_start && ce==pos_end) para = 0;//the number of parameters is zero, since both cs and ce are known
 			else if(ce==pos_end || cs==pos_start) para=1; //the number of parameters is one, since one of cs and ce is known
 
-			double symbol_cn = 0.0; //declare the counts of variant sites in the cluster region only.
+			long symbol_cn = 0; //declare the counts of variant sites in the cluster region only.
 			symbol_cn = getDifference(div_codon_consensus, cs, ce, symbol);//Get the counts of variant sites in the cluster region only.
-			double symbol_ncn = 0.0; //declare the counts of variant sites in the non-cluster region only.
+			long symbol_ncn = 0; //declare the counts of variant sites in the non-cluster region only.
 			symbol_ncn = getDifference(div_codon_consensus, pos_start, cs, symbol)+ getDifference(div_codon_consensus, ce, pos_end, symbol);//Get the counts of variant sites in the non-cluster region only.
-			
+			long total_variant=symbol_cn + symbol_ncn;
+
 			//Calculate log likelihood of the sites being variant in the cluster & Non-cluster			
 			double InL_tmp_cluster = LogLikelihoodCluster(cs, ce, pos_start, pos_end,symbol); 
 			double InL_tmp_noncluster = LogLikelihoodNonCluster(cs, ce, pos_start, pos_end,symbol);
@@ -1000,15 +1001,15 @@ int cPRFCluster::ClusterSubSeq(int pos_start, int pos_end, char symbol, struct S
 			}*/
 
 			//Evaluate the cluster by the criterion, found the best cluster model, the first cri0 is Null model cs=pos_start, ce=pos_end.
-			if (cri <= cri0 && ce-cs>1) {//add the condition to exclude the cluster of one site
+			if (cri < cri0 && ce-cs > 1 && symbol_n > 1) {//add the condition to exclude the cluster of one site, and no cluster for only one variant
 				if ((cs-pos_start>1 && pos_end-ce>1) ||
 						(cs==pos_start && pos_end-ce>1) ||
 						(cs-pos_start>1 && pos_end==ce))
 				{
 					found = 1; // found=1 means the presence of the cluster
-					//cout<<"\n***Found a cluster (cri <= cri0), cri: "<<cri<<"\tcri0: "<<cri0<<endl;
+					//cout<<"\n***Found a cluster (cri < cri0), cri: "<<cri<<"\tcri0: "<<cri0<<endl;
 					//ZMZ debugging 07/14/2016
-					//cout<<"Position Start: "<<pos_start<<"\tEnd: "<<pos_end<<"\tCluster start: "<<cs<<"\tend: "<<ce<<"\tp0: "<<p0<<"\tpc: "<<pc<<"\tvariant#Total\t"<<symbol_n<<"\tVariant#InCluster:\t"<<symbol_cn<<"\tInL0:\t"<<InL0<<"\tInL_tmp:\t"<<InL_tmp<<"\tInL_tmp_cluster:\t"<<InL_tmp_cluster<<"\tInL_tmp_noncluster:\t"<<InL_tmp_noncluster<<endl;
+					//cout<<"Position Start: "<<pos_start<<"\tEnd: "<<pos_end<<"\tCluster start: "<<cs<<"\tCluster end: "<<ce<<"\tp0: "<<p0<<"\tpc: "<<pc<<"\tvariant#Total\t"<<symbol_n<<"\tVariant#InCluster:\t"<<symbol_cn<<"\tInL0:\t"<<InL0<<"\tInL_tmp:\t"<<InL_tmp<<"\tInL_tmp_cluster:\t"<<InL_tmp_cluster<<"\tInL_tmp_noncluster:\t"<<InL_tmp_noncluster<<endl;
 					cs_max = cs;
 					ce_max = ce;
 					lambda_0_max=p0; 
@@ -1019,7 +1020,7 @@ int cPRFCluster::ClusterSubSeq(int pos_start, int pos_end, char symbol, struct S
 					AICc = AICc_tmp;
 					BIC = BIC_tmp;
 				}
-			}//end of if (cri <= cri0)
+			}//end of if (cri < cri0)
 		} // end of the inside for loop, sliding windows of the end of the cluster within the region
 	}//end of the outside for loop, sliding windows of the start of the cluster within the region
 	cout<<"For the region from "<<pos_start<<" to "<<pos_end<<", the total number of models in the subfunction ClusterSubSeq: "<<vec_AllModels.size()<<endl;
@@ -1030,13 +1031,13 @@ int cPRFCluster::ClusterSubSeq(int pos_start, int pos_end, char symbol, struct S
 			double p_tmp=(double)symbol_n/(double)N_ScaledBack;
 			CandidateModels nullmodel(0, N-1, 0, N-1, p_tmp,p_tmp, InL0, InL, AIC0, AIC, AICc0, AICc, BIC0, BIC);
 			vec_SelectedModels.push_back(nullmodel);
+			cout<<"No cluster is found for the entire gene; Model averaging of models for each site. exit current ClusterSubSeq."<<endl<<endl;
 			EachSiteModels(0, N-1, 0, N-1, p_tmp,p_tmp, min_cri,pointer); //Keep the null model for each site in the vector pointer if no cluster found in the whole gene
-			cout<<"No cluster is found; quit ClusterSubSeq."<<endl<<endl;
 			return 1;
 		}
 		else {
 			EachSiteModels(pos_start, pos_end, cs_max, ce_max, lambda_0_max, lambda_c_max, min_cri,pointer); //keep all models in the sub-region even no cluster is found
-			cout << "No cluster found: Model averaging of models for each site."<<endl;
+			cout << "No cluster is found for the subregion: exit current ClusterSubSeq."<<endl;
 			return 1;
 		}
 	}
@@ -1049,10 +1050,11 @@ int cPRFCluster::ClusterSubSeq(int pos_start, int pos_end, char symbol, struct S
 	//in the case that the cluster is present, Select models (vec_SelectedModels) keep the best model cs, ce; Model average.
 	CandidateModels selectedmodel(pos_start, pos_end, cs_max, ce_max, lambda_0_max, lambda_c_max, InL0, InL, AIC0, AIC, AICc0, AICc, BIC0, BIC);
 	vec_SelectedModels.push_back(selectedmodel); //Accumulate the best clustering model or null model for each region, only one selected for each region in each ClusterSubSeq.
-	cout<<"Selected model: "<<pos_start<<"-"<<pos_end<<"\tCluster: "<<cs_max<<"-"<<ce_max<<endl;
-	cout<<"Total number of selected models in ClusterSubSeq: "<<vec_SelectedModels.size()<<endl;
+	cout<<"Found a cluster. The selected model: "<<pos_start<<"-"<<pos_end<<"\tCluster: "<<cs_max<<"-"<<ce_max<<endl;
+	cout<<"Total number of total selected models in ClusterSubSeq: "<<vec_SelectedModels.size()<<endl;
+	cout << "Model averaging of models for each site, to get the probability of the site being variants."<<endl;
 	EachSiteModels(pos_start, pos_end, cs_max, ce_max, lambda_0_max, lambda_c_max, min_cri,pointer); //Keep all models for each site in the vector pointer
-	cout << "Cluster found: Model averaging of models for each site, to get the probability of the site being variants."<<endl;
+	
 
 	/* Divide and Conquer: do ClusterSubSeq for the three sub-sequences (pos_start to cs, ce to pos_end, and cs to ce) for the best models cs, ce*/
 	if (ce_max!=pos_end || cs_max!=pos_start) {
